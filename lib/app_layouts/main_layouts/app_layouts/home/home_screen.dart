@@ -57,135 +57,118 @@ class _HomeScreen extends State<HomeScreen> {
       listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.black,
-            elevation: 0,
-            leading: IconButton(
-              onPressed: () {
-                //backToPrevious(context);
-              },
-              icon: Icon(
-                Icons.arrow_back,
-              ),
-            ),
-            actions: [
-              IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.notifications_none,
-                  ))
-            ],
+          appBar: generateAppBar(
+            context: context,
+            title: "",
+            svgPath: "",
           ),
-          body: SafeArea(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 300,
-                  child: Expanded(
-                    child: PageView.builder(
-                      scrollDirection: Axis.horizontal,
-                      onPageChanged: (int index) {
-                        setState(() {
-                          currentPage = index;
-                        });
-                      },
-                      controller: boardController,
-                      physics: const BouncingScrollPhysics(),
-                      itemBuilder: (context, index) =>
-                          buildBoradingForMainScreen(homeImagesList[index]),
-                      itemCount: homeImagesList.length,
-                    ),
+          body: Column(
+            children: [
+              SizedBox(
+                height: 300,
+                child: Expanded(
+                  child: PageView.builder(
+                    scrollDirection: Axis.horizontal,
+                    onPageChanged: (int index) {
+                      setState(() {
+                        currentPage = index;
+                      });
+                    },
+                    controller: boardController,
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: (context, index) =>
+                        buildBoradingForMainScreen(homeImagesList[index]),
+                    itemCount: homeImagesList.length,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 20,
-                  ),
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SmoothPageIndicator(
-                          controller: boardController,
-                          count: homeImagesList.length,
-                          effect: const ScrollingDotsEffect(
-                            activeDotColor: Colors.yellow,
-                            //expansionFactor: 4,
-                            dotColor: Colors.grey,
-                            dotHeight: 10,
-                            dotWidth: 10,
-                            radius: 5,
-                            spacing: 15,
-                          ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                ),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SmoothPageIndicator(
+                        controller: boardController,
+                        count: homeImagesList.length,
+                        effect: const ScrollingDotsEffect(
+                          activeDotColor: Colors.yellow,
+                          //expansionFactor: 4,
+                          dotColor: Colors.grey,
+                          dotHeight: 10,
+                          dotWidth: 10,
+                          radius: 5,
+                          spacing: 15,
                         ),
-                        //Spacer(),
-                      ],
-                    ),
+                      ),
+                      //Spacer(),
+                    ],
                   ),
                 ),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    color: greyColor,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Text(
-                            "ﻗﺎﺋﻤﺔ ﺍﻟﺸﺤﻨﺎﺕ ﺍﻟﺨﺎﺻﺔ ﺑﻚ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 22,
-                                color: textGreyTwoColor),
-                          ),
+              ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  color: greyColor,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Text(
+                          "ﻗﺎﺋﻤﺔ ﺍﻟﺸﺤﻨﺎﺕ ﺍﻟﺨﺎﺻﺔ ﺑﻚ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 22,
+                              color: textGreyTwoColor),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: put_line(
-                              line_width: 120,
-                              color: yellowColor,
-                              line_height: 2),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: put_line(
+                            line_width: 120,
+                            color: yellowColor,
+                            line_height: 2),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          textDirection: TextDirection.rtl,
+                          children: [
+                            TransportCustomDesign(
+                              onTap: () {},
+                              icon: const Icon(
+                                Icons.car_repair,
+                                color: Colors.white,
+                                size: 80,
+                              ),
+                              paddingValue: 15,
+                              borderRadius: 20,
+                              containerColor: purpleColor,
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Expanded(
+                              child: YellowButtonCustomDesign(
+                                text: "تابع شحناتك",
+                                inkwellFunc: () {
+                                    persistentTabController.jumpToTab(3);
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20.0, vertical: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            textDirection: TextDirection.rtl,
-                            children: [
-                              TransportCustomDesign(
-                                onTap: () {},
-                                icon: const Icon(
-                                  Icons.car_repair,
-                                  color: Colors.white,
-                                  size: 80,
-                                ),
-                                paddingValue: 15,
-                                borderRadius: 20,
-                                containerColor: purpleColor,
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              Expanded(
-                                child: YellowButtonCustomDesign(
-                                  text: "تابع شحناتك",
-                                  inkwellFunc: () {
-                                      persistentTabController.jumpToTab(3);
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         );
       },

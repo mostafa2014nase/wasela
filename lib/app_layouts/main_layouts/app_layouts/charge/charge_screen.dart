@@ -25,48 +25,14 @@ class ChargeScreen extends StatelessWidget {
             child: DefaultTabController(
               length: 3,
               child: Scaffold(
-                backgroundColor: greyColor,
-                appBar: AppBar(
-                  toolbarHeight: 140,
-                  backgroundColor: purpleColor,
-                  centerTitle: true,
-                  foregroundColor: Colors.white,
-                  elevation: 0,
-                  leading: IconButton(
-                    onPressed: () {
-//backToPrevious(context);
-                    },
-                    icon: Icon(
-                      Icons.arrow_back,
-                    ),
-                  ),
-                  actions: [
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: InkWell(
-                        onTap: () {},
-                        child: SvgPicture.asset(
-                          "Assets/images/menu.svg",
-                          color: Colors.white,
-                          width: 30,
-                          height: 30,
-                        ),
-                      ),
-                    ),
-                  ],
-                  title: Column(
-                    children: [
-                      Icon(
-                        Icons.indeterminate_check_box,
-                        size: 70,
-                      ),
-                      Text(
-                        "شحناتي",
-                        style: TextStyle(fontSize: 25, height: 1.5),
-                      ),
-                    ],
-                  ),
+                appBar: generateAppBar(
+                  title: "شحناتك",
+                  svgPath: "wallet",
+                    context: context,
                 ),
+                primary: true,
+                resizeToAvoidBottomInset: false,
+                backgroundColor: greyColor,
                 body: SafeArea(
                   child: Column(
                     textDirection: TextDirection.rtl,
@@ -800,7 +766,7 @@ class ChargeScreen extends StatelessWidget {
                                                       child: InkWell(
                                                         onTap: () {
                                                           navigateAndBack(
-                                                              context,
+                                                            context,
                                                               layout:EvaluateScreen(),);
                                                         },
                                                         child:

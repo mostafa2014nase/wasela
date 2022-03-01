@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/charge/bloc/cubit_class.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/charge/bloc/states.dart';
+import 'package:wasela/app_layouts/main_layouts/app_layouts/home/home_screen.dart';
+import 'package:wasela/app_layouts/main_layouts/mainscreen/main_nav_screen.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
 
 import '../../../../helper_methods/constants/endpoints.dart';
@@ -23,48 +25,10 @@ class WalletScreen extends StatelessWidget {
               length: 3,
               child: Scaffold(
                 backgroundColor: greyColor,
-                appBar: AppBar(
-                  toolbarHeight: 140,
-                  backgroundColor: purpleColor,
-                  centerTitle: true,
-                  foregroundColor: Colors.white,
-                  elevation: 0,
-                  leading: IconButton(
-                    onPressed: () {
-//backToPrevious(context);
-                    },
-                    icon: Icon(
-                      Icons.arrow_back,
-                    ),
-                  ),
-                  actions: [
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: InkWell(
-                        onTap: () {},
-                        child: SvgPicture.asset(
-                          "Assets/images/menu.svg",
-                          color: Colors.white,
-                          width: 30,
-                          height: 30,
-                        ),
-                      ),
-                    ),
-                  ],
-                  title: Column(
-                    children: [
-                      SvgPicture.asset(
-                        "Assets/images/wallet.svg",
-                        width: 40,
-                        height: 40,
-                        color: Colors.white,
-                      ),
-                      Text(
-                        "محفظتى",
-                        style: TextStyle(fontSize: 25, height: 1.5),
-                      ),
-                    ],
-                  ),
+                appBar: generateAppBar(
+                  context: context,
+                  title: "محفظتى",
+                  svgPath: "wallet",
                 ),
                 body: SafeArea(
                   child: Column(
@@ -797,7 +761,8 @@ class WalletScreen extends StatelessWidget {
                                                                     containerColor:
                                                                         purpleColor),
                                                                 CustomDesignUnActive(
-                                                                  borderColor: purpleColor,
+                                                                    borderColor:
+                                                                        purpleColor,
                                                                     borderRadius:
                                                                         5,
                                                                     width: 110,
@@ -835,7 +800,8 @@ class WalletScreen extends StatelessWidget {
                                                                         Colors
                                                                             .transparent),
                                                                 CustomDesignUnActive(
-                                                                    borderColor: purpleColor,
+                                                                    borderColor:
+                                                                        purpleColor,
                                                                     borderRadius:
                                                                         5,
                                                                     width: 110,

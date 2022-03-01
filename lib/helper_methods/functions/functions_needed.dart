@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wasela/app_layouts/main_layouts/mainscreen/main_nav_screen.dart';
 
 import '../constants/endpoints.dart';
 
@@ -1315,3 +1317,66 @@ Color chooseToastColor(ToastStates states) {
   }
   return color;
 }
+
+
+
+
+   AppBar generateAppBar ({required String title,required String svgPath,required BuildContext context}){
+    return AppBar(
+      toolbarHeight: 100,
+      backgroundColor: purpleColor,
+      foregroundColor: Colors.white,
+      centerTitle: true,
+      elevation: 0,
+      title: Column(
+        children: [
+          SvgPicture.asset(
+            "Assets/images/${svgPath}.svg",
+            width: 40,
+            height: 40,
+            color: Colors.white,
+          ),
+          Text(
+            "${title}",
+            style: TextStyle(fontSize: 25, height: 1.5),
+          ),
+        ],
+      ),
+      leading: IconButton(
+        onPressed: () {
+          persistentTabController.jumpToTab(0);
+        },
+        icon: Icon(
+          Icons.arrow_back,
+        ),
+      ),
+      actions: [
+        Row(
+          textDirection: TextDirection.rtl,
+          children: [
+            InkWell(
+              onTap: () {
+                //mainScaffoldKey.currentState?.openEndDrawer();
+                Scaffold.of(context).openEndDrawer();
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: SvgPicture.asset(
+                  "Assets/images/menu.svg",
+                  color: Colors.white,
+                  width: 30,
+                  height: 30,
+                ),
+              ),
+            ),
+            SizedBox(width: 10,),
+            IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.notifications_none,
+                  size: 40,
+                )),
+          ],
+        )]);
+  }
+

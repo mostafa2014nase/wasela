@@ -10,44 +10,51 @@ class EvaluateScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 140,
+        toolbarHeight: 100,
         backgroundColor: purpleColor,
-        centerTitle: true,
         foregroundColor: Colors.white,
         elevation: 0,
+        centerTitle: true,
+        title: SizedBox(
+          child: Row(
+            textDirection: TextDirection.rtl,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.notifications_none,
+                      size: 40,
+                    )),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                child: Column(
+                  children: [
+                    SvgPicture.asset(
+                      "Assets/images/wallet.svg",
+                      width: 40,
+                      height: 40,
+                      color: Colors.white,
+                    ),
+                    Text(
+                      "تقييم الشحنة",
+                      style: TextStyle(fontSize: 25, height: 1.5),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
         leading: IconButton(
           onPressed: () {
-//backToPrevious(context);
+            backToPrevious(context);
           },
           icon: Icon(
             Icons.arrow_back,
           ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: InkWell(
-              onTap: () {},
-              child: SvgPicture.asset(
-                "Assets/images/menu.svg",
-                color: Colors.white,
-                width: 30,
-                height: 30,
-              ),
-            ),
-          ),
-        ],
-        title: Column(
-          children: [
-            Icon(
-              Icons.indeterminate_check_box,
-              size: 70,
-            ),
-            Text(
-              "تقييم الشحنة",
-              style: TextStyle(fontSize: 25, height: 1.5),
-            ),
-          ],
         ),
       ),
       body: Container(

@@ -18,50 +18,10 @@ class MarketingScreen extends StatelessWidget {
       builder: (context,state){
         var cubit = MarketingCubitClass.get(context);
         return Scaffold(
-          appBar: AppBar(
-            toolbarHeight: 140,
-            backgroundColor: purpleColor,
-            centerTitle: true,
-            foregroundColor: Colors.white,
-            elevation: 0,
-            leading: IconButton(
-              onPressed: () {
-//backToPrevious(context);
-              },
-              icon: Icon(
-                Icons.arrow_back,
-              ),
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: InkWell(
-                  onTap: () {
-                    navigateAndBack(context, layout: BasketScreen());
-                  },
-                  child: SvgPicture.asset(
-                    "Assets/images/menu.svg",
-                    color: Colors.white,
-                    width: 30,
-                    height: 30,
-                  ),
-                ),
-              ),
-            ],
-            title: Column(
-              children: [
-                SvgPicture.asset(
-                  "Assets/images/categories.svg",
-                  width: 40,
-                  height: 40,
-                  color: Colors.white,
-                ),
-                Text(
-                  "تسوق واشحن",
-                  style: TextStyle(fontSize: 25, height: 1.5),
-                ),
-              ],
-            ),
+          appBar: generateAppBar(
+            context: context,
+            title: "تسوق وأشحن",
+            svgPath: "wallet",
           ),
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),

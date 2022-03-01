@@ -82,7 +82,7 @@ class CalculateChargingCubitClass extends Cubit<CalculateChargingStates> {
   var lengthSelected;
   bool selected = false;
 
-  void selectLenghthChoice(choice) {
+  void selectLengthChoice(choice) {
     lengthSelected = choice;
     selected = !selected;
     emit(SelectChoiceSuccessCalculateState());
@@ -101,6 +101,32 @@ class CalculateChargingCubitClass extends Cubit<CalculateChargingStates> {
   void selectWeightChoice(choice) {
     weightSelected = choice;
     selected = !selected;
+    emit(SelectChoiceSuccessCalculateState());
+  }
+
+
+  List<String> cityList = [
+    "الدقى",
+    "المعادى",
+    "جسر السويس",
+    "حلوان",
+    "مصر الجديدة",
+    "مدينة نصر",
+  ];
+  var selectedCity;
+  bool isCitySelected = false;
+
+  void selectFromCityChoices(choice) {
+    selectedCity = choice;
+    isCitySelected = !isCitySelected;
+    emit(SelectChoiceSuccessCalculateState());
+  }
+  var selectedPosition;
+  bool isPositionSelected = false;
+
+  void selectFromPositionChoices(choice) {
+    selectedPosition = choice;
+    isPositionSelected = !isPositionSelected;
     emit(SelectChoiceSuccessCalculateState());
   }
 }

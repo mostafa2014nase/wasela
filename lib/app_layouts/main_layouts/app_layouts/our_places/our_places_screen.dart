@@ -17,27 +17,12 @@ class PranchesMapAndMenue extends StatelessWidget {
       builder: (context, state) {
         var cubit = OurBranchesCubitClass.get(context);
         return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.black,
-            elevation: 0,
-            leading: IconButton(
-              onPressed: () {
-                //backToPrevious(context);
-              },
-              icon: Icon(
-                Icons.arrow_back,
-              ),
-            ),
-            actions: [
-              IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.notifications_none,
-                  ))
-            ],
-          ),
           resizeToAvoidBottomInset: false,
+          appBar: generateAppBar(
+            title: "فروعنا",
+            svgPath: "wallet",
+            context: context,
+          ),
           body: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Column(

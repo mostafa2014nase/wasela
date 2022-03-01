@@ -26,6 +26,14 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
     UserAccountScreen(),
   ];
 
+  String svgGenerate( int index) {
+    return "wallet";
+  }
+
+  String addressGenerate( int index) {
+    return "محفظتى";
+  }
+
   List<String> titles = [
     "الرئيسية",
     "ﻣﺤﻔﻈﺘﻲ",
@@ -34,6 +42,7 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
     "ﻓﺮﻭﻋﻨﺎ",
     "ﺣﺴﺎﺑﻲ"
   ];
+
   List<IconData> iconsList = [
     Icons.home,
     Icons.wallet_giftcard,
@@ -80,7 +89,7 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
         inactiveColorPrimary: textGreyTwoColor,
         inactiveColorSecondary: textGreyTwoColor),
   ];
-  PersistentTabController  persistentTabController = PersistentTabController();
+  PersistentTabController persistentTabController = PersistentTabController();
 
   int index = 0;
 
@@ -89,11 +98,27 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
     index = barIndex;
     emit(NavBarSuccessState());
   }
+
   updateBarIndexNavigation(int changedIndex) {
     emit(NavBarIndexChangedLoadingState());
     persistentTabController.jumpToTab(changedIndex);
     emit(NavBarIndexChangedSuccessState());
   }
+
+  List drawerSvgPics = [
+    "wallet",
+    "cash-back",
+    "gift",
+    "feedbackkk",
+    "settings (3)",
+  ];
+  List drawerTexts = [
+    "محفظتى",
+    "كاش باك",
+    "نقط وهدايا",
+    "تقييمك",
+    "الأعدادات",
+  ];
 
 //   UserModel? model;
 //

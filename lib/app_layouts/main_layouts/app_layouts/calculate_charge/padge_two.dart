@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/calculate_charge/bloc/cubit_class.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/calculate_charge/bloc/states.dart';
 import 'package:wasela/helper_methods/constants/endpoints.dart';
@@ -16,9 +17,44 @@ class CalculateChargeSecondScreen extends StatelessWidget {
         var cubit = CalculateChargingCubitClass.get(context);
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.black,
+            toolbarHeight: 100,
+            backgroundColor: purpleColor,
+            foregroundColor: Colors.white,
             elevation: 0,
+            centerTitle: true,
+            title: SizedBox(
+              child: Row(
+                textDirection: TextDirection.rtl,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.notifications_none,
+                          size: 40,
+                        )),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                    child: Column(
+                      children: [
+                        SvgPicture.asset(
+                          "Assets/images/wallet.svg",
+                          width: 40,
+                          height: 40,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          "تقييم الشحنة",
+                          style: TextStyle(fontSize: 25, height: 1.5),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
             leading: IconButton(
               onPressed: () {
                 backToPrevious(context);
@@ -27,13 +63,6 @@ class CalculateChargeSecondScreen extends StatelessWidget {
                 Icons.arrow_back,
               ),
             ),
-            actions: [
-              IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.notifications_none,
-                  ))
-            ],
           ),
           resizeToAvoidBottomInset: false,
           body: SingleChildScrollView(
