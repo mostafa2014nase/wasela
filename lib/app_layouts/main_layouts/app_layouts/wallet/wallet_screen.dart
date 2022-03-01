@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,6 +8,7 @@ import 'package:wasela/app_layouts/main_layouts/app_layouts/charge/bloc/states.d
 import 'package:wasela/app_layouts/main_layouts/app_layouts/home/home_screen.dart';
 import 'package:wasela/app_layouts/main_layouts/mainscreen/main_nav_screen.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
+import 'package:wasela/translations/localeKeys.g.dart';
 
 import '../../../../helper_methods/constants/endpoints.dart';
 
@@ -27,12 +29,11 @@ class WalletScreen extends StatelessWidget {
                 backgroundColor: greyColor,
                 appBar: generateAppBar(
                   context: context,
-                  title: "محفظتى",
+                  title: LocaleKeys.bottomNavItemsName2.tr(),
                   svgPath: "wallet",
                 ),
                 body: SafeArea(
                   child: Column(
-                    textDirection: TextDirection.rtl,
                     children: [
                       TabBar(
                         enableFeedback: true,
@@ -49,13 +50,13 @@ class WalletScreen extends StatelessWidget {
                         // },
                         tabs: [
                           Text(
-                            "متحصلات القادمة",
+                            LocaleKeys.walletScreenTabBar1.tr(),
                           ),
                           Text(
-                            "المتحصلات السابقة",
+                            LocaleKeys.walletScreenTabBar2.tr(),
                           ),
                           Text(
-                            "رصيد النقاط ",
+                            LocaleKeys.walletScreenTabBar3.tr(),
                           ),
                         ],
                       ),
@@ -66,8 +67,7 @@ class WalletScreen extends StatelessWidget {
                             physics: BouncingScrollPhysics(),
                             children: [
                               Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                textDirection: TextDirection.rtl,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   InkWell(
                                     onTap: () {},
@@ -75,12 +75,10 @@ class WalletScreen extends StatelessWidget {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20),
                                       child: Row(
-                                        textDirection: TextDirection.rtl,
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Row(
-                                            textDirection: TextDirection.rtl,
                                             children: [
                                               SvgPicture.asset(
                                                 "Assets/images/calendar Income.svg",
@@ -89,15 +87,13 @@ class WalletScreen extends StatelessWidget {
                                                 height: 35,
                                               ),
                                               Container(
-                                                alignment:
-                                                    Alignment.centerRight,
                                                 padding:
-                                                    EdgeInsets.only(right: 5),
+                                                    EdgeInsets.only(right: 5,left: 5,),
                                                 width: 200,
                                                 height: 40,
                                                 color: greyColor,
                                                 child: Text(
-                                                  "البحث برقم بوصيلة الشحن",
+                                                  LocaleKeys.walletScreenSearch.tr(),
                                                   style:
                                                       TextStyle(fontSize: 17),
                                                 ),
@@ -131,6 +127,7 @@ class WalletScreen extends StatelessWidget {
                                     child: SingleChildScrollView(
                                       physics: const BouncingScrollPhysics(),
                                       child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Padding(
                                             padding: const EdgeInsets.only(
@@ -145,29 +142,27 @@ class WalletScreen extends StatelessWidget {
                                               itemBuilder: (context, index) {
                                                 return DecoratedContainerWithShadow(
                                                   child: Row(
-                                                    textDirection:
-                                                        TextDirection.rtl,
                                                     children: [
                                                       Column(
                                                         children: [
                                                           CustomRowForDetails(
                                                             text1:
-                                                                "رقم بوليصة الشحن",
+                                                                LocaleKeys.walletScreenListItemDetails1.tr(),
                                                             text2: "1855",
                                                           ),
                                                           CustomRowForDetails(
                                                             text1:
-                                                                "السعر الاجمالي ",
+                                                            LocaleKeys.walletScreenListItemDetails2.tr(),
                                                             text2: "1855",
                                                           ),
                                                           CustomRowForDetails(
                                                             text1:
-                                                                "حالة الفاتورة",
+                                                            LocaleKeys.walletScreenListItemDetails3.tr(),
                                                             text2: "1855",
                                                           ),
                                                           CustomRowForDetails(
                                                             text1:
-                                                                "تاريخ الفاتورة",
+                                                            LocaleKeys.walletScreenListItemDetails4.tr(),
                                                             text2: "1855",
                                                           ),
                                                         ],
@@ -181,7 +176,7 @@ class WalletScreen extends StatelessWidget {
                                                           child:
                                                               CustomContainerForDetails(
                                                             text1:
-                                                                "تفاصيل البوليصة",
+                                                                LocaleKeys.walletScreenListItemButton.tr(),
                                                             icon: Icon(
                                                               Icons
                                                                   .arrow_back_ios,
@@ -210,14 +205,13 @@ class WalletScreen extends StatelessWidget {
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
-                                            textDirection: TextDirection.rtl,
                                             children: [
                                               Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                 children: [
                                                   Text(
-                                                    "أجمالي المبالغ المحصلة",
+                                                    LocaleKeys.walletScreenAll1.tr(),
                                                     style:
                                                         TextStyle(fontSize: 13),
                                                   ),
@@ -242,7 +236,7 @@ class WalletScreen extends StatelessWidget {
                                                     CrossAxisAlignment.center,
                                                 children: [
                                                   Text(
-                                                    "إجمالي المتحصلات الملغاة",
+                                                    LocaleKeys.walletScreenAll2.tr(),
                                                     style:
                                                         TextStyle(fontSize: 13),
                                                   ),
@@ -251,7 +245,7 @@ class WalletScreen extends StatelessWidget {
                                                   ),
                                                   CustomDesign(
                                                     text: Text(
-                                                      "5000 جنية",
+                                                      "5000 ${LocaleKeys.pound.tr()}",
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 20),
@@ -267,7 +261,7 @@ class WalletScreen extends StatelessWidget {
                                                     CrossAxisAlignment.center,
                                                 children: [
                                                   Text(
-                                                    "أجمالي المتحصلات قيد التنفيذ",
+                                                    LocaleKeys.walletScreenAll3.tr(),
                                                     style:
                                                         TextStyle(fontSize: 13),
                                                   ),
@@ -276,7 +270,7 @@ class WalletScreen extends StatelessWidget {
                                                   ),
                                                   CustomDesign(
                                                     text: Text(
-                                                      "5000 جنية",
+                                                      "5000 ${LocaleKeys.pound.tr()}",
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 20),
@@ -299,8 +293,7 @@ class WalletScreen extends StatelessWidget {
                                 ],
                               ),
                               Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                textDirection: TextDirection.rtl,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   InkWell(
                                     onTap: () {},
@@ -308,12 +301,10 @@ class WalletScreen extends StatelessWidget {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20),
                                       child: Row(
-                                        textDirection: TextDirection.rtl,
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Row(
-                                            textDirection: TextDirection.rtl,
                                             children: [
                                               SvgPicture.asset(
                                                 "Assets/images/calendar Income.svg",
@@ -330,7 +321,7 @@ class WalletScreen extends StatelessWidget {
                                                 height: 40,
                                                 color: greyColor,
                                                 child: Text(
-                                                  "30-8-2021 حتى تاريخ ",
+                                                  "30-8-2021 ${LocaleKeys.walletScreenSearch.tr()} ",
                                                   style:
                                                       TextStyle(fontSize: 17),
                                                 ),
@@ -378,8 +369,6 @@ class WalletScreen extends StatelessWidget {
                                               itemBuilder: (context, index) {
                                                 return DecoratedContainerWithShadow(
                                                   child: Row(
-                                                    textDirection:
-                                                        TextDirection.rtl,
                                                     children: [
                                                       Column(
                                                         children: [
@@ -441,7 +430,6 @@ class WalletScreen extends StatelessWidget {
                                             ),
                                           ),
                                           Row(
-                                            textDirection: TextDirection.rtl,
                                             children: [
                                               Column(
                                                 crossAxisAlignment:
@@ -464,7 +452,7 @@ class WalletScreen extends StatelessWidget {
                                                           const EdgeInsets.all(
                                                               20.0),
                                                       child: Text(
-                                                        "5000 جنية",
+                                                        "5000 ${LocaleKeys.pound.tr()}",
                                                         style: TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 20),
@@ -482,8 +470,7 @@ class WalletScreen extends StatelessWidget {
                                 ],
                               ),
                               Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                textDirection: TextDirection.rtl,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   InkWell(
                                     onTap: () {},
@@ -491,12 +478,10 @@ class WalletScreen extends StatelessWidget {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20),
                                       child: Row(
-                                        textDirection: TextDirection.rtl,
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Row(
-                                            textDirection: TextDirection.rtl,
                                             children: [
                                               SvgPicture.asset(
                                                 "Assets/images/calendar Income.svg",
@@ -513,7 +498,7 @@ class WalletScreen extends StatelessWidget {
                                                 height: 40,
                                                 color: greyColor,
                                                 child: Text(
-                                                  "30-8-2021 حتى تاريخ ",
+                                                  "30-8-2021 ${LocaleKeys.walletScreenSearch.tr()} ",
                                                   style:
                                                       TextStyle(fontSize: 17),
                                                 ),
@@ -561,8 +546,6 @@ class WalletScreen extends StatelessWidget {
                                               itemBuilder: (context, index) {
                                                 return DecoratedContainerWithShadow(
                                                   child: Row(
-                                                    textDirection:
-                                                        TextDirection.rtl,
                                                     children: [
                                                       Column(
                                                         children: [
@@ -601,7 +584,6 @@ class WalletScreen extends StatelessWidget {
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceAround,
-                                            textDirection: TextDirection.rtl,
                                             children: [
                                               Column(
                                                 crossAxisAlignment:
@@ -652,7 +634,7 @@ class WalletScreen extends StatelessWidget {
                                                           const EdgeInsets.all(
                                                               20.0),
                                                       child: Text(
-                                                        "5000 جنية",
+                                                        "5000 ${LocaleKeys.pound.tr()}",
                                                         style: TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 20),
@@ -717,9 +699,6 @@ class WalletScreen extends StatelessWidget {
                                                                     bottom:
                                                                         10.0),
                                                             child: Row(
-                                                              textDirection:
-                                                                  TextDirection
-                                                                      .rtl,
                                                               mainAxisAlignment:
                                                                   MainAxisAlignment
                                                                       .spaceBetween,

@@ -1,0 +1,47 @@
+// DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
+
+abstract class  LocaleKeys {
+  static const skip ='skip';
+  static const onBoarding11 ='onBoarding11';
+  static const onBoarding12 ='onBoarding12';
+  static const onBoarding21 ='onBoarding21';
+  static const onBoarding22 ='onBoarding22';
+  static const onBoarding31 ='onBoarding31';
+  static const onBoarding32 ='onBoarding32';
+  static const startScreen1 ='startScreen1';
+  static const startScreen2 ='startScreen2';
+  static const startScreen3 ='startScreen3';
+  static const startScreenLogIn ='startScreenLogIn';
+  static const startScreenRegister ='startScreenRegister';
+  static const loginScreenMobile ='loginScreenMobile';
+  static const loginScreenLogIn ='loginScreenLogIn';
+  static const loginScreen1 ='loginScreen1';
+  static const loginScreenEnter ='loginScreenEnter';
+  static const ensureScreenCode ='ensureScreenCode';
+  static const ensureScreenGo ='ensureScreenGo';
+  static const ensureScreen1 ='ensureScreen1';
+  static const ensureScreen2 ='ensureScreen2';
+  static const ensureScreen3 ='ensureScreen3';
+  static const bottomNavItemsName1 ='bottomNavItemsName1';
+  static const bottomNavItemsName2 ='bottomNavItemsName2';
+  static const bottomNavItemsName3 ='bottomNavItemsName3';
+  static const bottomNavItemsName4 ='bottomNavItemsName4';
+  static const bottomNavItemsName5 ='bottomNavItemsName5';
+  static const bottomNavItemsName6 ='bottomNavItemsName6';
+  static const homeScreen1 ='homeScreen1';
+  static const homeScreen2 ='homeScreen2';
+  static const marketing ='marketing';
+  static const walletScreenTabBar1 ='walletScreenTabBar1';
+  static const walletScreenTabBar2 ='walletScreenTabBar2';
+  static const walletScreenTabBar3 ='walletScreenTabBar3';
+  static const walletScreenSearch ='walletScreenSearch';
+  static const walletScreenListItemDetails1 ='walletScreenListItemDetails1';
+  static const walletScreenListItemDetails2 ='walletScreenListItemDetails2';
+  static const walletScreenListItemDetails3 ='walletScreenListItemDetails3';
+  static const walletScreenListItemDetails4 ='walletScreenListItemDetails4';
+  static const walletScreenListItemButton ='walletScreenListItemDetails4';
+  static const walletScreenAll1 ='walletScreenAll1';
+  static const walletScreenAll2 ='walletScreenAll2';
+  static const walletScreenAll3 ='walletScreenAll3';
+  static const pound ='pound';
+}

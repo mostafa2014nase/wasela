@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:wasela/app_layouts/main_layouts/mainscreen/nav_bloc/main_nav_states.dart';
+import 'package:wasela/translations/localeKeys.g.dart';
 import '../../../../helper_methods/constants/endpoints.dart';
 import '../../../../helper_methods/functions/functions_needed.dart';
 import '../../mainscreen/main_nav_screen.dart';
@@ -113,12 +115,12 @@ class _HomeScreen extends State<HomeScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
                   color: greyColor,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: Text(
-                          "ﻗﺎﺋﻤﺔ ﺍﻟﺸﺤﻨﺎﺕ ﺍﻟﺨﺎﺻﺔ ﺑﻚ",
+                          LocaleKeys.homeScreen1.tr(),
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 22,
@@ -137,7 +139,6 @@ class _HomeScreen extends State<HomeScreen> {
                             horizontal: 20.0, vertical: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          textDirection: TextDirection.rtl,
                           children: [
                             TransportCustomDesign(
                               onTap: () {},
@@ -155,7 +156,7 @@ class _HomeScreen extends State<HomeScreen> {
                             ),
                             Expanded(
                               child: YellowButtonCustomDesign(
-                                text: "تابع شحناتك",
+                                text: LocaleKeys.homeScreen2.tr(),
                                 inkwellFunc: () {
                                     persistentTabController.jumpToTab(3);
                                 },

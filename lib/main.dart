@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/calculate_charge/bloc/cubit_class.dart';
@@ -5,6 +6,7 @@ import 'package:wasela/app_layouts/main_layouts/app_layouts/home/home_bloc/home_
 import 'package:wasela/app_layouts/main_layouts/app_layouts/marketing_and_carage/bloc/cubit_class.dart';
 import 'package:wasela/app_layouts/main_layouts/mainscreen/nav_bloc/main_nav_cubit.dart';
 import 'package:wasela/splach/splach_screen.dart';
+import 'package:wasela/translations/codegen_loader.g.dart';
 import 'app_layouts/main_layouts/app_layouts/charge/bloc/cubit_class.dart';
 import 'app_layouts/main_layouts/app_layouts/our_places/bloc/cubit_class.dart';
 import 'helper_methods/app_bloc_provider/bloc/cubit.dart';
@@ -14,9 +16,10 @@ import 'helper_methods/sharedpref/shared_preference.dart';
 import 'login/login_screen.dart';
 import 'onBoarding/on_boarding_screen.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //await Firebase.initializeApp();
+  await EasyLocalization.ensureInitialized();
   await SharedCashHelper.init();
   Bloc.observer = BlocObserver();
   var onBoarding = SharedCashHelper.getValue(key: "skip");
@@ -29,7 +32,17 @@ void main() async {
     startScreen = LoginScreen();
   }
 
-  runApp(MyApp(startScreen: startScreen));
+  runApp(
+    EasyLocalization(
+      child: MyApp(startScreen: startScreen),
+      path: "Assets/translations",
+      supportedLocales: const [
+        Locale("en"),
+        Locale("ar"),
+      ],
+      fallbackLocale: const Locale("ar"),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -57,6 +70,9 @@ class MyApp extends StatelessWidget {
               title: 'Flutter Demo',
               theme: lightTheme,
               debugShowCheckedModeBanner: false,
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
               home: MainSplashScreen(startScreen: startScreen),
             );
           },

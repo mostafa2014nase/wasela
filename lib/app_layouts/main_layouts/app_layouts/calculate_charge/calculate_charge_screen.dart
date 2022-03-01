@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/calculate_charge/bloc/cubit_class.dart';
@@ -9,6 +8,7 @@ import 'package:wasela/helper_methods/functions/functions_needed.dart';
 
 class CalculateChargeScreen extends StatelessWidget {
   TextEditingController phoneController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +54,8 @@ class CalculateChargeScreen extends StatelessWidget {
                               paddingValue: 10,
                               borderRadius: 15,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
+                            const Padding(
+                              padding: EdgeInsets.all(8.0),
                               child: Text("الشحنة من"),
                             ),
                           ],
@@ -79,8 +79,8 @@ class CalculateChargeScreen extends StatelessWidget {
                               borderRadius: 15,
                               iconColor: Colors.black,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
+                            const Padding(
+                              padding: EdgeInsets.all(8.0),
                               child: Text("الشحنة الي"),
                             ),
                           ],
@@ -104,8 +104,8 @@ class CalculateChargeScreen extends StatelessWidget {
                               borderRadius: 15,
                               iconColor: Colors.black,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
+                            const Padding(
+                              padding: EdgeInsets.all(8.0),
                               child: Text("نوع الشحنة"),
                             ),
                           ],
@@ -115,10 +115,10 @@ class CalculateChargeScreen extends StatelessWidget {
                   ),
                 ),
                 cubit.leftChoice
-                    ? ChargeKind()
+                    ? const ChargeKind()
                     : cubit.middleChoice
-                        ? ChargeTo()
-                        : ChargeFrom()
+                        ?const ChargeTo()
+                        :const ChargeFrom()
               ],
             ),
           ),
@@ -155,16 +155,16 @@ class ChargeKind extends StatelessWidget {
                       containerColor: greyColor,
                       upContainerColor: yellowColor,
                       downContainerColor: purpleColor,
-                      upIcon: Icon(Icons.inbox_sharp),
-                      downIcon: Icon(
+                      upIcon: const Icon(Icons.inbox_sharp),
+                      downIcon:const Icon(
                         Icons.inbox_sharp,
                         color: Colors.white,
                       ),
-                      upText: Text(
+                      upText:const Text(
                         "طرود",
-                        style: TextStyle(fontSize: 25),
+                        style:TextStyle(fontSize: 25),
                       ),
-                      downText: Text(
+                      downText: const Text(
                         "مستندات",
                         style: TextStyle(color: Colors.white, fontSize: 25),
                       ),
@@ -179,18 +179,18 @@ class ChargeKind extends StatelessWidget {
                       containerColor: greyColor,
                       upContainerColor: purpleColor,
                       downContainerColor: yellowColor,
-                      upIcon: Icon(
+                      upIcon: const Icon(
                         Icons.inbox_sharp,
                         color: Colors.white,
                       ),
-                      downIcon: Icon(
+                      downIcon: const Icon(
                         Icons.inbox_sharp,
                       ),
-                      upText: Text(
+                      upText: const Text(
                         "طرود",
                         style: TextStyle(color: Colors.white, fontSize: 25),
                       ),
-                      downText: Text(
+                      downText: const Text(
                         "مستندات",
                         style: TextStyle(fontSize: 25),
                       ),
@@ -200,23 +200,22 @@ class ChargeKind extends StatelessWidget {
                 hintText: cubit.longHintWords,
                 controller: cubit.longController,
                 preWidget: DropdownButton(
-                    underline: SizedBox(),
+                    underline: const SizedBox(),
                     focusColor: Colors.black,
                     dropdownColor: yellowColor,
                     autofocus: true,
-                    hint: Text('cm', style: TextStyle(color: Colors.black)),
+                    hint: const Text('cm', style: TextStyle(color: Colors.black)),
                     onTap: () {},
                     value: cubit.lengthSelected,
                     onChanged: (newVal) {
                       cubit.selectLengthChoice(newVal);
-                      print(cubit.menuList);
                     },
                     items: cubit.menuList.map((val) {
                       return DropdownMenuItem(
                         value: val,
                         child: Text(
                           val,
-                          style: TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.black),
                         ),
                       );
                     }).toList()),
@@ -226,11 +225,11 @@ class ChargeKind extends StatelessWidget {
                 hintText: cubit.widthHintWords,
                 controller: cubit.widthController,
                 preWidget: DropdownButton(
-                    underline: SizedBox(),
+                    underline: const SizedBox(),
                     focusColor: Colors.black,
                     dropdownColor: yellowColor,
                     autofocus: true,
-                    hint: Text('cm', style: TextStyle(color: Colors.black)),
+                    hint: const Text('cm', style: TextStyle(color: Colors.black)),
                     onTap: () {},
                     value: cubit.widthSelected,
                     onChanged: (newVal) {
@@ -241,7 +240,7 @@ class ChargeKind extends StatelessWidget {
                         value: val,
                         child: Text(
                           val,
-                          style: TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.black),
                         ),
                       );
                     }).toList()),
@@ -251,11 +250,11 @@ class ChargeKind extends StatelessWidget {
                 hintText: cubit.weightHintWords,
                 controller: cubit.weightController,
                 preWidget: DropdownButton(
-                    underline: SizedBox(),
+                    underline: const SizedBox(),
                     focusColor: Colors.black,
                     dropdownColor: yellowColor,
                     autofocus: true,
-                    hint: Text('cm', style: TextStyle(color: Colors.black)),
+                    hint: const Text('cm', style: TextStyle(color: Colors.black)),
                     onTap: () {},
                     value: cubit.weightSelected,
                     onChanged: (newVal) {
@@ -266,7 +265,7 @@ class ChargeKind extends StatelessWidget {
                         value: val,
                         child: Text(
                           val,
-                          style: TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.black),
                         ),
                       );
                     }).toList()),
@@ -276,7 +275,7 @@ class ChargeKind extends StatelessWidget {
                 child: Row(
                   textDirection: TextDirection.rtl,
                   children: [
-                    Text("القابلية للكسر "),
+                    const Text("القابلية للكسر "),
                     cubit.no
                         ? ToggleNoIconCustomDesign(
                             downOnTapFunction: () {
@@ -288,8 +287,8 @@ class ChargeKind extends StatelessWidget {
                             containerColor: greyColor,
                             upContainerColor: yellowColor,
                             downContainerColor: darkGreyColor,
-                            upText: Text("لا"),
-                            downText: Text("نعم"),
+                            upText: const Text("لا"),
+                            downText: const Text("نعم"),
                           )
                         : ToggleNoIconCustomDesignUpdate(
                             downOnTapFunction: () {
@@ -301,8 +300,8 @@ class ChargeKind extends StatelessWidget {
                             containerColor: greyColor,
                             upContainerColor: darkGreyColor,
                             downContainerColor: yellowColor,
-                            upText: Text("لا"),
-                            downText: Text("نعم"),
+                            upText: const Text("لا"),
+                            downText: const Text("نعم"),
                           ),
                   ],
                 ),
@@ -310,7 +309,7 @@ class ChargeKind extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: ButtonCustomDesign(
-                  text: Text(
+                  text: const Text(
                     "أحسب شحنتك",
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -349,7 +348,7 @@ class ChargeTo extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 20),
-                child: Container(
+                child: SizedBox(
                   width: double.infinity,
                   child: Directionality(
                     textDirection: TextDirection.rtl,
@@ -359,7 +358,7 @@ class ChargeTo extends StatelessWidget {
                         focusColor: Colors.black,
                         dropdownColor: yellowColor,
                         isExpanded: true,
-                        hint: Text('أختر المدينة',
+                        hint: const Text('أختر المدينة',
                             style: TextStyle(color: Colors.black)),
                         onTap: () {},
                         value: cubit.selectedCity,
@@ -372,7 +371,7 @@ class ChargeTo extends StatelessWidget {
                             value: val,
                             child: Text(
                               val,
-                              style: TextStyle(color: Colors.black),
+                              style: const TextStyle(color: Colors.black),
                               //textAlign: TextAlign.right,
                             ),
                           );
@@ -383,7 +382,7 @@ class ChargeTo extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 40),
                 child: ButtonCustomDesign(
-                  text: Text(
+                  text: const Text(
                     "التالى",
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -420,7 +419,7 @@ class ChargeFrom extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 20),
-                child: Container(
+                child: SizedBox(
                   width: double.infinity,
                   child: Directionality(
                     textDirection: TextDirection.rtl,
@@ -430,7 +429,7 @@ class ChargeFrom extends StatelessWidget {
                         focusColor: Colors.black,
                         dropdownColor: yellowColor,
                         isExpanded: true,
-                        hint: Text('أختر المدينة',
+                        hint: const Text('أختر المدينة',
                             style: TextStyle(color: Colors.black)),
                         onTap: () {},
                         value: cubit.selectedPosition,
@@ -443,7 +442,7 @@ class ChargeFrom extends StatelessWidget {
                             value: val,
                             child: Text(
                               val,
-                              style: TextStyle(color: Colors.black),
+                              style: const TextStyle(color: Colors.black),
                               //textAlign: TextAlign.right,
                             ),
                           );
@@ -454,7 +453,7 @@ class ChargeFrom extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 40),
                 child: ButtonCustomDesign(
-                  text: Text(
+                  text: const Text(
                     "التالى",
                     textAlign: TextAlign.center,
                     style: TextStyle(

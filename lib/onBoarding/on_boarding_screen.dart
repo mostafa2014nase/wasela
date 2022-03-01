@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -6,6 +7,7 @@ import 'package:wasela/helper_methods/constants/endpoints.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'package:wasela/start/start_screen.dart';
 import '../helper_methods/sharedpref/shared_preference.dart';
+import '../translations/localeKeys.g.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   @override
@@ -19,12 +21,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       text: Column(
         children: [
           Text(
-            "شحناتك تصل الى اى مكان",
+            LocaleKeys.onBoarding11.tr(),
             style: TextStyle(fontSize: 30, color: textBlueColor),
             textAlign: TextAlign.center,
           ),
-          const Text(
-            "جهز شحناتك .... تصل لأي مكان",
+           Text(
+            LocaleKeys.onBoarding12.tr(),
             style: TextStyle(fontSize: 20),
             textAlign: TextAlign.center,
           )
@@ -36,12 +38,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       text: Column(
         children: [
           Text(
-            "افضل نظام لتتبع شحناتك",
+            LocaleKeys.onBoarding21.tr(),
             style: TextStyle(fontSize: 30, color: textBlueColor),
             textAlign: TextAlign.center,
           ),
-          const Text(
-            "شحناتك معاك فى اى وقت وفى اى مكان",
+           Text(
+            LocaleKeys.onBoarding22.tr(),
             style: TextStyle(fontSize: 20),
             textAlign: TextAlign.center,
           )
@@ -53,12 +55,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       text: Column(
         children: [
           Text(
-            "أفضل مندوبي توصيل",
+            LocaleKeys.onBoarding31.tr(),
             style: TextStyle(fontSize: 30, color: textBlueColor),
             textAlign: TextAlign.center,
           ),
-          const Text(
-            "نظام تقييمات كامل على أداء المندوب",
+           Text(
+             LocaleKeys.onBoarding32.tr(),
             style: TextStyle(fontSize: 20),
             textAlign: TextAlign.center,
           ),
@@ -114,23 +116,26 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               ),
             ),
             Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SmoothPageIndicator(
-                    controller: boardController,
-                    count: boardingList.length,
-                    effect: const ScrollingDotsEffect(
-                      activeDotColor: Colors.yellow,
-                      //expansionFactor: 4,
-                      dotColor: Colors.grey,
-                      dotHeight: 8,
-                      dotWidth: 8,
-                      radius: 5,
-                      spacing: 25,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 40.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SmoothPageIndicator(
+                      controller: boardController,
+                      count: boardingList.length,
+                      effect: const ScrollingDotsEffect(
+                        activeDotColor: Colors.yellow,
+                        //expansionFactor: 4,
+                        dotColor: Colors.grey,
+                        dotHeight: 8,
+                        dotWidth: 8,
+                        radius: 5,
+                        spacing: 25,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             const SizedBox(
@@ -140,15 +145,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         ),
         floatingActionButton: Row(
           children: [
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 40.0),
               child: Text(
-                "تجاوز",
+                LocaleKeys.skip.tr(),
                 textAlign: TextAlign.end,
                 style: TextStyle(fontSize: 20),
               ),
             ),
-            const Spacer(),
+           const Spacer(),
             Container(
               height: 70,
               width: 70,

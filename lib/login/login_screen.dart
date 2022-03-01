@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:wasela/translations/localeKeys.g.dart';
 
 import '../helper_methods/constants/endpoints.dart';
 import 'ensure_sent_code.dart';
@@ -21,13 +23,12 @@ class LoginScreen extends StatelessWidget {
               ),
               CustomTextFormField(
                 controller: phoneController,
-                textDirection: TextDirection.ltr,
                 preWidget: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Mobile",
+                      LocaleKeys.loginScreenMobile.tr(),
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(
@@ -50,7 +51,7 @@ class LoginScreen extends StatelessWidget {
                 ),
                 child: ButtonCustomDesign(
                   text: Text(
-                    'تسجيل',
+                    LocaleKeys.loginScreenLogIn.tr(),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 25.0,
@@ -69,7 +70,7 @@ class LoginScreen extends StatelessWidget {
               ),
               Container(
                   height: 50,
-                  child: Text("ﺳﻮﻑ ﻳﺘﻢ ﺃﺭﺳﺎﻝ ﺭﺳﺎﻟﺔ ﻧﺼﻴﺔ ﻟﺘﺄﻛﻴﺪ ﺭﻗﻢ ﺍﻟﻤﻮﺑﺎﻳﻞ ",style: TextStyle(fontSize: 17),),),
+                  child: Text(LocaleKeys.loginScreen1.tr(),style: TextStyle(fontSize: 17),),),
               SizedBox(
                 height: 15,
               ),
@@ -89,7 +90,7 @@ class LoginScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                     child: Text(
-                      "الدخول",
+                      LocaleKeys.loginScreenEnter.tr(),
                       style: TextStyle(
                         fontSize: 20,
                         color: textGreyTwoColor,

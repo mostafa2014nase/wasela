@@ -824,7 +824,6 @@ class CustomContainerForDetails extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
-          textDirection: TextDirection.rtl,
           children: [
             Text(
               text1,
@@ -853,12 +852,10 @@ class CustomRowForDetails extends StatelessWidget {
     return SizedBox(
       width: 185,
       child: Row(
-        textDirection: TextDirection.rtl,
         children: [
           SizedBox(
             width: 130,
             child: Row(
-              textDirection: TextDirection.rtl,
               children: [
                 Icon(Icons.check_circle_outline),
                 Padding(
@@ -871,7 +868,6 @@ class CustomRowForDetails extends StatelessWidget {
             ),
           ),
           Row(
-            textDirection: TextDirection.rtl,
             children: [
               Text(":"),
               Padding(
@@ -1317,10 +1313,6 @@ Color chooseToastColor(ToastStates states) {
   }
   return color;
 }
-
-
-
-
    AppBar generateAppBar ({required String title,required String svgPath,required BuildContext context}){
     return AppBar(
       toolbarHeight: 100,
@@ -1328,6 +1320,33 @@ Color chooseToastColor(ToastStates states) {
       foregroundColor: Colors.white,
       centerTitle: true,
       elevation: 0,
+      actions: [
+        Row(
+          children: [
+            IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.notifications_none,
+                  size: 40,
+                )),
+            SizedBox(width: 10,),
+            InkWell(
+              onTap: () {
+                //mainScaffoldKey.currentState?.openEndDrawer();
+                Scaffold.of(context).openDrawer();
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: SvgPicture.asset(
+                  "Assets/images/menu.svg",
+                  color: Colors.white,
+                  width: 30,
+                  height: 30,
+                ),
+              ),
+            ),
+          ],
+        )],
       title: Column(
         children: [
           SvgPicture.asset(
@@ -1350,33 +1369,6 @@ Color chooseToastColor(ToastStates states) {
           Icons.arrow_back,
         ),
       ),
-      actions: [
-        Row(
-          textDirection: TextDirection.rtl,
-          children: [
-            InkWell(
-              onTap: () {
-                //mainScaffoldKey.currentState?.openEndDrawer();
-                Scaffold.of(context).openEndDrawer();
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: SvgPicture.asset(
-                  "Assets/images/menu.svg",
-                  color: Colors.white,
-                  width: 30,
-                  height: 30,
-                ),
-              ),
-            ),
-            SizedBox(width: 10,),
-            IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.notifications_none,
-                  size: 40,
-                )),
-          ],
-        )]);
+      );
   }
 

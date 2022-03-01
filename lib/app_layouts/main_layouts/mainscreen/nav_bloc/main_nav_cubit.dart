@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -8,6 +9,7 @@ import 'package:wasela/app_layouts/main_layouts/app_layouts/my_account/user_acco
 import 'package:wasela/app_layouts/main_layouts/app_layouts/our_places/our_places_screen.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/wallet/wallet_screen.dart';
 import 'package:wasela/helper_methods/constants/endpoints.dart';
+import 'package:wasela/translations/localeKeys.g.dart';
 
 import '../../app_layouts/home/home_screen.dart';
 import 'main_nav_states.dart';
@@ -18,7 +20,7 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
   static MainNavCubitClass get(context) => BlocProvider.of(context);
 
   List<Widget> Screens = [
-    HomeScreen(),
+    const HomeScreen(),
     WalletScreen(),
     CalculateChargeScreen(),
     ChargeScreen(),
@@ -35,12 +37,12 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
   }
 
   List<String> titles = [
-    "الرئيسية",
-    "ﻣﺤﻔﻈﺘﻲ",
-    "ﺃﺣﺴﺐ ﺷﺤﻨﺘﻚ",
-    "ﺷﺤﻨﺘﻚ",
-    "ﻓﺮﻭﻋﻨﺎ",
-    "ﺣﺴﺎﺑﻲ"
+    LocaleKeys.bottomNavItemsName1.tr(),
+    LocaleKeys.bottomNavItemsName2.tr(),
+    LocaleKeys.bottomNavItemsName3.tr(),
+    LocaleKeys.bottomNavItemsName4.tr(),
+    LocaleKeys.bottomNavItemsName5.tr(),
+    LocaleKeys.bottomNavItemsName6.tr(),
   ];
 
   List<IconData> iconsList = [
@@ -54,37 +56,37 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
   List<PersistentBottomNavBarItem> navigationBarItems = [
     PersistentBottomNavBarItem(
         icon: Icon(Icons.home),
-        title: ("الرئيسية"),
+        title: (LocaleKeys.bottomNavItemsName1.tr()),
         activeColorPrimary: yellowColor,
         inactiveColorPrimary: textGreyTwoColor,
         inactiveColorSecondary: textGreyTwoColor),
     PersistentBottomNavBarItem(
         icon: Icon(Icons.wallet_giftcard),
-        title: ("ﻣﺤﻔﻈﺘﻲ"),
+        title: (LocaleKeys.bottomNavItemsName2.tr()),
         activeColorPrimary: yellowColor,
         inactiveColorPrimary: textGreyTwoColor,
         inactiveColorSecondary: textGreyTwoColor),
     PersistentBottomNavBarItem(
         icon: Icon(Icons.calculate),
-        title: ("ﺃﺣﺴﺐ ﺷﺤﻨﺘﻚ"),
+        title: (LocaleKeys.bottomNavItemsName3.tr()),
         activeColorPrimary: yellowColor,
         inactiveColorPrimary: textGreyTwoColor,
         inactiveColorSecondary: textGreyTwoColor),
     PersistentBottomNavBarItem(
         icon: Icon(Icons.wallet_giftcard_sharp),
-        title: ("ﺷﺤﻨﺘﻚ"),
+        title: (LocaleKeys.bottomNavItemsName4.tr()),
         activeColorPrimary: yellowColor,
         inactiveColorPrimary: textGreyTwoColor,
         inactiveColorSecondary: textGreyTwoColor),
     PersistentBottomNavBarItem(
         icon: Icon(Icons.hotel),
-        title: ("ﻓﺮﻭﻋﻨﺎ"),
+        title: (LocaleKeys.bottomNavItemsName5.tr()),
         activeColorPrimary: yellowColor,
         inactiveColorPrimary: textGreyTwoColor,
         inactiveColorSecondary: textGreyTwoColor),
     PersistentBottomNavBarItem(
         icon: Icon(Icons.person),
-        title: ("ﺣﺴﺎﺑﻲ"),
+        title: (LocaleKeys.bottomNavItemsName6.tr()),
         activeColorPrimary: yellowColor,
         inactiveColorPrimary: textGreyTwoColor,
         inactiveColorSecondary: textGreyTwoColor),

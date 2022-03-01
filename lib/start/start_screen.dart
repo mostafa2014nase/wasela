@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'package:wasela/login/login_screen.dart';
 import 'package:wasela/register/register_screen.dart';
+import 'package:wasela/translations/localeKeys.g.dart';
 
 import '../helper_methods/constants/endpoints.dart';
 
@@ -12,7 +14,7 @@ class StartScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.only(top: 50, bottom: 20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.asset('Assets/images/3 back.jpg'),
             SizedBox(
@@ -23,7 +25,7 @@ class StartScreen extends StatelessWidget {
                 horizontal: 20.0,
               ),
               child: Text(
-                "مرحبا بكم فى وسيلة",
+                LocaleKeys.startScreen1.tr(),
                 textAlign: TextAlign.end,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -36,16 +38,16 @@ class StartScreen extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "ﺃﺧﺘﺮ ﺃﻓﻀﻞ ﺧﺪﻣﺎﺕ ﺍﻟﺸﺤﻦ ؟ ",
+                    LocaleKeys.startScreen2.tr(),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 20, color: textGreyColor, height: 2),
                   ),
                   Text(
-                    "ﻧﺼﻠﻚ ﻓﻰ ﺍﻯ ﻣﻜﺎﻥ , ﻭﻓﻰ ﺍﻯ ﻭﻗﺖ",
+                    LocaleKeys.startScreen3.tr(),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 20, color: textGreyColor, height: 1),
@@ -55,7 +57,7 @@ class StartScreen extends StatelessWidget {
                   ),
                   ButtonCustomDesign(
                     text: Text(
-                      'تسجيل الدخول',
+                      LocaleKeys.startScreenLogIn.tr(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 20.0,
@@ -72,7 +74,7 @@ class StartScreen extends StatelessWidget {
                   ),
                   ButtonCustomDesign(
                     text: Text(
-                      'إنشاء حساب جديد',
+                      LocaleKeys.startScreenRegister.tr(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,

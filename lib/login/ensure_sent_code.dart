@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:wasela/app_layouts/main_layouts/mainscreen/main_nav_screen.dart';
+import 'package:wasela/translations/localeKeys.g.dart';
 import '../helper_methods/constants/endpoints.dart';
 import '../helper_methods/functions/functions_needed.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -25,10 +27,10 @@ class EnsureSentCode extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "ﺑﺮﺟﺎﺀ ﺃﺩﺧﺎﻝ ﺭﻣﺰ ﺍﻟﺘﺄﻛﻴﺪ",
+                          LocaleKeys.ensureScreenCode.tr(),
                           style:
                               TextStyle(fontSize: 17, color: textGreyTwoColor),
                         ),
@@ -52,7 +54,7 @@ class EnsureSentCode extends StatelessWidget {
                         ),
                         ButtonCustomDesign(
                           text: Text(
-                            'التأكيد',
+                            LocaleKeys.ensureScreenGo.tr(),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 25.0,
@@ -72,14 +74,18 @@ class EnsureSentCode extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    " ﺗﻢ ﺍﺭﺳﺎﻝ ﻛﻮﺩ ﺍﻟﺘﻔﻌﻴﻞ ﻋﻠﻰ ﻫﺬﺍ ﺍﻟﺮﻗﻢ\n ﻟﻢ ﺗﺤﺼﻞ ﻋﻠﻰ ﺭﻣﺰ ﺍﻟﺘﺄﻛﻴﺪ ؟",
+                    LocaleKeys.ensureScreen1.tr(),
+                    style: TextStyle(fontSize: 17, color: textGreyTwoColor),
+                    textAlign: TextAlign.center,
+                  ),   Text(
+                    LocaleKeys.ensureScreen2.tr(),
                     style: TextStyle(fontSize: 17, color: textGreyTwoColor),
                     textAlign: TextAlign.center,
                   ),
                   TextButton(
                     onPressed: () {},
                     child: Text(
-                      "ﺍﺭﺳﺎﻝ ﺭﻣﺰ ﺍﻟﺘﺄﻛﻴﺪ ﻣﺮﺓ ﺃﺧﺮﻱ (10:66)",
+                      LocaleKeys.ensureScreen3.tr(),
                       style: TextStyle(fontSize: 15, height: 0),
                     ),
                   ),
@@ -102,7 +108,7 @@ class EnsureSentCode extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         child: Text(
-                          "الدخول",
+                          LocaleKeys.loginScreenEnter.tr(),
                           style: TextStyle(
                             fontSize: 18,
                             color: textGreyTwoColor,

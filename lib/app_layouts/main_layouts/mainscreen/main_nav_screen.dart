@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +10,8 @@ import 'package:wasela/app_layouts/main_layouts/mainscreen/nav_bloc/main_nav_cub
 import 'package:wasela/app_layouts/main_layouts/mainscreen/nav_bloc/main_nav_states.dart';
 import 'package:wasela/helper_methods/constants/endpoints.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
+import 'package:wasela/settings/settings_screen.dart';
+import 'package:wasela/translations/localeKeys.g.dart';
 
 PersistentTabController persistentTabController =
     PersistentTabController(initialIndex: 0);
@@ -23,7 +26,7 @@ class ManNavScreen extends StatelessWidget {
       builder: (context, state) {
         var cubit = MainNavCubitClass.get(context);
         return Scaffold(
-          endDrawer: Drawer(
+          drawer: Drawer(
             backgroundColor: Colors.white,
             child: SafeArea(
               child: Column(
@@ -58,11 +61,11 @@ class ManNavScreen extends StatelessWidget {
                                   width: 70,
                                   borderRadius: 35,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 20,
                                 ),
                                 Column(
-                                  children: [
+                                  children: const [
                                     Text(
                                       "مصطفى نصر",
                                       style: TextStyle(
@@ -80,7 +83,6 @@ class ManNavScreen extends StatelessWidget {
                                   ],
                                 ),
                               ],
-                              textDirection: TextDirection.rtl,
                             ),
                           ),
                         ],
@@ -103,12 +105,13 @@ class ManNavScreen extends StatelessWidget {
                                       persistentTabController.jumpToTab(1);
                                       backToPrevious(context);
                                     }
-                                  : () {},
+                                  :index == 4 ?  () {
+                                navigateAndBack(context, layout: SettingsScreen());
+                              }:() {},
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10.0, vertical: 20.0),
                                 child: Row(
-                                  textDirection: TextDirection.rtl,
                                   children: [
                                     SvgPicture.asset(
                                       "Assets/images/${cubit.drawerSvgPics[index]}.svg",
@@ -116,7 +119,7 @@ class ManNavScreen extends StatelessWidget {
                                       height: 30,
                                       color: purpleColor,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 10,
                                     ),
                                     Text(
@@ -137,7 +140,6 @@ class ManNavScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 50),
                     child: Row(
-                      textDirection: TextDirection.rtl,
                       children: [
                         SvgPicture.asset(
                           "Assets/images/logout.svg",
@@ -145,10 +147,10 @@ class ManNavScreen extends StatelessWidget {
                           height: 40,
                           color: Colors.red,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
-                        Text(
+                        const Text(
                           "خروج",
                           style: TextStyle(color: Colors.red, fontSize: 25),
                         ),
@@ -161,7 +163,7 @@ class ManNavScreen extends StatelessWidget {
           ),
           body: PersistentTabView(
             context,
-            padding: NavBarPadding.only(left: 90, right: 0),
+            padding: NavBarPadding.only(left: 90.0, right: 0),
             screens: cubit.Screens,
             items: cubit.navigationBarItems,
             backgroundColor: Colors.white,
@@ -199,7 +201,7 @@ class ManNavScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text("تسوق وأشحن"),
+                Text(LocaleKeys.marketing.tr()),
               ],
             ),
           ),
