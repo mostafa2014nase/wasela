@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wasela/helper_methods/constants/endpoints.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
+import 'package:wasela/translations/localeKeys.g.dart';
 
 class EvaluateScreen extends StatelessWidget {
   const EvaluateScreen({Key? key}) : super(key: key);
@@ -15,39 +17,20 @@ class EvaluateScreen extends StatelessWidget {
         foregroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        title: SizedBox(
-          child: Row(
-            textDirection: TextDirection.rtl,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.notifications_none,
-                      size: 40,
-                    )),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50.0),
-                child: Column(
-                  children: [
-                    SvgPicture.asset(
-                      "Assets/images/wallet.svg",
-                      width: 40,
-                      height: 40,
-                      color: Colors.white,
-                    ),
-                    Text(
-                      "تقييم الشحنة",
-                      style: TextStyle(fontSize: 25, height: 1.5),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+        title: Column(
+        children: [
+          SvgPicture.asset(
+            "Assets/images/wallet.svg",
+            width: 40,
+            height: 40,
+            color: Colors.white,
           ),
-        ),
+          Text(
+            LocaleKeys.shippingEvaluate.tr(),
+            style: TextStyle(fontSize: 25, height: 1.5),
+          ),
+        ],
+      ),
         leading: IconButton(
           onPressed: () {
             backToPrevious(context);
@@ -56,28 +39,36 @@ class EvaluateScreen extends StatelessWidget {
             Icons.arrow_back,
           ),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsetsDirectional.only(end: 10.0),
+            child: IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.notifications_none,
+                  size: 40,
+                )),
+          ),
+        ],
       ),
       body: Container(
         color: greyColor,
         child: Padding(
           padding: const EdgeInsets.all(30.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "شريك نجاح.... دائما معانا ",
-                textAlign: TextAlign.end,
+                LocaleKeys.evaluateScreen1.tr(),
                 style: TextStyle(
-                    fontWeight: FontWeight.bold, color: textGreyTwoColor),
+                    fontWeight: FontWeight.bold, color: textGreyTwoColor,fontSize: 20),
               ),
               Text(
-                "ايه رأيك فى خدمات الشحن عندنا ؟",
-                textAlign: TextAlign.end,
-                style: TextStyle(color: textGreyTwoColor),
+                LocaleKeys.evaluateScreen2.tr(),
+                style: TextStyle(color: textGreyTwoColor,fontSize: 17),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                textDirection: TextDirection.rtl,
                 children: [
                   InkWell(
                     onTap: () {
@@ -92,7 +83,7 @@ class EvaluateScreen extends StatelessWidget {
                             width: 50,
                             height: 50,
                           ),
-                          Text("ممتازة"),
+                          Text(LocaleKeys.evaluate1.tr()),
                         ],
                       ),
                     ),
@@ -109,7 +100,7 @@ class EvaluateScreen extends StatelessWidget {
                             width: 50,
                             height: 50,
                           ),
-                          Text("جيدة جدا"),
+                          Text(LocaleKeys.evaluate2.tr()),
                         ],
                       ),
                     ),
@@ -126,7 +117,7 @@ class EvaluateScreen extends StatelessWidget {
                             width: 50,
                             height: 50,
                           ),
-                          Text("جيدة"),
+                          Text(LocaleKeys.evaluate3.tr()),
                         ],
                       ),
                     ),
@@ -139,27 +130,24 @@ class EvaluateScreen extends StatelessWidget {
                             mainWidgetText: Column(
                               children: [
                                 Text(
-                                  "نأسف جدا لسماع ذلك من حضرتك",
+                                  LocaleKeys.badDialog1.tr(),
                                   style:
                                   lightTheme.textTheme.bodyText1?.copyWith(
                                     fontSize: 20,
                                     color: Colors.white,
                                   ),
-                                  textAlign: TextAlign.end,
                                 ),
                                 Text(
-                                  "برجاء توضيح سبب هذا التقييم",
+                                  LocaleKeys.badDialog2.tr(),
                                   style: lightTheme.textTheme.bodyText1
                                       ?.copyWith(
                                       fontSize: 20, color: Colors.white),
-                                  textAlign: TextAlign.end,
                                 ),
                               ],
                             ),
                             choiceMenu: Column(
                               children: [
                                 Row(
-                                  textDirection: TextDirection.rtl,
                                   children: [
                                     SizedBox(
                                       child: MaterialButton(
@@ -182,7 +170,6 @@ class EvaluateScreen extends StatelessWidget {
                                   ],
                                 ),
                                 Row(
-                                  textDirection: TextDirection.rtl,
                                   children: [
                                     SizedBox(
                                       child: MaterialButton(
@@ -205,7 +192,6 @@ class EvaluateScreen extends StatelessWidget {
                                   ],
                                 ),
                                 Row(
-                                  textDirection: TextDirection.rtl,
                                   children: [
                                     SizedBox(
                                       child: MaterialButton(
@@ -228,7 +214,6 @@ class EvaluateScreen extends StatelessWidget {
                                   ],
                                 ),
                                 Row(
-                                  textDirection: TextDirection.rtl,
                                   children: [
                                     SizedBox(
                                       child: MaterialButton(
@@ -264,7 +249,7 @@ class EvaluateScreen extends StatelessWidget {
                             width: 50,
                             height: 50,
                           ),
-                          Text("سيئة"),
+                          Text(LocaleKeys.evaluate4.tr()),
                         ],
                       ),
                     ),
@@ -277,27 +262,24 @@ class EvaluateScreen extends StatelessWidget {
                             mainWidgetText: Column(
                               children: [
                                 Text(
-                                  "نأسف جدا لسماع ذلك من حضرتك",
+                                  LocaleKeys.badDialog1.tr(),
                                   style:
                                   lightTheme.textTheme.bodyText1?.copyWith(
                                     fontSize: 20,
                                     color: Colors.white,
                                   ),
-                                  textAlign: TextAlign.end,
                                 ),
                                 Text(
-                                  "برجاء توضيح سبب هذا التقييم",
+                                  LocaleKeys.badDialog2.tr(),
                                   style: lightTheme.textTheme.bodyText1
                                       ?.copyWith(
                                       fontSize: 20, color: Colors.white),
-                                  textAlign: TextAlign.end,
                                 ),
                               ],
                             ),
                             choiceMenu: Column(
                               children: [
                                 Row(
-                                  textDirection: TextDirection.rtl,
                                   children: [
                                     SizedBox(
                                       child: MaterialButton(
@@ -320,7 +302,6 @@ class EvaluateScreen extends StatelessWidget {
                                   ],
                                 ),
                                 Row(
-                                  textDirection: TextDirection.rtl,
                                   children: [
                                     SizedBox(
                                       child: MaterialButton(
@@ -343,7 +324,6 @@ class EvaluateScreen extends StatelessWidget {
                                   ],
                                 ),
                                 Row(
-                                  textDirection: TextDirection.rtl,
                                   children: [
                                     SizedBox(
                                       child: MaterialButton(
@@ -366,7 +346,6 @@ class EvaluateScreen extends StatelessWidget {
                                   ],
                                 ),
                                 Row(
-                                  textDirection: TextDirection.rtl,
                                   children: [
                                     SizedBox(
                                       child: MaterialButton(
@@ -402,7 +381,7 @@ class EvaluateScreen extends StatelessWidget {
                             width: 50,
                             height: 50,
                           ),
-                          Text("سيئة جدا"),
+                          Text(LocaleKeys.evaluate5.tr()),
                         ],
                       ),
                     ),

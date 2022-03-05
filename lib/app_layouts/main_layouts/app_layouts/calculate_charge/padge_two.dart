@@ -1,13 +1,22 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/calculate_charge/bloc/cubit_class.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/calculate_charge/bloc/states.dart';
+import 'package:wasela/app_layouts/main_layouts/app_layouts/calculate_charge/calculate_charge_screen.dart';
 import 'package:wasela/helper_methods/constants/endpoints.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
+import 'package:wasela/translations/localeKeys.g.dart';
 
 class CalculateChargeSecondScreen extends StatelessWidget {
   TextEditingController phoneController = TextEditingController();
+  final String fromCity;
+  final String toCity;
+
+  CalculateChargeSecondScreen(
+      {Key? key, required this.fromCity, required this.toCity})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,19 +33,10 @@ class CalculateChargeSecondScreen extends StatelessWidget {
             centerTitle: true,
             title: SizedBox(
               child: Row(
-                textDirection: TextDirection.rtl,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.notifications_none,
-                          size: 40,
-                        )),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                    padding: const EdgeInsetsDirectional.only(start: 50),
                     child: Column(
                       children: [
                         SvgPicture.asset(
@@ -46,12 +46,18 @@ class CalculateChargeSecondScreen extends StatelessWidget {
                           color: Colors.white,
                         ),
                         Text(
-                          "تقييم الشحنة",
+                          LocaleKeys.bottomNavItemsName3.tr(),
                           style: TextStyle(fontSize: 25, height: 1.5),
                         ),
                       ],
                     ),
                   ),
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.notifications_none,
+                        size: 40,
+                      )),
                 ],
               ),
             ),
@@ -72,12 +78,8 @@ class CalculateChargeSecondScreen extends StatelessWidget {
                 SizedBox(
                   height: 175,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 15.0,
-                      horizontal: 20.0,
-                    ),
+                    padding: const EdgeInsetsDirectional.only(end: 5),
                     child: Row(
-                      textDirection: TextDirection.rtl,
                       children: [
                         SizedBox(
                           width: 120,
@@ -88,51 +90,47 @@ class CalculateChargeSecondScreen extends StatelessWidget {
                             icon: Icon(
                               Icons.car_repair,
                               color: purpleColor,
-                              size: 140,
+                              size: 120,
                             ),
                             containerColor: Colors.white,
-                            paddingValue: 10,
+                            paddingValue: 0,
                             borderRadius: 15,
                           ),
                         ),
                         Expanded(
                           child: Column(
                             children: [
-                              Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: const [
-                                    Expanded(
-                                      child: YellowCustomDesign(
-                                        height: 50,
-                                        text: "4 أيام",
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(left: 10, right: 17),
-                                      child: Text(
-                                        "الشحن خلال",
-                                        style: TextStyle(fontSize: 30),
-                                      ),
-                                    ),
-                                  ]),
+                              Row(children: [
+                                Text(
+                                  LocaleKeys.calculateBetween.tr(),
+                                  style: TextStyle(fontSize: 28),
+                                ),
+                                SizedBox(
+                                  width: 3,
+                                ),
+                                Expanded(
+                                  child: YellowCustomDesign(
+                                    height: 50,
+                                    text: "4 ${LocaleKeys.days.tr()}",
+                                  ),
+                                ),
+                              ]),
                               Padding(
                                 padding: const EdgeInsets.only(top: 5.0),
                                 child: Row(
-                                  textDirection: TextDirection.rtl,
                                   children: [
                                     Text(
-                                      "التكلفة",
+                                      LocaleKeys.cost.tr(),
                                       style: TextStyle(
                                           fontSize: 25, color: yellowColor),
                                     ),
                                     const SizedBox(
                                       width: 15,
                                     ),
-                                    const Expanded(
+                                    Expanded(
                                       child: YellowCustomDesign(
                                         height: 50,
-                                        text: "30 جنية",
+                                        text: "30 ${LocaleKeys.pound.tr()}",
                                       ),
                                     ),
                                   ],
@@ -169,10 +167,10 @@ class CalculateChargeSecondScreen extends StatelessWidget {
                               width: 20,
                             ),
                             Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "الشحنة من ",
+                                  LocaleKeys.calculateScreenTabs1.tr(),
                                   style: TextStyle(
                                       fontSize: 17, color: textGreyTwoColor),
                                   textAlign: TextAlign.center,
@@ -182,7 +180,7 @@ class CalculateChargeSecondScreen extends StatelessWidget {
                                   line_width: 90,
                                 ),
                                 Text(
-                                  "القاهرة الجديدة",
+                                  fromCity,
                                   style: TextStyle(
                                       fontSize: 15, color: textGreyColor),
                                   textAlign: TextAlign.center,
@@ -196,12 +194,15 @@ class CalculateChargeSecondScreen extends StatelessWidget {
                               child: YellowButtonCustomDesign(
                                 height: 50,
                                 textSize: 20,
-                                text: "تعديل",
-                                inkwellFunc: () {},
+                                text: LocaleKeys.calculateScreenModify.tr(),
+                                inkwellFunc: () {
+                                  cubit.chooseRight();
+                                  navigateAndFinish(context,
+                                      layout: CalculateChargeScreen());
+                                },
                               ),
                             ),
                           ],
-                          textDirection: TextDirection.rtl,
                         ),
                       ),
                       Padding(
@@ -224,10 +225,10 @@ class CalculateChargeSecondScreen extends StatelessWidget {
                               width: 20,
                             ),
                             Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "الشحنة الي",
+                                  LocaleKeys.calculateScreenTabs2.tr(),
                                   style: TextStyle(
                                       fontSize: 17, color: textGreyTwoColor),
                                   textAlign: TextAlign.center,
@@ -237,7 +238,7 @@ class CalculateChargeSecondScreen extends StatelessWidget {
                                   line_width: 90,
                                 ),
                                 Text(
-                                  "القاهرة الجديدة",
+                                  toCity,
                                   style: TextStyle(
                                       fontSize: 15, color: textGreyColor),
                                   textAlign: TextAlign.center,
@@ -251,12 +252,15 @@ class CalculateChargeSecondScreen extends StatelessWidget {
                               child: YellowButtonCustomDesign(
                                 height: 50,
                                 textSize: 20,
-                                text: "تعديل",
-                                inkwellFunc: () {},
+                                text: LocaleKeys.calculateScreenModify.tr(),
+                                inkwellFunc: () {
+                                  cubit.chooseMiddle();
+                                  navigateAndFinish(context,
+                                      layout: CalculateChargeScreen());
+                                },
                               ),
                             ),
                           ],
-                          textDirection: TextDirection.rtl,
                         ),
                       ),
                       Padding(
@@ -279,10 +283,10 @@ class CalculateChargeSecondScreen extends StatelessWidget {
                               width: 20,
                             ),
                             Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "نوع الشحنة",
+                                  LocaleKeys.calculateScreenTabs3.tr(),
                                   style: TextStyle(
                                       fontSize: 17, color: textGreyTwoColor),
                                   textAlign: TextAlign.center,
@@ -306,19 +310,20 @@ class CalculateChargeSecondScreen extends StatelessWidget {
                               child: YellowButtonCustomDesign(
                                 height: 50,
                                 textSize: 20,
-                                text: "تعديل",
-                                inkwellFunc: () {},
+                                text: LocaleKeys.calculateScreenModify.tr(),
+                                inkwellFunc: () {
+                                  backToPrevious(context);
+                                },
                               ),
                             ),
                           ],
-                          textDirection: TextDirection.rtl,
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: ButtonCustomDesign(
-                          text: const Text(
-                            "أحسب شحنتك",
+                          text: Text(
+                            LocaleKeys.calculateShipping.tr(),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,
@@ -332,7 +337,9 @@ class CalculateChargeSecondScreen extends StatelessWidget {
                           containerColor: purpleColor,
                         ),
                       ),
-                      SizedBox(height: 30,),
+                      SizedBox(
+                        height: 30,
+                      ),
                     ],
                   ),
                 )

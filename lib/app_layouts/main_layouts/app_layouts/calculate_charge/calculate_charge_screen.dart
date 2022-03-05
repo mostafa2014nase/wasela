@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/calculate_charge/bloc/cubit_class.dart';
@@ -5,6 +6,7 @@ import 'package:wasela/app_layouts/main_layouts/app_layouts/calculate_charge/blo
 import 'package:wasela/app_layouts/main_layouts/app_layouts/calculate_charge/padge_two.dart';
 import 'package:wasela/helper_methods/constants/endpoints.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
+import 'package:wasela/translations/localeKeys.g.dart';
 
 class CalculateChargeScreen extends StatelessWidget {
   TextEditingController phoneController = TextEditingController();
@@ -18,7 +20,7 @@ class CalculateChargeScreen extends StatelessWidget {
         var cubit = CalculateChargingCubitClass.get(context);
         return Scaffold(
           appBar: generateAppBar(
-            title: "أحسب شحنتك",
+            title: LocaleKeys.bottomNavItemsName3.tr(),
             svgPath: "wallet",
             context: context,
           ),
@@ -34,7 +36,6 @@ class CalculateChargeScreen extends StatelessWidget {
                         horizontal: 20.0, vertical: 15.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      textDirection: TextDirection.rtl,
                       children: [
                         Column(
                           children: [
@@ -54,9 +55,9 @@ class CalculateChargeScreen extends StatelessWidget {
                               paddingValue: 10,
                               borderRadius: 15,
                             ),
-                            const Padding(
+                             Padding(
                               padding: EdgeInsets.all(8.0),
-                              child: Text("الشحنة من"),
+                              child: Text(LocaleKeys.calculateScreenTabs1.tr()),
                             ),
                           ],
                         ),
@@ -79,9 +80,9 @@ class CalculateChargeScreen extends StatelessWidget {
                               borderRadius: 15,
                               iconColor: Colors.black,
                             ),
-                            const Padding(
+                             Padding(
                               padding: EdgeInsets.all(8.0),
-                              child: Text("الشحنة الي"),
+                              child: Text(LocaleKeys.calculateScreenTabs2.tr()),
                             ),
                           ],
                         ),
@@ -104,9 +105,9 @@ class CalculateChargeScreen extends StatelessWidget {
                               borderRadius: 15,
                               iconColor: Colors.black,
                             ),
-                            const Padding(
+                             Padding(
                               padding: EdgeInsets.all(8.0),
-                              child: Text("نوع الشحنة"),
+                              child: Text(LocaleKeys.calculateScreenTabs3.tr()),
                             ),
                           ],
                         ),
@@ -146,6 +147,7 @@ class ChargeKind extends StatelessWidget {
               ),
               cubit.right
                   ? ToggleCustomDesign(
+                sizedBoxWidthForDownPart: lang == "en" ?10: 30,
                       downOnTapFunction: () {
                         cubit.toggleLeft();
                       },
@@ -160,12 +162,12 @@ class ChargeKind extends StatelessWidget {
                         Icons.inbox_sharp,
                         color: Colors.white,
                       ),
-                      upText:const Text(
-                        "طرود",
-                        style:TextStyle(fontSize: 25),
+                      upText: Text(
+                        LocaleKeys.calculateScreenTab3Details1.tr(),
+                        style:TextStyle(fontSize: 25,),
                       ),
-                      downText: const Text(
-                        "مستندات",
+                      downText:  Text(
+                        LocaleKeys.calculateScreenTab3Details2.tr(),
                         style: TextStyle(color: Colors.white, fontSize: 25),
                       ),
                     )
@@ -186,12 +188,12 @@ class ChargeKind extends StatelessWidget {
                       downIcon: const Icon(
                         Icons.inbox_sharp,
                       ),
-                      upText: const Text(
-                        "طرود",
+                      upText:  Text(
+                        LocaleKeys.calculateScreenTab3Details1.tr(),
                         style: TextStyle(color: Colors.white, fontSize: 25),
                       ),
-                      downText: const Text(
-                        "مستندات",
+                      downText:  Text(
+                        LocaleKeys.calculateScreenTab3Details2.tr(),
                         style: TextStyle(fontSize: 25),
                       ),
                     ),
@@ -199,12 +201,12 @@ class ChargeKind extends StatelessWidget {
                 keyboardType: TextInputType.number,
                 hintText: cubit.longHintWords,
                 controller: cubit.longController,
-                preWidget: DropdownButton(
+                postWidget: DropdownButton(
                     underline: const SizedBox(),
                     focusColor: Colors.black,
                     dropdownColor: yellowColor,
                     autofocus: true,
-                    hint: const Text('cm', style: TextStyle(color: Colors.black)),
+                    hint:  Text(LocaleKeys.cm.tr(), style: TextStyle(color: Colors.black)),
                     onTap: () {},
                     value: cubit.lengthSelected,
                     onChanged: (newVal) {
@@ -224,12 +226,12 @@ class ChargeKind extends StatelessWidget {
                 keyboardType: TextInputType.number,
                 hintText: cubit.widthHintWords,
                 controller: cubit.widthController,
-                preWidget: DropdownButton(
+                postWidget: DropdownButton(
                     underline: const SizedBox(),
                     focusColor: Colors.black,
                     dropdownColor: yellowColor,
                     autofocus: true,
-                    hint: const Text('cm', style: TextStyle(color: Colors.black)),
+                    hint:  Text(LocaleKeys.cm.tr(), style: TextStyle(color: Colors.black)),
                     onTap: () {},
                     value: cubit.widthSelected,
                     onChanged: (newVal) {
@@ -249,18 +251,18 @@ class ChargeKind extends StatelessWidget {
                 keyboardType: TextInputType.number,
                 hintText: cubit.weightHintWords,
                 controller: cubit.weightController,
-                preWidget: DropdownButton(
+                postWidget:  DropdownButton(
                     underline: const SizedBox(),
                     focusColor: Colors.black,
                     dropdownColor: yellowColor,
                     autofocus: true,
-                    hint: const Text('cm', style: TextStyle(color: Colors.black)),
+                    hint:  Text(LocaleKeys.weight1.tr(), style: TextStyle(color: Colors.black)),
                     onTap: () {},
                     value: cubit.weightSelected,
                     onChanged: (newVal) {
                       cubit.selectWeightChoice(newVal);
                     },
-                    items: cubit.menuList.map((val) {
+                    items: cubit.menu1List.map((val) {
                       return DropdownMenuItem(
                         value: val,
                         child: Text(
@@ -273,9 +275,8 @@ class ChargeKind extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 50.0),
                 child: Row(
-                  textDirection: TextDirection.rtl,
                   children: [
-                    const Text("القابلية للكسر "),
+                     Text(LocaleKeys.toggle.tr()),
                     cubit.no
                         ? ToggleNoIconCustomDesign(
                             downOnTapFunction: () {
@@ -287,8 +288,8 @@ class ChargeKind extends StatelessWidget {
                             containerColor: greyColor,
                             upContainerColor: yellowColor,
                             downContainerColor: darkGreyColor,
-                            upText: const Text("لا"),
-                            downText: const Text("نعم"),
+                            upText:  Text(LocaleKeys.no.tr()),
+                            downText:  Text(LocaleKeys.yes.tr()),
                           )
                         : ToggleNoIconCustomDesignUpdate(
                             downOnTapFunction: () {
@@ -300,8 +301,8 @@ class ChargeKind extends StatelessWidget {
                             containerColor: greyColor,
                             upContainerColor: darkGreyColor,
                             downContainerColor: yellowColor,
-                            upText: const Text("لا"),
-                            downText: const Text("نعم"),
+                      upText:  Text(LocaleKeys.no.tr()),
+                      downText:  Text(LocaleKeys.yes.tr()),
                           ),
                   ],
                 ),
@@ -309,8 +310,8 @@ class ChargeKind extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: ButtonCustomDesign(
-                  text: const Text(
-                    "أحسب شحنتك",
+                  text:  Text(
+                    LocaleKeys.calculateShipping.tr(),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
@@ -320,7 +321,7 @@ class ChargeKind extends StatelessWidget {
                   ),
                   inkwellFunc: () {
                     navigateAndBack(context,
-                        layout: CalculateChargeSecondScreen());
+                        layout: CalculateChargeSecondScreen(fromCity: cubit.selectedPosition,toCity: cubit.selectedCity,));
                   },
                   containerColor: purpleColor,
                 ),
@@ -350,40 +351,37 @@ class ChargeTo extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 20),
                 child: SizedBox(
                   width: double.infinity,
-                  child: Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: DropdownButton(
-                      alignment: AlignmentDirectional.bottomCenter,
-                        underline: put_line(),
-                        focusColor: Colors.black,
-                        dropdownColor: yellowColor,
-                        isExpanded: true,
-                        hint: const Text('أختر المدينة',
-                            style: TextStyle(color: Colors.black)),
-                        onTap: () {},
-                        value: cubit.selectedCity,
-                        onChanged: (newVal) {
-                          cubit.selectFromCityChoices(newVal);
-                        },
-                        items: cubit.cityList.map((val) {
-                          return DropdownMenuItem(
-                            alignment: Alignment.centerRight,
-                            value: val,
-                            child: Text(
-                              val,
-                              style: const TextStyle(color: Colors.black),
-                              //textAlign: TextAlign.right,
-                            ),
-                          );
-                        }).toList()),
-                  ),
+                  child: DropdownButton(
+                    alignment: AlignmentDirectional.bottomCenter,
+                      underline: put_line(),
+                      focusColor: Colors.black,
+                      dropdownColor: yellowColor,
+                      isExpanded: true,
+                      hint:  Text(LocaleKeys.calculateScreenChoose.tr(),
+                          style: TextStyle(color: Colors.black)),
+                      onTap: () {},
+                      value: cubit.selectedCity,
+                      onChanged: (newVal) {
+                        cubit.selectFromCityChoices(newVal);
+                      },
+                      items: cubit.cityList.map((val) {
+                        return DropdownMenuItem(
+                          alignment: AlignmentDirectional.centerStart,
+                          value: val,
+                          child: Text(
+                            val,
+                            style: const TextStyle(color: Colors.black),
+                            //textAlign: TextAlign.right,
+                          ),
+                        );
+                      }).toList()),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 40),
                 child: ButtonCustomDesign(
-                  text: const Text(
-                    "التالى",
+                  text:  Text(
+                    LocaleKeys.calculateScreenNext.tr(),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
@@ -421,40 +419,37 @@ class ChargeFrom extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 20),
                 child: SizedBox(
                   width: double.infinity,
-                  child: Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: DropdownButton(
-                      alignment: AlignmentDirectional.bottomCenter,
-                        underline: put_line(),
-                        focusColor: Colors.black,
-                        dropdownColor: yellowColor,
-                        isExpanded: true,
-                        hint: const Text('أختر المدينة',
-                            style: TextStyle(color: Colors.black)),
-                        onTap: () {},
-                        value: cubit.selectedPosition,
-                        onChanged: (newVal) {
-                          cubit.selectFromPositionChoices(newVal);
-                        },
-                        items: cubit.cityList.map((val) {
-                          return DropdownMenuItem(
-                            alignment: Alignment.centerRight,
-                            value: val,
-                            child: Text(
-                              val,
-                              style: const TextStyle(color: Colors.black),
-                              //textAlign: TextAlign.right,
-                            ),
-                          );
-                        }).toList()),
-                  ),
+                  child: DropdownButton(
+                    alignment: AlignmentDirectional.bottomCenter,
+                      underline: put_line(),
+                      focusColor: Colors.black,
+                      dropdownColor: yellowColor,
+                      isExpanded: true,
+                      hint:  Text(LocaleKeys.calculateScreenChoose.tr(),
+                          style: TextStyle(color: Colors.black)),
+                      onTap: () {},
+                      value: cubit.selectedPosition,
+                      onChanged: (newVal) {
+                        cubit.selectFromPositionChoices(newVal);
+                      },
+                      items: cubit.cityList.map((val) {
+                        return DropdownMenuItem(
+                          alignment: AlignmentDirectional.centerStart,
+                          value: val,
+                          child: Text(
+                            val,
+                            style: const TextStyle(color: Colors.black),
+                            //textAlign: TextAlign.right,
+                          ),
+                        );
+                      }).toList()),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 40),
                 child: ButtonCustomDesign(
-                  text: const Text(
-                    "التالى",
+                  text:  Text(
+                    LocaleKeys.calculateScreenNext.tr(),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,

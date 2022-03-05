@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -313,15 +314,13 @@ class WalletScreen extends StatelessWidget {
                                                 height: 35,
                                               ),
                                               Container(
-                                                alignment:
-                                                    Alignment.centerRight,
                                                 padding:
-                                                    EdgeInsets.only(right: 5),
+                                                    EdgeInsets.only(right: 5.0,left: 5.0),
                                                 width: 200,
                                                 height: 40,
                                                 color: greyColor,
                                                 child: Text(
-                                                  "30-8-2021 ${LocaleKeys.walletScreenSearch.tr()} ",
+                                                  LocaleKeys.walletScreenSearch.tr(),
                                                   style:
                                                       TextStyle(fontSize: 17),
                                                 ),
@@ -374,22 +373,22 @@ class WalletScreen extends StatelessWidget {
                                                         children: [
                                                           CustomRowForDetails(
                                                             text1:
-                                                                "رقم بوليصة الشحن",
+                                                            LocaleKeys.walletScreenListItemDetails1.tr(),
                                                             text2: "1855",
                                                           ),
                                                           CustomRowForDetails(
                                                             text1:
-                                                                "السعر الاجمالي ",
+                                                            LocaleKeys.walletScreenListItemDetails2.tr(),
                                                             text2: "1855",
                                                           ),
                                                           CustomRowForDetails(
                                                             text1:
-                                                                "حالة الفاتورة",
+                                                            LocaleKeys.walletScreenListItemDetails3.tr(),
                                                             text2: "1855",
                                                           ),
                                                           CustomRowForDetails(
                                                             text1:
-                                                                "تاريخ الفاتورة",
+                                                            LocaleKeys.walletScreenListItemDetails4.tr(),
                                                             text2: "1855",
                                                           ),
                                                         ],
@@ -403,7 +402,7 @@ class WalletScreen extends StatelessWidget {
                                                           child:
                                                               CustomContainerForDetails(
                                                             text1:
-                                                                "تفاصيل البوليصة",
+                                                            LocaleKeys.walletScreenListItemButton.tr(),
                                                             icon: Icon(
                                                               Icons
                                                                   .arrow_back_ios,
@@ -436,7 +435,7 @@ class WalletScreen extends StatelessWidget {
                                                     CrossAxisAlignment.center,
                                                 children: [
                                                   Text(
-                                                      "أجمالي المبالغ المحصلة"),
+                                                      LocaleKeys.walletScreenAll1.tr()),
                                                   SizedBox(
                                                     height: 5,
                                                   ),
@@ -490,15 +489,13 @@ class WalletScreen extends StatelessWidget {
                                                 height: 35,
                                               ),
                                               Container(
-                                                alignment:
-                                                    Alignment.centerRight,
                                                 padding:
-                                                    EdgeInsets.only(right: 5),
+                                                    EdgeInsets.only(right: 5.0,left: 5.0),
                                                 width: 200,
                                                 height: 40,
                                                 color: greyColor,
                                                 child: Text(
-                                                  "30-8-2021 ${LocaleKeys.walletScreenSearch.tr()} ",
+                                                  LocaleKeys.walletScreenSearch.tr(),
                                                   style:
                                                       TextStyle(fontSize: 17),
                                                 ),
@@ -551,16 +548,16 @@ class WalletScreen extends StatelessWidget {
                                                         children: [
                                                           CustomRowForDetails(
                                                             text1:
-                                                                "نوع العملية ",
+                                                                LocaleKeys.walletScreenPointsListItemDetails1.tr(),
                                                             text2: "1855",
                                                           ),
                                                           CustomRowForDetails(
-                                                            text1: "عدد النقاط",
+                                                            text1: LocaleKeys.walletScreenPointsListItemDetails2.tr(),
                                                             text2: "1855",
                                                           ),
                                                           CustomRowForDetails(
                                                             text1:
-                                                                "تاريخ العملية",
+                                                            LocaleKeys.walletScreenPointsListItemDetails3.tr(),
                                                             text2: "1855",
                                                           ),
                                                         ],
@@ -589,7 +586,7 @@ class WalletScreen extends StatelessWidget {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                 children: [
-                                                  Text("إجمالي عدد النقاط"),
+                                                  Text(LocaleKeys.walletScreenPointsAll2.tr()),
                                                   SizedBox(
                                                     height: 5,
                                                   ),
@@ -605,7 +602,7 @@ class WalletScreen extends StatelessWidget {
                                                           const EdgeInsets.all(
                                                               20.0),
                                                       child: Text(
-                                                        "5000 جنية",
+                                                        "5000 ${LocaleKeys.pound.tr()}",
                                                         style: TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 20),
@@ -618,7 +615,7 @@ class WalletScreen extends StatelessWidget {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                 children: [
-                                                  Text("الرصيد النقدي للوحدات"),
+                                                  Text(LocaleKeys.walletScreenPointsAll1.tr()),
                                                   SizedBox(
                                                     height: 5,
                                                   ),
@@ -673,156 +670,163 @@ class WalletScreen extends StatelessWidget {
                                                       child: Column(
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          Text(
-                                                            "أسهل مكسب .......... مع أسهل وبس",
-                                                            textAlign: TextAlign
                                                                 .center,
-                                                            style: TextStyle(
-                                                              color:
-                                                                  purpleColor,
-                                                              fontSize: 20,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            ": عاوز رصيدي أستخدمه فى",
-                                                            style: TextStyle(
-                                                              fontSize: 20,
-                                                            ),
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    top: 8.0,
-                                                                    bottom:
-                                                                        10.0),
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: [
-                                                                CustomDesign(
-                                                                    borderRadius:
-                                                                        5,
-                                                                    width: 110,
-                                                                    height: 98,
-                                                                    text:
-                                                                        Padding(
-                                                                      padding: const EdgeInsets
-                                                                              .all(
-                                                                          10.0),
-                                                                      child:
-                                                                          Column(
-                                                                        children: [
-                                                                          Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.all(2.0),
-                                                                            child:
-                                                                                SvgPicture.asset(
-                                                                              "Assets/images/cash-back.svg",
-                                                                              width: 40,
-                                                                              height: 40,
-                                                                              color: Colors.white,
-                                                                            ),
+                                                        children: [
+                                                          Column(
+                                                            crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                            children: [
+                                                              Text(
+                                                                LocaleKeys.bottomSheet1.tr(),
+                                                                textAlign: TextAlign
+                                                                    .center,
+                                                                style: TextStyle(
+                                                                  color:
+                                                                      purpleColor,
+                                                                  fontSize: 20,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                LocaleKeys.bottomSheet2.tr(),
+                                                                style: TextStyle(
+                                                                  fontSize: 20,
+                                                                ),
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        top: 8.0,
+                                                                        bottom:
+                                                                            10.0),
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    CustomDesign(
+                                                                        borderRadius:
+                                                                            5,
+                                                                        width: 110,
+                                                                        height: 98,
+                                                                        text:
+                                                                            Padding(
+                                                                          padding: const EdgeInsets
+                                                                                  .all(
+                                                                              10.0),
+                                                                          child:
+                                                                              Column(
+                                                                            children: [
+                                                                              Padding(
+                                                                                padding:
+                                                                                    const EdgeInsets.all(2.0),
+                                                                                child:
+                                                                                    SvgPicture.asset(
+                                                                                  "Assets/images/cash-back.svg",
+                                                                                  width: 40,
+                                                                                  height: 40,
+                                                                                  color: Colors.white,
+                                                                                ),
+                                                                              ),
+                                                                              Text(
+                                                                                LocaleKeys.bottomSheetChoice1.tr(),
+                                                                                style: TextStyle(
+                                                                                    color: Colors.white,
+                                                                                    fontSize: 20,
+                                                                                    height: 1.5),
+                                                                              ),
+                                                                            ],
                                                                           ),
-                                                                          Text(
-                                                                            "كاش باك",
-                                                                            style: TextStyle(
-                                                                                color: Colors.white,
-                                                                                fontSize: 20,
-                                                                                height: 1.5),
+                                                                        ),
+                                                                        containerColor:
+                                                                            purpleColor),
+                                                                    CustomDesignUnActive(
+                                                                        borderColor:
+                                                                            purpleColor,
+                                                                        borderRadius:
+                                                                            5,
+                                                                        width: 110,
+                                                                        height: 98,
+                                                                        text:
+                                                                            Padding(
+                                                                          padding: const EdgeInsets
+                                                                                  .all(
+                                                                              10.0),
+                                                                          child:
+                                                                              Column(
+                                                                            children: [
+                                                                              Padding(
+                                                                                padding:
+                                                                                    const EdgeInsets.all(2.0),
+                                                                                child:
+                                                                                    SvgPicture.asset(
+                                                                                  "Assets/images/cash-back.svg",
+                                                                                  width: 40,
+                                                                                  height: 40,
+                                                                                  color: purpleColor,
+                                                                                ),
+                                                                              ),
+                                                                              Text(
+                                                                                LocaleKeys.bottomSheetChoice2.tr(),
+                                                                                style: TextStyle(
+                                                                                    color: purpleColor,
+                                                                                    fontSize: 20,
+                                                                                    height: 1.5),
+                                                                              ),
+                                                                            ],
                                                                           ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                    containerColor:
-                                                                        purpleColor),
-                                                                CustomDesignUnActive(
-                                                                    borderColor:
-                                                                        purpleColor,
-                                                                    borderRadius:
-                                                                        5,
-                                                                    width: 110,
-                                                                    height: 98,
-                                                                    text:
-                                                                        Padding(
-                                                                      padding: const EdgeInsets
-                                                                              .all(
-                                                                          10.0),
-                                                                      child:
-                                                                          Column(
-                                                                        children: [
-                                                                          Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.all(2.0),
-                                                                            child:
-                                                                                SvgPicture.asset(
-                                                                              "Assets/images/cash-back.svg",
-                                                                              width: 40,
-                                                                              height: 40,
-                                                                              color: purpleColor,
-                                                                            ),
+                                                                        ),
+                                                                        containerColor:
+                                                                            Colors
+                                                                                .transparent),
+                                                                    CustomDesignUnActive(
+                                                                        borderColor:
+                                                                            purpleColor,
+                                                                        borderRadius:
+                                                                            5,
+                                                                        width: 110,
+                                                                        height: 98,
+                                                                        text:
+                                                                            Padding(
+                                                                          padding: const EdgeInsets
+                                                                                  .all(
+                                                                              10.0),
+                                                                          child:
+                                                                              Column(
+                                                                            children: [
+                                                                              Padding(
+                                                                                padding:
+                                                                                    const EdgeInsets.all(2.0),
+                                                                                child:
+                                                                                    SvgPicture.asset(
+                                                                                  "Assets/images/party.svg",
+                                                                                  width: 40,
+                                                                                  height: 40,
+                                                                                  color: purpleColor,
+                                                                                ),
+                                                                              ),
+                                                                              Text(
+                                                                                LocaleKeys.bottomSheetChoice3.tr(),
+                                                                                style: TextStyle(
+                                                                                    color: purpleColor,
+                                                                                    fontSize: 20,
+                                                                                    height: 1.5),
+                                                                              ),
+                                                                            ],
                                                                           ),
-                                                                          Text(
-                                                                            "تسوق",
-                                                                            style: TextStyle(
-                                                                                color: purpleColor,
-                                                                                fontSize: 20,
-                                                                                height: 1.5),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                    containerColor:
-                                                                        Colors
-                                                                            .transparent),
-                                                                CustomDesignUnActive(
-                                                                    borderColor:
-                                                                        purpleColor,
-                                                                    borderRadius:
-                                                                        5,
-                                                                    width: 110,
-                                                                    height: 98,
-                                                                    text:
-                                                                        Padding(
-                                                                      padding: const EdgeInsets
-                                                                              .all(
-                                                                          10.0),
-                                                                      child:
-                                                                          Column(
-                                                                        children: [
-                                                                          Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.all(2.0),
-                                                                            child:
-                                                                                SvgPicture.asset(
-                                                                              "Assets/images/party.svg",
-                                                                              width: 40,
-                                                                              height: 40,
-                                                                              color: purpleColor,
-                                                                            ),
-                                                                          ),
-                                                                          Text(
-                                                                            "ترفيه",
-                                                                            style: TextStyle(
-                                                                                color: purpleColor,
-                                                                                fontSize: 20,
-                                                                                height: 1.5),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                    containerColor:
-                                                                        Colors
-                                                                            .transparent),
-                                                              ],
-                                                            ),
+                                                                        ),
+                                                                        containerColor:
+                                                                            Colors
+                                                                                .transparent),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
                                                           Stack(
-                                                            alignment: Alignment
-                                                                .centerLeft,
+                                                            alignment: AlignmentDirectional
+                                                                .centerEnd,
                                                             children: [
                                                               Container(
                                                                 margin: EdgeInsets
@@ -832,9 +836,8 @@ class WalletScreen extends StatelessWidget {
                                                                 alignment:
                                                                     Alignment
                                                                         .center,
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        right:
+                                                                padding: EdgeInsetsDirectional.only(
+                                                                        start:
                                                                             20),
                                                                 width: 250,
                                                                 height: 60,
@@ -851,12 +854,12 @@ class WalletScreen extends StatelessWidget {
                                                                               purpleColor,
                                                                         )),
                                                                 child: Padding(
-                                                                  padding: const EdgeInsets
+                                                                  padding: const EdgeInsetsDirectional
                                                                           .only(
-                                                                      left:
+                                                                      end:
                                                                           50.0),
                                                                   child: Text(
-                                                                    "إتمام العملية",
+                                                                    LocaleKeys.bottomSheetPerform.tr(),
                                                                     style: TextStyle(
                                                                         fontSize:
                                                                             20,
@@ -909,7 +912,7 @@ class WalletScreen extends StatelessWidget {
                                               padding:
                                                   const EdgeInsets.all(20.0),
                                               child: Stack(
-                                                alignment: Alignment.centerLeft,
+                                                alignment: AlignmentDirectional.centerEnd,
                                                 children: [
                                                   Container(
                                                     margin:
@@ -928,17 +931,12 @@ class WalletScreen extends StatelessWidget {
                                                         border: Border.all(
                                                           color: purpleColor,
                                                         )),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 50.0),
-                                                      child: Text(
-                                                        "إستخدم رصيدك",
-                                                        style: TextStyle(
-                                                            fontSize: 20,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
+                                                    child: Text(
+                                                      LocaleKeys.walletScreenPointsAll3.tr(),
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          color:
+                                                              Colors.white),
                                                     ),
                                                   ),
                                                   Stack(

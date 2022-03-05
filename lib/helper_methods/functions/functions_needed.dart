@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wasela/app_layouts/main_layouts/mainscreen/main_nav_screen.dart';
 
+import '../../translations/localeKeys.g.dart';
 import '../constants/endpoints.dart';
 
 navigateAndFinish(context, {required Widget layout}) {
@@ -134,7 +136,7 @@ class TransportCustomDesign extends StatelessWidget {
       onTap: onTap,
       child: Container(
         child: icon,
-        padding: EdgeInsets.all(paddingValue),
+        padding: EdgeInsetsDirectional.only(start: paddingValue),
         decoration: BoxDecoration(
           color: containerColor,
           borderRadius: BorderRadius.circular(borderRadius),
@@ -377,7 +379,7 @@ class ToggleCustomDesign extends StatelessWidget {
     required this.downText,
     required this.downOnTapFunction,
     this.horizontalPadding = 15.0,
-    this.sizedBoxWidthForDownPart = 15.0,
+    this.sizedBoxWidthForDownPart = 10.0,
     required this.upOnTapFunction,
   });
 
@@ -390,8 +392,7 @@ class ToggleCustomDesign extends StatelessWidget {
         alignment: AlignmentDirectional.center,
         height: 150,
         child: Stack(
-          textDirection: TextDirection.rtl,
-          alignment: Alignment.topRight,
+          alignment: AlignmentDirectional.topStart,
           children: [
             Expanded(
               child: InkWell(
@@ -401,25 +402,22 @@ class ToggleCustomDesign extends StatelessWidget {
                     alignment: AlignmentDirectional.center,
                     decoration: BoxDecoration(
                       color: downContainerColor,
-                      borderRadius: BorderRadius.horizontal(
-                        right: Radius.circular(50.0),
-                        left: Radius.circular(50.0),
+                      borderRadius: BorderRadiusDirectional.horizontal(
+                        start: Radius.circular(50.0),
+                        end: Radius.circular(50.0),
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                      ),
+                      padding: EdgeInsetsDirectional.only(
+                          end: sizedBoxWidthForDownPart),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          SizedBox(
-                            width: sizedBoxWidthForDownPart,
-                          ),
-                          downIcon,
+                          downText,
                           SizedBox(
                             width: 5,
                           ),
-                          downText,
+                          downIcon,
                         ],
                       ),
                     )),
@@ -444,7 +442,6 @@ class ToggleCustomDesign extends StatelessWidget {
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        textDirection: TextDirection.rtl,
                         children: [
                           upIcon,
                           SizedBox(
@@ -497,8 +494,7 @@ class ToggleCustomDesignUpdate extends StatelessWidget {
         alignment: AlignmentDirectional.center,
         height: 150,
         child: Stack(
-          textDirection: TextDirection.rtl,
-          alignment: Alignment.topLeft,
+          alignment: AlignmentDirectional.topEnd,
           children: [
             Expanded(
               child: InkWell(
@@ -518,7 +514,6 @@ class ToggleCustomDesignUpdate extends StatelessWidget {
                         horizontal: 20,
                       ),
                       child: Row(
-                        textDirection: TextDirection.rtl,
                         children: [
                           SizedBox(
                             width: sizedBoxWidthForDownPart,
@@ -647,7 +642,6 @@ class ToggleNoIconCustomDesign extends StatelessWidget {
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        textDirection: TextDirection.rtl,
                         children: [
                           SizedBox(
                             width: 5,
@@ -743,7 +737,6 @@ class ToggleNoIconCustomDesignUpdate extends StatelessWidget {
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        textDirection: TextDirection.rtl,
                         children: [
                           SizedBox(
                             width: 5,
@@ -759,21 +752,151 @@ class ToggleNoIconCustomDesignUpdate extends StatelessWidget {
   }
 }
 
+class ToggleNoIconCustomDesignSwapLanguage extends StatelessWidget {
+  final Color containerColor;
+
+  final Color upContainerColor;
+
+  final Color downContainerColor;
+  final Function() downOnTapFunction;
+  final Function() upOnTapFunction;
+
+  ToggleNoIconCustomDesignSwapLanguage({
+    required this.containerColor,
+    required this.upContainerColor,
+    required this.downContainerColor,
+    required this.downOnTapFunction,
+    required this.upOnTapFunction,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 30.0),
+        color: containerColor,
+        alignment: AlignmentDirectional.center,
+        height: 100,
+        child: Stack(
+          alignment: AlignmentDirectional.centerStart,
+          children: [
+            Expanded(
+              child: InkWell(
+                onTap: upOnTapFunction,
+                child: Container(
+                  width: 85,
+                  alignment: AlignmentDirectional.center,
+                  decoration: BoxDecoration(
+                    color: upContainerColor,
+                    borderRadius: BorderRadius.horizontal(
+                      right: Radius.circular(50.0),
+                      left: Radius.circular(50.0),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: InkWell(
+                onTap: downOnTapFunction,
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 10),
+                  child: Container(
+                    width: 25,
+                    height: 25,
+                    alignment: AlignmentDirectional.center,
+                    decoration: BoxDecoration(
+                      color: downContainerColor,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(50.0),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ));
+  }
+}
+
+class ToggleNoIconCustomDesignSwapLanguageActive extends StatelessWidget {
+  final Color containerColor;
+
+  final Color upContainerColor;
+
+  final Color downContainerColor;
+
+  final Function() downOnTapFunction;
+  final Function() upOnTapFunction;
+
+  ToggleNoIconCustomDesignSwapLanguageActive({
+    required this.containerColor,
+    required this.upContainerColor,
+    required this.downContainerColor,
+    required this.downOnTapFunction,
+    required this.upOnTapFunction,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 30.0),
+        color: containerColor,
+        alignment: AlignmentDirectional.center,
+        height: 100,
+        child: Stack(
+          alignment: AlignmentDirectional.centerEnd,
+          children: [
+            Expanded(
+              child: InkWell(
+                onTap: downOnTapFunction,
+                child: Container(
+                  width: 85,
+                  alignment: AlignmentDirectional.centerStart,
+                  decoration: BoxDecoration(
+                    color: downContainerColor,
+                    borderRadius: BorderRadius.horizontal(
+                      right: Radius.circular(50.0),
+                      left: Radius.circular(50.0),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: InkWell(
+                  onTap: upOnTapFunction,
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.only(end: 10),
+                    child: Container(
+                      width: 25,
+                      height: 25,
+                      alignment: AlignmentDirectional.center,
+                      decoration: BoxDecoration(
+                        color: upContainerColor,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(50.0),
+                        ),
+                      ),
+                    ),
+                  )),
+            ),
+          ],
+        ));
+  }
+}
+
 class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
-  final Widget preWidget;
+  final Widget postWidget;
   final TextInputType keyboardType;
   final String hintText;
-  final TextDirection textDirection;
-  final TextDirection hintTextDirection;
 
   const CustomTextFormField({
     required this.controller,
-    required this.preWidget,
+    required this.postWidget,
     required this.keyboardType,
     this.hintText = "",
-    this.textDirection = TextDirection.rtl,
-    this.hintTextDirection = TextDirection.rtl,
   });
 
   @override
@@ -781,11 +904,12 @@ class CustomTextFormField extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: TextFormField(
-          textAlignVertical: TextAlignVertical.center,
-          textDirection: textDirection,
+          textAlignVertical: TextAlignVertical.bottom,
+          showCursor: false,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18.0,
+            height: 0.4,
           ),
           cursorColor: Colors.black,
           cursorHeight: 30.0,
@@ -793,9 +917,9 @@ class CustomTextFormField extends StatelessWidget {
           decoration: InputDecoration(
             hintStyle: lightTheme.textTheme.bodyText1
                 ?.copyWith(fontSize: 15, color: textGreyColor),
-            hintTextDirection: hintTextDirection,
             hintText: hintText,
-            prefixIcon: preWidget,
+            //suffixIcon: postWidget,
+            suffixIcon: postWidget,
           ),
           keyboardType: keyboardType,
         ));
@@ -855,16 +979,16 @@ class CustomRowForDetails extends StatelessWidget {
         children: [
           SizedBox(
             width: 130,
-            child: Row(
-              children: [
-                Icon(Icons.check_circle_outline),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                  child: Text(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2.0),
+              child: Row(
+                children: [
+                  Icon(Icons.check_circle_outline),
+                  Text(
                     text1,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           Row(
@@ -896,7 +1020,6 @@ class CustomRowForDetailsWithNoPreIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      textDirection: TextDirection.rtl,
       children: [
         SizedBox(
           width: 120,
@@ -909,7 +1032,6 @@ class CustomRowForDetailsWithNoPreIcon extends StatelessWidget {
           ),
         ),
         Row(
-          textDirection: TextDirection.rtl,
           children: [
             Text(":"),
             Padding(
@@ -1000,7 +1122,10 @@ class DoneCircularAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 60,
+      height: 60,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CircleAvatar(
             backgroundColor: purpleColor,
@@ -1014,7 +1139,13 @@ class DoneCircularAvatar extends StatelessWidget {
           ),
           Text(
             underText,
-            style: TextStyle(fontSize: 12),
+            style: TextStyle(
+              fontSize: 12,
+              height: 1,
+            ),
+            textAlign: TextAlign.center,
+            // maxLines: 1,
+            // overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
@@ -1031,23 +1162,35 @@ class NotYetYellowContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 60,
+      height: 60,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
+          CustomDesignUnActive(
+            borderColor: yellowColor,
+            text: const Text(""),
+            containerColor: Colors.white,
             width: 30,
             height: 30,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(
-                  color: yellowColor,
-                  width: 5,
-                )),
+            borderWidth: 5,
+            borderRadius: 15,
           ),
+          // Container(
+          //   width: 30,
+          //   height: 30,
+          //   decoration: BoxDecoration(
+          //       color: Colors.white,
+          //       borderRadius: BorderRadius.circular(15),
+          //       border: Border.all(
+          //         color: yellowColor,
+          //         width: 5,
+          //       )),
+          // ),
           Text(
             underText,
-            style: TextStyle(color: yellowColor, fontSize: 12),
+            style: TextStyle(color: yellowColor, fontSize: 12, height: 1),
+            textAlign: TextAlign.center,
           ),
         ],
       ),
@@ -1152,7 +1295,6 @@ class CustomAlertDialog extends StatelessWidget {
                   padding:
                       const EdgeInsets.only(left: 15.0, right: 15.0, top: 60.0),
                   child: Column(
-                    textDirection: TextDirection.rtl,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       mainWidgetText,
@@ -1169,7 +1311,6 @@ class CustomAlertDialog extends StatelessWidget {
                                 child: SizedBox(
                                   height: 120,
                                   child: TextFormField(
-                                    textAlign: TextAlign.end,
                                     textAlignVertical: TextAlignVertical.top,
                                     autofocus: false,
                                     decoration: InputDecoration(
@@ -1178,7 +1319,7 @@ class CustomAlertDialog extends StatelessWidget {
                                           top: 5,
                                           right: 10,
                                           left: 10),
-                                      hintText: "اترك تعليقك",
+                                      hintText: LocaleKeys.badDialogComment.tr(),
                                       hintStyle: lightTheme.textTheme.caption,
                                       border: InputBorder.none,
                                     ),
@@ -1205,7 +1346,7 @@ class CustomAlertDialog extends StatelessWidget {
                             child: ButtonCustomDesign(
                               width: 200,
                               text: Text(
-                                "أرسال",
+                                LocaleKeys.dialogSend.tr(),
                                 style: TextStyle(fontSize: 18),
                               ),
                               inkwellFunc: () {},
@@ -1226,11 +1367,10 @@ class CustomAlertDialog extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Row(
-                      textDirection: TextDirection.rtl,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "التحدث مع فريق الدعم ",
+                          LocaleKeys.callCenter.tr(),
                           style: lightTheme.textTheme.bodyText1?.copyWith(
                             fontSize: 20,
                             color: Colors.white,
@@ -1292,8 +1432,7 @@ void myShowDialog(
 }
 
 void showToast(BuildContext context, String message, ToastStates states) {
-  ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     content: Text(message),
     backgroundColor: chooseToastColor(states),
   ));
@@ -1313,62 +1452,76 @@ Color chooseToastColor(ToastStates states) {
   }
   return color;
 }
-   AppBar generateAppBar ({required String title,required String svgPath,required BuildContext context}){
-    return AppBar(
-      toolbarHeight: 100,
-      backgroundColor: purpleColor,
-      foregroundColor: Colors.white,
-      centerTitle: true,
-      elevation: 0,
-      actions: [
-        Row(
-          children: [
-            IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.notifications_none,
-                  size: 40,
-                )),
-            SizedBox(width: 10,),
-            InkWell(
-              onTap: () {
-                //mainScaffoldKey.currentState?.openEndDrawer();
-                Scaffold.of(context).openDrawer();
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: SvgPicture.asset(
-                  "Assets/images/menu.svg",
-                  color: Colors.white,
-                  width: 30,
-                  height: 30,
-                ),
-              ),
-            ),
-          ],
-        )],
-      title: Column(
-        children: [
-          SvgPicture.asset(
-            "Assets/images/${svgPath}.svg",
-            width: 40,
-            height: 40,
-            color: Colors.white,
-          ),
-          Text(
-            "${title}",
-            style: TextStyle(fontSize: 25, height: 1.5),
-          ),
-        ],
-      ),
-      leading: IconButton(
-        onPressed: () {
-          persistentTabController.jumpToTab(0);
-        },
-        icon: Icon(
-          Icons.arrow_back,
+
+AppBar generateAppBar(
+    {required String title,
+    required String svgPath,
+    required BuildContext context}) {
+  return AppBar(
+    //excludeHeaderSemantics:true,
+    automaticallyImplyLeading: false,
+    toolbarHeight: 100,
+    backgroundColor: purpleColor,
+    foregroundColor: Colors.white,
+    centerTitle: true,
+    elevation: 0,
+    leading: Row(
+      children: [
+        SizedBox(
+          width: 5,
         ),
+        SizedBox(
+        width: 20,
+          child: InkWell(
+            onTap: () {
+              Scaffold.of(context).openDrawer();
+            },
+            child: SvgPicture.asset(
+              "Assets/images/menu.svg",
+              color: Colors.white,
+              width: 25,
+              height: 25,
+            ),
+          ),
       ),
-      );
-  }
+        SizedBox(
+        width: 5,
+      ),
+        InkWell(
+          onTap: () {
+            persistentTabController.jumpToTab(0);
+          },
+          child: Icon(
+            Icons.arrow_back,
+          ),
+        ),
+      ],
+    ),
+    title: Column(
+      children: [
+        SvgPicture.asset(
+          "Assets/images/${svgPath}.svg",
+          width: 40,
+          height: 40,
+          color: Colors.white,
+        ),
+        Text(
+          "${title}",
+          style: TextStyle(fontSize: 25, height: 1.5),
+        ),
+      ],
+    ),
+    actions: [
+      Padding(
+        padding: const EdgeInsetsDirectional.only(end: 10.0),
+        child: IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.notifications_none,
+              size: 40,
+            )),
+      ),
+    ],
+  );
+}
 

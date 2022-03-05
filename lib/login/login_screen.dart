@@ -21,22 +21,26 @@ class LoginScreen extends StatelessWidget {
               SizedBox(
                 height: 15,
               ),
-              CustomTextFormField(
+              CustomLocalTextFormField(
                 controller: phoneController,
-                preWidget: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                preWidget:Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       LocaleKeys.loginScreenMobile.tr(),
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    Text(
-                      CountryFlagGeneration.generateCountryFlag() +
+                    Row(
+                      children: [
+                        Text(
+                          CountryFlagGeneration.generateCountryFlag(),
+                        ),
+                        Text(
                           '  20' +
-                          ' ',
-                      style: const TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                              ' ',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -133,5 +137,41 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class CustomLocalTextFormField extends StatelessWidget {
+  final TextEditingController controller;
+  final Widget preWidget;
+  final TextInputType keyboardType;
+
+   const CustomLocalTextFormField({
+    required this.controller,
+    required this.preWidget,
+    required this.keyboardType,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: TextFormField(
+          textAlignVertical: TextAlignVertical.top,
+          showCursor: true,
+          textAlign: TextAlign.start,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18.0,
+            color: Colors.black,
+            height: 0.4,
+          ),
+          cursorColor: Colors.black,
+          cursorHeight: 60.0,
+          controller: controller,
+          decoration: InputDecoration(
+            prefixIcon: preWidget,
+          ),
+          keyboardType: keyboardType,
+        ));
   }
 }

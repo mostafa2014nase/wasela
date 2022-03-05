@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+bool ? isArabic ;
+var  lang ;
+
 const String fontFamily = 'hanimation';
 ThemeData lightTheme = ThemeData(
     tabBarTheme:  TabBarTheme(

@@ -42,13 +42,11 @@ class StartScreen extends StatelessWidget {
                 children: [
                   Text(
                     LocaleKeys.startScreen2.tr(),
-                    textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 20, color: textGreyColor, height: 2),
                   ),
                   Text(
                     LocaleKeys.startScreen3.tr(),
-                    textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 20, color: textGreyColor, height: 1),
                   ),

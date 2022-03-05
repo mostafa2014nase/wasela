@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/calculate_charge/bloc/states.dart';
+import 'package:wasela/translations/localeKeys.g.dart';
 
 class CalculateChargingCubitClass extends Cubit<CalculateChargingStates> {
   CalculateChargingCubitClass() : super(CalculateChargingInitState());
@@ -9,9 +11,9 @@ class CalculateChargingCubitClass extends Cubit<CalculateChargingStates> {
   TextEditingController longController = TextEditingController();
   TextEditingController widthController = TextEditingController();
   TextEditingController weightController = TextEditingController();
-  String longHintWords = "أدخل الطول ";
-  String widthHintWords = "أدخل العرض ";
-  String weightHintWords = "أدخل الوزن ";
+  String longHintWords = LocaleKeys.calculateScreenTab3Hint1.tr();
+  String widthHintWords = LocaleKeys.calculateScreenTab3Hint2.tr();
+  String weightHintWords = LocaleKeys.calculateScreenTab3Hint3.tr();
 
   bool no = true;
 
@@ -75,8 +77,12 @@ class CalculateChargingCubitClass extends Cubit<CalculateChargingStates> {
   }
 
   List<String> menuList = [
-    "cm",
-    "m",
+    LocaleKeys.cm.tr(),
+    LocaleKeys.meter.tr(),
+  ];
+  List<String> menu1List = [
+    LocaleKeys.weight1.tr(),
+    LocaleKeys.weight2.tr(),
   ];
 
   var lengthSelected;

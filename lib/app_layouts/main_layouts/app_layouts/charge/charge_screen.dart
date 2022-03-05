@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
@@ -8,6 +9,7 @@ import 'package:wasela/app_layouts/main_layouts/app_layouts/charge/bloc/cubit_cl
 import 'package:wasela/app_layouts/main_layouts/app_layouts/charge/bloc/states.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/charge/evaluate.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
+import 'package:wasela/translations/localeKeys.g.dart';
 
 import '../../../../helper_methods/constants/endpoints.dart';
 
@@ -26,7 +28,7 @@ class ChargeScreen extends StatelessWidget {
               length: 3,
               child: Scaffold(
                 appBar: generateAppBar(
-                  title: "شحناتك",
+                  title: LocaleKeys.bottomNavItemsName4.tr(),
                   svgPath: "wallet",
                     context: context,
                 ),
@@ -35,7 +37,6 @@ class ChargeScreen extends StatelessWidget {
                 backgroundColor: greyColor,
                 body: SafeArea(
                   child: Column(
-                    textDirection: TextDirection.rtl,
                     children: [
                       TabBar(
                         enableFeedback: true,
@@ -52,13 +53,13 @@ class ChargeScreen extends StatelessWidget {
                         // },
                         tabs: [
                           Text(
-                            "الشحنات الحالية",
+                            LocaleKeys.shippingTabs1.tr(),
                           ),
                           Text(
-                            "الشحنات المرسلة",
+                            LocaleKeys.shippingTabs2.tr(),
                           ),
                           Text(
-                            "الشحنات المنتهية",
+                            LocaleKeys.shippingTabs3.tr(),
                           ),
                         ],
                       ),
@@ -70,10 +71,8 @@ class ChargeScreen extends StatelessWidget {
                             children: [
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
-                                textDirection: TextDirection.rtl,
                                 children: [
                                   Row(
-                                    textDirection: TextDirection.rtl,
                                     children: [
                                       Container(
                                         width: 90,
@@ -88,10 +87,9 @@ class ChargeScreen extends StatelessWidget {
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Row(
-                                            textDirection: TextDirection.rtl,
                                             children: [
                                               Text(
-                                                "من تاريخ",
+                                                LocaleKeys.shippingSearch1.tr(),
                                                 style: TextStyle(fontSize: 12),
                                               ),
                                               Spacer(),
@@ -119,10 +117,9 @@ class ChargeScreen extends StatelessWidget {
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Row(
-                                            textDirection: TextDirection.rtl,
                                             children: [
                                               Text(
-                                                "إلى تاريخ",
+                                                LocaleKeys.shippingSearch2.tr(),
                                                 style: TextStyle(fontSize: 12),
                                               ),
                                               Spacer(),
@@ -139,12 +136,12 @@ class ChargeScreen extends StatelessWidget {
                                       ),
                                       Expanded(
                                         child: Stack(
-                                          alignment: Alignment.centerLeft,
+                                          alignment: AlignmentDirectional.centerEnd,
                                           children: [
                                             Container(
-                                              alignment: Alignment.centerRight,
+                                              alignment: AlignmentDirectional.centerStart,
                                               padding:
-                                                  EdgeInsets.only(right: 5),
+                                                  EdgeInsetsDirectional.only(start: 5),
                                               width: 200,
                                               height: 40,
                                               decoration: BoxDecoration(
@@ -156,7 +153,7 @@ class ChargeScreen extends StatelessWidget {
                                                     color: purpleColor,
                                                   )),
                                               child: Text(
-                                                "البحث برقم بوصيلة الشحن",
+                                                LocaleKeys.shippingSearch3.tr(),
                                                 style: TextStyle(fontSize: 12),
                                               ),
                                             ),
@@ -166,13 +163,13 @@ class ChargeScreen extends StatelessWidget {
                                               decoration: BoxDecoration(
                                                   color: purpleColor,
                                                   borderRadius:
-                                                      BorderRadius.only(
-                                                          bottomLeft:
-                                                              Radius.circular(
-                                                                  10.0),
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  10.0)),
+                                                  BorderRadiusDirectional.only(
+                                                      bottomEnd:
+                                                      Radius.circular(
+                                                          10.0),
+                                                      topEnd:
+                                                      Radius.circular(
+                                                          10.0)),
                                                   border: Border.all(
                                                     width: 0.8,
                                                     color: purpleColor,
@@ -202,44 +199,42 @@ class ChargeScreen extends StatelessWidget {
                                                   CrossAxisAlignment.center,
                                               children: [
                                                 Row(
-                                                  textDirection:
-                                                      TextDirection.rtl,
                                                   children: [
                                                     Column(
                                                       children: [
                                                         CustomRowForDetails(
                                                           text1:
-                                                              "رقم بوليصة الشحن",
+                                                          LocaleKeys.walletScreenListItemDetails1.tr(),
                                                           text2: "1855",
                                                         ),
                                                         CustomRowForDetails(
                                                           text1:
-                                                              "رقم بوليصة الشحن",
+                                                          LocaleKeys.shippingListItemDetails2.tr(),
                                                           text2: "1855",
                                                         ),
                                                         CustomRowForDetails(
                                                           text1:
-                                                              "رقم بوليصة الشحن",
+                                                          LocaleKeys.walletScreenListItemDetails2.tr(),
                                                           text2: "1855",
                                                         ),
                                                         CustomRowForDetails(
                                                           text1:
-                                                              "رقم بوليصة الشحن",
+                                                          LocaleKeys.shippingListItemDetails4.tr(),
                                                           text2: "1855",
                                                         ),
                                                         CustomRowForDetails(
                                                           text1:
-                                                              "رقم بوليصة الشحن",
+                                                          LocaleKeys.shippingListItemDetails5.tr(),
                                                           text2: "1855",
                                                         ),
                                                         CustomRowForDetails(
                                                           text1:
-                                                              "رقم بوليصة الشحن",
+                                                          LocaleKeys.shippingListItemDetails6.tr(),
                                                           text2: "1855",
                                                         ),
                                                         CustomRowForDetails(
                                                           text1:
-                                                              "رقم بوليصة الشحن",
+                                                          LocaleKeys.shippingListItemDetails7.tr(),
                                                           text2: "1855",
                                                         ),
                                                       ],
@@ -253,7 +248,7 @@ class ChargeScreen extends StatelessWidget {
                                                         child:
                                                             CustomContainerForDetails(
                                                           text1:
-                                                              "تتبع الشحنة على الخريطة",
+                                                          LocaleKeys.shippingListItemButton.tr(),
                                                           icon: Icon(
                                                             Icons
                                                                 .arrow_back_ios,
@@ -269,8 +264,8 @@ class ChargeScreen extends StatelessWidget {
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets
-                                                          .symmetric(
-                                                      vertical: 40),
+                                                          .only(
+                                                      top: 10,bottom: 40),
                                                   child: Stack(
                                                     alignment: Alignment.center,
                                                     children: [
@@ -282,29 +277,26 @@ class ChargeScreen extends StatelessWidget {
                                                         width: 300,
                                                       ),
                                                       Row(
-                                                        textDirection:
-                                                        TextDirection.rtl,
                                                         mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .spaceBetween,
                                                         children: [
                                                           DoneCircularAvatar(
-
                                                             underText:
-                                                            "طلب جديد",
+                                                            LocaleKeys.shippingQueSteps1.tr(),
                                                           ),
                                                           DoneCircularAvatar(
                                                             underText:
-                                                            "الإستلام من المندوب",
+                                                            LocaleKeys.shippingQueSteps2.tr(),
                                                           ),
                                                           NotYetYellowContainer(
-                                                            underText: "التغليف",
+                                                            underText: LocaleKeys.shippingQueSteps3.tr(),
                                                           ),
                                                           NotYetYellowContainer(
-                                                            underText: "فى الطريق للعميل",
+                                                            underText: LocaleKeys.shippingQueSteps4.tr(),
                                                           ),
                                                           NotYetYellowContainer(
-                                                            underText: "تم الإستلام",
+                                                            underText: LocaleKeys.shippingQueSteps5.tr(),
                                                           ),
                                                         ],
                                                       ),
@@ -328,17 +320,15 @@ class ChargeScreen extends StatelessWidget {
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
-                                textDirection: TextDirection.rtl,
                                 children: [
                                   Row(
-                                    textDirection: TextDirection.rtl,
                                     children: [
                                       Container(
                                         width: 90,
                                         decoration: BoxDecoration(
                                             color: Colors.transparent,
                                             borderRadius:
-                                                BorderRadius.circular(10.0),
+                                            BorderRadius.circular(10.0),
                                             border: Border.all(
                                               width: 0.8,
                                               color: purpleColor,
@@ -346,10 +336,9 @@ class ChargeScreen extends StatelessWidget {
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Row(
-                                            textDirection: TextDirection.rtl,
                                             children: [
                                               Text(
-                                                "من تاريخ",
+                                                LocaleKeys.shippingSearch1.tr(),
                                                 style: TextStyle(fontSize: 12),
                                               ),
                                               Spacer(),
@@ -369,7 +358,7 @@ class ChargeScreen extends StatelessWidget {
                                         decoration: BoxDecoration(
                                             color: Colors.transparent,
                                             borderRadius:
-                                                BorderRadius.circular(10.0),
+                                            BorderRadius.circular(10.0),
                                             border: Border.all(
                                               width: 0.8,
                                               color: purpleColor,
@@ -377,10 +366,9 @@ class ChargeScreen extends StatelessWidget {
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Row(
-                                            textDirection: TextDirection.rtl,
                                             children: [
                                               Text(
-                                                "إلى تاريخ",
+                                                LocaleKeys.shippingSearch2.tr(),
                                                 style: TextStyle(fontSize: 12),
                                               ),
                                               Spacer(),
@@ -397,24 +385,24 @@ class ChargeScreen extends StatelessWidget {
                                       ),
                                       Expanded(
                                         child: Stack(
-                                          alignment: Alignment.centerLeft,
+                                          alignment: AlignmentDirectional.centerEnd,
                                           children: [
                                             Container(
-                                              alignment: Alignment.centerRight,
+                                              alignment: AlignmentDirectional.centerStart,
                                               padding:
-                                                  EdgeInsets.only(right: 5),
+                                              EdgeInsetsDirectional.only(start: 5),
                                               width: 200,
                                               height: 40,
                                               decoration: BoxDecoration(
                                                   color: greyColor,
                                                   borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.0),
+                                                  BorderRadius.circular(
+                                                      10.0),
                                                   border: Border.all(
                                                     color: purpleColor,
                                                   )),
                                               child: Text(
-                                                "البحث برقم بوصيلة الشحن",
+                                                LocaleKeys.shippingSearch3.tr(),
                                                 style: TextStyle(fontSize: 12),
                                               ),
                                             ),
@@ -424,13 +412,13 @@ class ChargeScreen extends StatelessWidget {
                                               decoration: BoxDecoration(
                                                   color: purpleColor,
                                                   borderRadius:
-                                                      BorderRadius.only(
-                                                          bottomLeft:
-                                                              Radius.circular(
-                                                                  10.0),
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  10.0)),
+                                                  BorderRadiusDirectional.only(
+                                                      bottomEnd:
+                                                      Radius.circular(
+                                                          10.0),
+                                                      topEnd:
+                                                      Radius.circular(
+                                                          10.0)),
                                                   border: Border.all(
                                                     width: 0.8,
                                                     color: purpleColor,
@@ -457,47 +445,45 @@ class ChargeScreen extends StatelessWidget {
                                           return DecoratedContainerWithShadow(
                                             child: Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
+                                              CrossAxisAlignment.center,
                                               children: [
                                                 Row(
-                                                  textDirection:
-                                                      TextDirection.rtl,
                                                   children: [
                                                     Column(
                                                       children: [
                                                         CustomRowForDetails(
                                                           text1:
-                                                              "رقم بوليصة الشحن",
+                                                          LocaleKeys.walletScreenListItemDetails1.tr(),
                                                           text2: "1855",
                                                         ),
                                                         CustomRowForDetails(
                                                           text1:
-                                                              "رقم بوليصة الشحن",
+                                                          LocaleKeys.shippingListItemDetails2.tr(),
                                                           text2: "1855",
                                                         ),
                                                         CustomRowForDetails(
                                                           text1:
-                                                              "رقم بوليصة الشحن",
+                                                          LocaleKeys.walletScreenListItemDetails2.tr(),
                                                           text2: "1855",
                                                         ),
                                                         CustomRowForDetails(
                                                           text1:
-                                                              "رقم بوليصة الشحن",
+                                                          LocaleKeys.shippingListItemDetails4.tr(),
                                                           text2: "1855",
                                                         ),
                                                         CustomRowForDetails(
                                                           text1:
-                                                              "رقم بوليصة الشحن",
+                                                          LocaleKeys.shippingListItemDetails5.tr(),
                                                           text2: "1855",
                                                         ),
                                                         CustomRowForDetails(
                                                           text1:
-                                                              "رقم بوليصة الشحن",
+                                                          LocaleKeys.shippingListItemDetails6.tr(),
                                                           text2: "1855",
                                                         ),
                                                         CustomRowForDetails(
                                                           text1:
-                                                              "رقم بوليصة الشحن",
+                                                          LocaleKeys.shippingListItemDetails7.tr(),
                                                           text2: "1855",
                                                         ),
                                                       ],
@@ -509,9 +495,9 @@ class ChargeScreen extends StatelessWidget {
                                                       child: InkWell(
                                                         onTap: () {},
                                                         child:
-                                                            CustomContainerForDetails(
+                                                        CustomContainerForDetails(
                                                           text1:
-                                                              "تتبع الشحنة على الخريطة",
+                                                          LocaleKeys.shippingListItemButton.tr(),
                                                           icon: Icon(
                                                             Icons
                                                                 .arrow_back_ios,
@@ -527,8 +513,8 @@ class ChargeScreen extends StatelessWidget {
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets
-                                                          .symmetric(
-                                                      vertical: 40),
+                                                      .only(
+                                                      top: 10,bottom: 40),
                                                   child: Stack(
                                                     alignment: Alignment.center,
                                                     children: [
@@ -540,28 +526,26 @@ class ChargeScreen extends StatelessWidget {
                                                         width: 300,
                                                       ),
                                                       Row(
-                                                        textDirection:
-                                                            TextDirection.rtl,
                                                         mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
                                                         children: [
                                                           DoneCircularAvatar(
                                                             underText:
-                                                            "طلب جديد",
+                                                            LocaleKeys.shippingQueSteps1.tr(),
                                                           ),
                                                           DoneCircularAvatar(
                                                             underText:
-                                                            "الإستلام من المندوب",
+                                                            LocaleKeys.shippingQueSteps2.tr(),
                                                           ),
                                                           NotYetYellowContainer(
-                                                            underText: "التغليف",
+                                                            underText: LocaleKeys.shippingQueSteps3.tr(),
                                                           ),
                                                           NotYetYellowContainer(
-                                                            underText: "فى الطريق للعميل",
+                                                            underText: LocaleKeys.shippingQueSteps4.tr(),
                                                           ),
                                                           NotYetYellowContainer(
-                                                            underText: "تم الإستلام",
+                                                            underText: LocaleKeys.shippingQueSteps5.tr(),
                                                           ),
                                                         ],
                                                       ),
@@ -585,17 +569,15 @@ class ChargeScreen extends StatelessWidget {
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
-                                textDirection: TextDirection.rtl,
                                 children: [
                                   Row(
-                                    textDirection: TextDirection.rtl,
                                     children: [
                                       Container(
                                         width: 90,
                                         decoration: BoxDecoration(
                                             color: Colors.transparent,
                                             borderRadius:
-                                                BorderRadius.circular(10.0),
+                                            BorderRadius.circular(10.0),
                                             border: Border.all(
                                               width: 0.8,
                                               color: purpleColor,
@@ -603,10 +585,9 @@ class ChargeScreen extends StatelessWidget {
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Row(
-                                            textDirection: TextDirection.rtl,
                                             children: [
                                               Text(
-                                                "من تاريخ",
+                                                LocaleKeys.shippingSearch1.tr(),
                                                 style: TextStyle(fontSize: 12),
                                               ),
                                               Spacer(),
@@ -626,7 +607,7 @@ class ChargeScreen extends StatelessWidget {
                                         decoration: BoxDecoration(
                                             color: Colors.transparent,
                                             borderRadius:
-                                                BorderRadius.circular(10.0),
+                                            BorderRadius.circular(10.0),
                                             border: Border.all(
                                               width: 0.8,
                                               color: purpleColor,
@@ -634,10 +615,9 @@ class ChargeScreen extends StatelessWidget {
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Row(
-                                            textDirection: TextDirection.rtl,
                                             children: [
                                               Text(
-                                                "إلى تاريخ",
+                                                LocaleKeys.shippingSearch2.tr(),
                                                 style: TextStyle(fontSize: 12),
                                               ),
                                               Spacer(),
@@ -654,24 +634,24 @@ class ChargeScreen extends StatelessWidget {
                                       ),
                                       Expanded(
                                         child: Stack(
-                                          alignment: Alignment.centerLeft,
+                                          alignment: AlignmentDirectional.centerEnd,
                                           children: [
                                             Container(
-                                              alignment: Alignment.centerRight,
+                                              alignment: AlignmentDirectional.centerStart,
                                               padding:
-                                                  EdgeInsets.only(right: 5),
+                                              EdgeInsetsDirectional.only(start: 5),
                                               width: 200,
                                               height: 40,
                                               decoration: BoxDecoration(
                                                   color: greyColor,
                                                   borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.0),
+                                                  BorderRadius.circular(
+                                                      10.0),
                                                   border: Border.all(
                                                     color: purpleColor,
                                                   )),
                                               child: Text(
-                                                "البحث برقم بوصيلة الشحن",
+                                                LocaleKeys.shippingSearch3.tr(),
                                                 style: TextStyle(fontSize: 12),
                                               ),
                                             ),
@@ -681,13 +661,13 @@ class ChargeScreen extends StatelessWidget {
                                               decoration: BoxDecoration(
                                                   color: purpleColor,
                                                   borderRadius:
-                                                      BorderRadius.only(
-                                                          bottomLeft:
-                                                              Radius.circular(
-                                                                  10.0),
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  10.0)),
+                                                  BorderRadiusDirectional.only(
+                                                      bottomEnd:
+                                                      Radius.circular(
+                                                          10.0),
+                                                      topEnd:
+                                                      Radius.circular(
+                                                          10.0)),
                                                   border: Border.all(
                                                     width: 0.8,
                                                     color: purpleColor,
@@ -714,47 +694,45 @@ class ChargeScreen extends StatelessWidget {
                                           return DecoratedContainerWithShadow(
                                             child: Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
+                                              CrossAxisAlignment.center,
                                               children: [
                                                 Row(
-                                                  textDirection:
-                                                      TextDirection.rtl,
                                                   children: [
                                                     Column(
                                                       children: [
                                                         CustomRowForDetails(
                                                           text1:
-                                                              "رقم بوليصة الشحن",
+                                                          LocaleKeys.walletScreenListItemDetails1.tr(),
                                                           text2: "1855",
                                                         ),
                                                         CustomRowForDetails(
                                                           text1:
-                                                              "رقم بوليصة الشحن",
+                                                          LocaleKeys.shippingListItemDetails2.tr(),
                                                           text2: "1855",
                                                         ),
                                                         CustomRowForDetails(
                                                           text1:
-                                                              "رقم بوليصة الشحن",
+                                                          LocaleKeys.walletScreenListItemDetails2.tr(),
                                                           text2: "1855",
                                                         ),
                                                         CustomRowForDetails(
                                                           text1:
-                                                              "رقم بوليصة الشحن",
+                                                          LocaleKeys.shippingListItemDetails4.tr(),
                                                           text2: "1855",
                                                         ),
                                                         CustomRowForDetails(
                                                           text1:
-                                                              "رقم بوليصة الشحن",
+                                                          LocaleKeys.shippingListItemDetails5.tr(),
                                                           text2: "1855",
                                                         ),
                                                         CustomRowForDetails(
                                                           text1:
-                                                              "رقم بوليصة الشحن",
+                                                          LocaleKeys.shippingListItemDetails6.tr(),
                                                           text2: "1855",
                                                         ),
                                                         CustomRowForDetails(
                                                           text1:
-                                                              "رقم بوليصة الشحن",
+                                                          LocaleKeys.shippingListItemDetails7.tr(),
                                                           text2: "1855",
                                                         ),
                                                       ],
@@ -767,11 +745,12 @@ class ChargeScreen extends StatelessWidget {
                                                         onTap: () {
                                                           navigateAndBack(
                                                             context,
-                                                              layout:EvaluateScreen(),);
+                                                            layout:EvaluateScreen(),);
                                                         },
                                                         child:
-                                                            CustomContainerForDetails(
-                                                          text1: "تقييم الشحنة",
+                                                        CustomContainerForDetails(
+                                                          text1:
+                                                          LocaleKeys.shippingEvaluate.tr(),
                                                           icon: Icon(
                                                             Icons
                                                                 .arrow_back_ios,
@@ -784,6 +763,47 @@ class ChargeScreen extends StatelessWidget {
                                                       width: 10,
                                                     ),
                                                   ],
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .only(
+                                                      top: 10,bottom: 40),
+                                                  child: Stack(
+                                                    alignment: Alignment.center,
+                                                    children: [
+                                                      SizedBox(
+                                                        child: MySeparator(
+                                                          color: Colors.red,
+                                                          height: 1.7,
+                                                        ),
+                                                        width: 300,
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                        children: [
+                                                          DoneCircularAvatar(
+                                                            underText:
+                                                            LocaleKeys.shippingQueSteps1.tr(),
+                                                          ),
+                                                          DoneCircularAvatar(
+                                                            underText:
+                                                            LocaleKeys.shippingQueSteps2.tr(),
+                                                          ),
+                                                          NotYetYellowContainer(
+                                                            underText: LocaleKeys.shippingQueSteps3.tr(),
+                                                          ),
+                                                          NotYetYellowContainer(
+                                                            underText: LocaleKeys.shippingQueSteps4.tr(),
+                                                          ),
+                                                          NotYetYellowContainer(
+                                                            underText: LocaleKeys.shippingQueSteps5.tr(),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ],
                                             ),
