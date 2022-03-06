@@ -105,5 +105,15 @@
   "badDialog2": "برجاء توضيح سبب هذا التقييم",
   "badDialogComment": "أترك تعليقك",
   "dialogSend": "أرسال",
-  "callCenter": "التحدث مع فريق الدعم"
+  "callCenter": "التحدث مع فريق الدعم",
+  "branches1": "خريطة الأفرع",
+  "followShippingAddress": "تتبع مراحل تنفيذ الشحنة",
+  "followShipping1": "تتبع الشحنة على الخريطة",
+  "marketingCategories": "أختر فئة المنتجات",
+  "marketingCategories1": "ملابس",
+  "marketingCategories2": "أغذية",
+  "marketingCategories3": "هدايا",
+  "marketingCategories4": "شنط",
+  "marketingCategory1": "أختر المنتج",
+  "marketingCategory2": "أضف للسلة"
 }

@@ -164,7 +164,7 @@ class ManNavScreen extends StatelessWidget {
           ),
           body: PersistentTabView(
             context,
-          padding: lang == "en" ? NavBarPadding.only(left: 70.0, right: 0.0):NavBarPadding.only(left: 0.0, right: 90.0) ,
+          padding: isArabic == false ? NavBarPadding.only(left: 70.0, right: 0.0):NavBarPadding.only(left: 0.0, right: 90.0) ,
             screens: cubit.Screens,
             items: cubit.navigationBarItems,
             backgroundColor: Colors.white,
@@ -176,11 +176,13 @@ class ManNavScreen extends StatelessWidget {
               cubit.changeBarItem(index);
               print(persistentTabController.index);
             },
-            popAllScreensOnTapOfSelectedTab: true,
-            hideNavigationBar: false,
+            popAllScreensOnTapOfSelectedTab: false,
+            //hideNavigationBar: false,
+            resizeToAvoidBottomInset: true,
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.startDocked,
+          resizeToAvoidBottomInset: false,
           floatingActionButton: SizedBox(
             height: 100,
             child: Column(

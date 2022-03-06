@@ -8,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/charge/bloc/cubit_class.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/charge/bloc/states.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/charge/evaluate.dart';
+import 'package:wasela/app_layouts/main_layouts/app_layouts/charge/follow_shipping.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
 
@@ -244,7 +245,9 @@ class ChargeScreen extends StatelessWidget {
                                                     ),
                                                     Expanded(
                                                       child: InkWell(
-                                                        onTap: () {},
+                                                        onTap: () {
+                                                          navigateAndBack(context, layout: FollowShippingOnMapScreen());
+                                                        },
                                                         child:
                                                             CustomContainerForDetails(
                                                           text1:

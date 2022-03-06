@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,6 +8,7 @@ import 'package:wasela/app_layouts/main_layouts/app_layouts/marketing_and_carage
 import 'package:wasela/app_layouts/main_layouts/app_layouts/marketing_and_carage/detailed_category.dart';
 import 'package:wasela/helper_methods/constants/endpoints.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
+import 'package:wasela/translations/localeKeys.g.dart';
 
 class MarketingScreen extends StatelessWidget {
   const MarketingScreen({Key? key}) : super(key: key);
@@ -18,10 +20,59 @@ class MarketingScreen extends StatelessWidget {
       builder: (context,state){
         var cubit = MarketingCubitClass.get(context);
         return Scaffold(
-          appBar: generateAppBar(
-            context: context,
-            title: "تسوق وأشحن",
-            svgPath: "wallet",
+          appBar: AppBar(
+            toolbarHeight: 140,
+            backgroundColor: purpleColor,
+            centerTitle: true,
+            foregroundColor: Colors.white,
+            elevation: 0,
+            leading: IconButton(
+              onPressed: () {
+//backToPrevious(context);
+              },
+              icon: Icon(
+                Icons.arrow_back,
+              ),
+            ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: InkWell(
+                  onTap: () {},
+                  child: SvgPicture.asset(
+                    "Assets/images/menu.svg",
+                    color: Colors.white,
+                    width: 30,
+                    height: 30,
+                  ),
+                ),
+              ),
+            ],
+            title: Padding(
+              padding: const EdgeInsetsDirectional.only(start: 80),
+              child: Row(
+                children: [
+                  Column(
+                    children: [
+                      SvgPicture.asset(
+                        "Assets/images/wallet.svg",
+                        width: 40,
+                        height: 40,
+                        color: Colors.white,
+                      ),
+                      Text(
+                        LocaleKeys.marketing.tr(),
+                        style: TextStyle(fontSize: 25, height: 1.5),
+                      ),
+                    ],
+                  ),
+                  SizedBox(width: 30,),
+                  IconButton(onPressed: (){
+                    navigateAndBack(context, layout: BasketScreen());
+                  }, icon: Icon(Icons.shopping_cart),color: Colors.white,iconSize: 40,)
+                ],
+              ),
+            ),
           ),
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
@@ -29,7 +80,7 @@ class MarketingScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    "أختر فئة المنتجات",
+                    LocaleKeys.marketingCategories.tr(),
                     style: TextStyle(color: purpleColor, fontSize: 20),
                   ),
                   put_line(line_width: 70, color: yellowColor, line_height: 3),

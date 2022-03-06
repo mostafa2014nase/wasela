@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,6 +8,7 @@ import 'package:wasela/app_layouts/main_layouts/app_layouts/marketing_and_carage
 import 'package:wasela/helper_methods/constants/endpoints.dart';
 
 import '../../../../helper_methods/functions/functions_needed.dart';
+import '../../../../translations/localeKeys.g.dart';
 
 class DetailedCategory extends StatelessWidget {
   final int index;
@@ -70,7 +72,7 @@ class DetailedCategory extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    "أختر المنتج",
+                    LocaleKeys.marketingCategory1.tr(),
                     style: TextStyle(color: purpleColor, fontSize: 20),
                   ),
                   put_line(line_width: 70, color: yellowColor, line_height: 3),
@@ -85,7 +87,7 @@ class DetailedCategory extends StatelessWidget {
                                 layout: DetailedItemScreen(
                                   categoryIndex: index,
                                   itemIndex: indexis,
-                                  isAlreadyClicked: true,
+                                  isAlreadyClicked: false,
                                 ));
                           },
                           child: Stack(
@@ -118,7 +120,7 @@ class DetailedCategory extends StatelessWidget {
                                         left: 8.0, right: 8.0, bottom: 8.0),
                                     child: CustomDesignUnActive(
                                       text: Text(
-                                        " 200 جنيه",
+                                        " 200 ${LocaleKeys.pound.tr()}",
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 20),
                                       ),
@@ -154,11 +156,9 @@ class DetailedCategory extends StatelessWidget {
                                                     const EdgeInsets.symmetric(
                                                         horizontal: 10.0),
                                                 child: Row(
-                                                  textDirection:
-                                                      TextDirection.rtl,
                                                   children: [
                                                     Text(
-                                                      "أضف إلى السلة",
+                                                      LocaleKeys.marketingCategory2.tr(),
                                                       style: TextStyle(
                                                           fontSize: 10,
                                                           fontWeight:
@@ -192,7 +192,6 @@ class DetailedCategory extends StatelessWidget {
                                             ),
                                           ),
                                         ],
-                                        textDirection: TextDirection.rtl,
                                       ),
                                     ),
                                     borderRadius: 1,

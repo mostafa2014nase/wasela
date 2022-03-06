@@ -14,7 +14,9 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<DrawerCubitClass, DrawerStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        print("state now is $state");
+      },
       builder: (context, state) {
         var cubit = DrawerCubitClass.get(context);
         return Scaffold(

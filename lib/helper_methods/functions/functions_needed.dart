@@ -593,7 +593,7 @@ class ToggleNoIconCustomDesign extends StatelessWidget {
         alignment: AlignmentDirectional.center,
         height: 100,
         child: Stack(
-          alignment: Alignment.topRight,
+          alignment: AlignmentDirectional.topStart,
           children: [
             Expanded(
               child: InkWell(
@@ -609,8 +609,8 @@ class ToggleNoIconCustomDesign extends StatelessWidget {
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
+                      padding: const EdgeInsetsDirectional.only(
+                        start: 80,
                       ),
                       child: Row(
                         children: [
@@ -687,7 +687,7 @@ class ToggleNoIconCustomDesignUpdate extends StatelessWidget {
         alignment: AlignmentDirectional.center,
         height: 100,
         child: Stack(
-          alignment: Alignment.topLeft,
+          alignment: AlignmentDirectional.topEnd,
           children: [
             Expanded(
               child: InkWell(
@@ -703,11 +703,10 @@ class ToggleNoIconCustomDesignUpdate extends StatelessWidget {
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
+                      padding: const EdgeInsetsDirectional.only(
+                        start: 35,
                       ),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           upText,
                           SizedBox(
@@ -1114,9 +1113,17 @@ class MySeparator extends StatelessWidget {
 
 class DoneCircularAvatar extends StatelessWidget {
   final String underText;
+  final Color backGroundColor;
+  final Color frontGroundColor;
+  final Color textColor;
+  final Color iconColor;
 
   const DoneCircularAvatar({
     required this.underText,
+     this.backGroundColor = const Color(0xff7663EA),
+     this.frontGroundColor = const Color(0xff7663EA),
+     this.textColor = Colors.black,
+     this.iconColor = Colors.white,
   });
 
   @override
@@ -1128,12 +1135,12 @@ class DoneCircularAvatar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CircleAvatar(
-            backgroundColor: purpleColor,
-            foregroundColor: purpleColor,
+            backgroundColor: backGroundColor,
+            foregroundColor: frontGroundColor,
             radius: 15,
             child: Icon(
               Icons.check,
-              color: Colors.white,
+              color: iconColor,
               size: 20,
             ),
           ),
@@ -1142,6 +1149,7 @@ class DoneCircularAvatar extends StatelessWidget {
             style: TextStyle(
               fontSize: 12,
               height: 1,
+              color: textColor,
             ),
             textAlign: TextAlign.center,
             // maxLines: 1,
@@ -1156,8 +1164,16 @@ class DoneCircularAvatar extends StatelessWidget {
 
 class NotYetYellowContainer extends StatelessWidget {
   final String underText;
+  final Color borderColor;
+  final Color textColor;
+  final Color containerColor;
 
-  const NotYetYellowContainer({required this.underText});
+  const NotYetYellowContainer({
+    required this.underText,
+    this.borderColor = const Color(0xffFED201),
+    this.textColor = const Color(0xffFED201),
+    this.containerColor = Colors.white,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1168,9 +1184,9 @@ class NotYetYellowContainer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomDesignUnActive(
-            borderColor: yellowColor,
+            borderColor: borderColor,
             text: const Text(""),
-            containerColor: Colors.white,
+            containerColor: containerColor,
             width: 30,
             height: 30,
             borderWidth: 5,
@@ -1189,7 +1205,7 @@ class NotYetYellowContainer extends StatelessWidget {
           // ),
           Text(
             underText,
-            style: TextStyle(color: yellowColor, fontSize: 12, height: 1),
+            style: TextStyle(color: textColor, fontSize: 12, height: 1),
             textAlign: TextAlign.center,
           ),
         ],

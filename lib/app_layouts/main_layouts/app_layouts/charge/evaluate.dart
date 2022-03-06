@@ -18,19 +18,19 @@ class EvaluateScreen extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         title: Column(
-        children: [
-          SvgPicture.asset(
-            "Assets/images/wallet.svg",
-            width: 40,
-            height: 40,
-            color: Colors.white,
-          ),
-          Text(
-            LocaleKeys.shippingEvaluate.tr(),
-            style: TextStyle(fontSize: 25, height: 1.5),
-          ),
-        ],
-      ),
+          children: [
+            SvgPicture.asset(
+              "Assets/images/wallet.svg",
+              width: 40,
+              height: 40,
+              color: Colors.white,
+            ),
+            Text(
+              LocaleKeys.shippingEvaluate.tr(),
+              style: TextStyle(fontSize: 25, height: 1.5),
+            ),
+          ],
+        ),
         leading: IconButton(
           onPressed: () {
             backToPrevious(context);
@@ -61,18 +61,19 @@ class EvaluateScreen extends StatelessWidget {
               Text(
                 LocaleKeys.evaluateScreen1.tr(),
                 style: TextStyle(
-                    fontWeight: FontWeight.bold, color: textGreyTwoColor,fontSize: 20),
+                    fontWeight: FontWeight.bold,
+                    color: textGreyTwoColor,
+                    fontSize: 20),
               ),
               Text(
                 LocaleKeys.evaluateScreen2.tr(),
-                style: TextStyle(color: textGreyTwoColor,fontSize: 17),
+                style: TextStyle(color: textGreyTwoColor, fontSize: 17),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InkWell(
-                    onTap: () {
-                    },
+                    onTap: () {},
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 30.0),
                       child: Column(
@@ -132,7 +133,7 @@ class EvaluateScreen extends StatelessWidget {
                                 Text(
                                   LocaleKeys.badDialog1.tr(),
                                   style:
-                                  lightTheme.textTheme.bodyText1?.copyWith(
+                                      lightTheme.textTheme.bodyText1?.copyWith(
                                     fontSize: 20,
                                     color: Colors.white,
                                   ),
@@ -141,7 +142,7 @@ class EvaluateScreen extends StatelessWidget {
                                   LocaleKeys.badDialog2.tr(),
                                   style: lightTheme.textTheme.bodyText1
                                       ?.copyWith(
-                                      fontSize: 20, color: Colors.white),
+                                          fontSize: 20, color: Colors.white),
                                 ),
                               ],
                             ),
@@ -164,8 +165,8 @@ class EvaluateScreen extends StatelessWidget {
                                       "تأخر توصيل الشحنات عن الموعد المحدد",
                                       style: lightTheme.textTheme.bodyText1
                                           ?.copyWith(
-                                          fontSize: 15,
-                                          color: Colors.white),
+                                              fontSize: 15,
+                                              color: Colors.white),
                                     ),
                                   ],
                                 ),
@@ -173,21 +174,21 @@ class EvaluateScreen extends StatelessWidget {
                                   children: [
                                     SizedBox(
                                       child: MaterialButton(
-                                          onPressed: () {},
-                                          child: Icon(
-                                            Icons
-                                                .check_box_outline_blank_rounded,
-                                            color: Colors.white,
-                                            size: 20,
-                                          )),
+                                        onPressed: () {},
+                                        child: Icon(
+                                          Icons.check_box_outline_blank_rounded,
+                                          color: Colors.white,
+                                          size: 20,
+                                        ),
+                                      ),
                                       width: 50,
                                     ),
                                     Text(
                                       "عدم التزام المندوب بأداب اللياقة والمعاملة",
                                       style: lightTheme.textTheme.bodyText1
                                           ?.copyWith(
-                                          fontSize: 15,
-                                          color: Colors.white),
+                                              fontSize: 15,
+                                              color: Colors.white),
                                     ),
                                   ],
                                 ),
@@ -208,8 +209,8 @@ class EvaluateScreen extends StatelessWidget {
                                       "الشحنات تالفة",
                                       style: lightTheme.textTheme.bodyText1
                                           ?.copyWith(
-                                          fontSize: 15,
-                                          color: Colors.white),
+                                              fontSize: 15,
+                                              color: Colors.white),
                                     ),
                                   ],
                                 ),
@@ -230,8 +231,8 @@ class EvaluateScreen extends StatelessWidget {
                                       "الأسئلة كلها هتبقي ديناميك من الداش بورد",
                                       style: lightTheme.textTheme.bodyText1
                                           ?.copyWith(
-                                          fontSize: 15,
-                                          color: Colors.white),
+                                              fontSize: 15,
+                                              color: Colors.white),
                                     ),
                                   ],
                                 ),
@@ -264,7 +265,7 @@ class EvaluateScreen extends StatelessWidget {
                                 Text(
                                   LocaleKeys.badDialog1.tr(),
                                   style:
-                                  lightTheme.textTheme.bodyText1?.copyWith(
+                                      lightTheme.textTheme.bodyText1?.copyWith(
                                     fontSize: 20,
                                     color: Colors.white,
                                   ),
@@ -273,7 +274,7 @@ class EvaluateScreen extends StatelessWidget {
                                   LocaleKeys.badDialog2.tr(),
                                   style: lightTheme.textTheme.bodyText1
                                       ?.copyWith(
-                                      fontSize: 20, color: Colors.white),
+                                          fontSize: 20, color: Colors.white),
                                 ),
                               ],
                             ),
@@ -296,8 +297,8 @@ class EvaluateScreen extends StatelessWidget {
                                       "تأخر توصيل الشحنات عن الموعد المحدد",
                                       style: lightTheme.textTheme.bodyText1
                                           ?.copyWith(
-                                          fontSize: 15,
-                                          color: Colors.white),
+                                              fontSize: 15,
+                                              color: Colors.white),
                                     ),
                                   ],
                                 ),
@@ -318,8 +319,8 @@ class EvaluateScreen extends StatelessWidget {
                                       "عدم التزام المندوب بأداب اللياقة والمعاملة",
                                       style: lightTheme.textTheme.bodyText1
                                           ?.copyWith(
-                                          fontSize: 15,
-                                          color: Colors.white),
+                                              fontSize: 15,
+                                              color: Colors.white),
                                     ),
                                   ],
                                 ),
@@ -340,8 +341,8 @@ class EvaluateScreen extends StatelessWidget {
                                       "الشحنات تالفة",
                                       style: lightTheme.textTheme.bodyText1
                                           ?.copyWith(
-                                          fontSize: 15,
-                                          color: Colors.white),
+                                              fontSize: 15,
+                                              color: Colors.white),
                                     ),
                                   ],
                                 ),
@@ -362,8 +363,8 @@ class EvaluateScreen extends StatelessWidget {
                                       "الأسئلة كلها هتبقي ديناميك من الداش بورد",
                                       style: lightTheme.textTheme.bodyText1
                                           ?.copyWith(
-                                          fontSize: 15,
-                                          color: Colors.white),
+                                              fontSize: 15,
+                                              color: Colors.white),
                                     ),
                                   ],
                                 ),

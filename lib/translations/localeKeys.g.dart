@@ -108,4 +108,14 @@ abstract class  LocaleKeys {
   static const badDialogComment ='badDialogComment';
   static const dialogSend ='dialogSend';
   static const callCenter ='callCenter';
+  static const branches1 ='branches1';
+  static const followShippingAddress ='followShippingAddress';
+  static const followShipping1 ='followShipping1';
+  static const marketingCategories ='marketingCategories';
+  static const marketingCategories1 ='marketingCategories1';
+  static const marketingCategories2 ='marketingCategories2';
+  static const marketingCategories3 ='marketingCategories3';
+  static const marketingCategories4 ='marketingCategories4';
+  static const marketingCategory1 ='marketingCategory1';
+  static const marketingCategory2 ='marketingCategory2';
 }

@@ -105,7 +105,18 @@
   "badDialog2": "Please explain this evaluation",
   "badDialogComment": "Leave your comment",
   "dialogSend": "Send",
-  "callCenter": "Talk to the support team"
+  "callCenter": "Talk to the support team",
+  "branches1": "Branches map",
+  "followShippingAddress": "Follow ship steps",
+  "followShipping1": "Follow ship on the map",
+  "marketingCategories": "Choose product category",
+  "marketingCategories1": "Clothes",
+  "marketingCategories2": "Food",
+  "marketingCategories3": "Gifts",
+  "marketingCategories4": "Bags",
+  "marketingCategory1": "Choose product",
+  "marketingCategory2": "Add to card"
+
 
 
 }

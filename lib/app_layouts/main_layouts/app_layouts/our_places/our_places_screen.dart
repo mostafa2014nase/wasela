@@ -1,8 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wasela/helper_methods/constants/endpoints.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
+import 'package:wasela/translations/localeKeys.g.dart';
 
 import 'bloc/cubit_class.dart';
 import 'bloc/states.dart';
@@ -19,7 +22,7 @@ class PranchesMapAndMenue extends StatelessWidget {
         return Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: generateAppBar(
-            title: "فروعنا",
+            title: LocaleKeys.bottomNavItemsName5.tr(),
             svgPath: "wallet",
             context: context,
           ),
@@ -47,17 +50,18 @@ class PranchesMapAndMenue extends StatelessWidget {
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          textDirection: TextDirection.rtl,
                           children: [
-                            Icon(
-                              Icons.inbox_sharp,
+                            SvgPicture.asset(
+                              "Assets/images/placeholder.svg",
                               color: Colors.black,
+                              width: 30,
+                              height: 30,
                             ),
                             SizedBox(
                               width: 5,
                             ),
                             Text(
-                              "خريطة الأفرع",
+                              LocaleKeys.branches1.tr(),
                               style: TextStyle(fontSize: 20),
                             ),
                           ],
@@ -125,7 +129,6 @@ class PranchesMapAndMenue extends StatelessWidget {
                               ),
                             ),
                           ],
-                          textDirection: TextDirection.rtl,
                         ),
                       );
                     },

@@ -7,7 +7,6 @@ import 'package:wasela/app_layouts/main_layouts/app_layouts/marketing_and_carage
 import 'package:wasela/app_layouts/main_layouts/mainscreen/nav_bloc/main_nav_cubit.dart';
 import 'package:wasela/settings/bloc/cubit_class.dart';
 import 'package:wasela/splach/splach_screen.dart';
-import 'package:wasela/translations/codegen_loader.g.dart';
 import 'app_layouts/main_layouts/app_layouts/charge/bloc/cubit_class.dart';
 import 'app_layouts/main_layouts/app_layouts/our_places/bloc/cubit_class.dart';
 import 'helper_methods/app_bloc_provider/bloc/cubit.dart';
@@ -16,6 +15,7 @@ import 'helper_methods/constants/endpoints.dart';
 import 'helper_methods/sharedpref/shared_preference.dart';
 import 'login/login_screen.dart';
 import 'onBoarding/on_boarding_screen.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,9 +29,9 @@ Future<void> main() async {
   Widget startScreen;
   print("language is ${lang} and isArabic Check = $isArabic");
   if(isArabic == false  && lang == "en")
-    {
-      lang = "en";
-    }
+  {
+    lang = "en";
+  }
   else {
     lang = "ar";
   }
@@ -57,12 +57,29 @@ Future<void> main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   Widget startScreen;
   String language;
 
   MyApp({required this.startScreen,required this.language});
 
+
+  static void setLocale(BuildContext context,String myAppLanguage){
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state!.setLocale(myAppLanguage);
+  }
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  void setLocale(String finalLanguage) {
+    setState(() {
+      widget.language = finalLanguage;
+    });
+  }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -80,15 +97,26 @@ class MyApp extends StatelessWidget {
         child: BlocConsumer<AppCubitClass, AppStates>(
           listener: (context, state) {},
           builder: (context, state) {
-            print ("language is $language which is (${Locale(language)})");
+            print ("language is ${widget.language} which is (${Locale(widget.language)})");
             return MaterialApp(
               title: 'Flutter Demo',
               theme: lightTheme,
               debugShowCheckedModeBanner: false,
-              localizationsDelegates: context.localizationDelegates,
+              //localizationsDelegates: context.localizationDelegates,
               supportedLocales: context.supportedLocales,
-              locale: Locale(language),
-              home: MainSplashScreen(startScreen: startScreen),
+              localizationsDelegates:  [
+                context.localizationDelegates[0],
+                context.localizationDelegates[1],
+                context.localizationDelegates[2],
+                context.localizationDelegates[3],
+                DefaultWidgetsLocalizations.delegate,
+                DefaultMaterialLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              locale:Locale(widget.language),
+              home: MainSplashScreen(startScreen: widget.startScreen),
             );
           },
         ));

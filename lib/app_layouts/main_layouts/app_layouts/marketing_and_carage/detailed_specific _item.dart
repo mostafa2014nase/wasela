@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,6 +11,7 @@ import 'package:wasela/app_layouts/main_layouts/app_layouts/marketing_and_carage
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
 
 import '../../../../helper_methods/constants/endpoints.dart';
+import '../../../../translations/localeKeys.g.dart';
 
 class DetailedItemScreen extends StatefulWidget {
   final int categoryIndex;
@@ -168,7 +170,7 @@ class _DetailedItemScreenState extends State<DetailedItemScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Text(
-                    "200 جنيه",
+                    "200 ${LocaleKeys.pound.tr()}",
                     style: TextStyle(color: purpleColor, fontSize: 25),
                   ),
                 ),
@@ -230,13 +232,12 @@ class _DetailedItemScreenState extends State<DetailedItemScreen> {
                                 const EdgeInsets.symmetric(horizontal: 10.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              textDirection: TextDirection.rtl,
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 40.0),
                                   child: Text(
-                                    "أضف إلى السلة",
+                                    LocaleKeys.marketingCategory2.tr(),
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,

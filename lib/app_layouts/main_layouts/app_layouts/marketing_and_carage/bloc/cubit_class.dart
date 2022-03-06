@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/marketing_and_carage/bloc/states.dart';
+
+import '../../../../../translations/localeKeys.g.dart';
 
 class MarketingCubitClass extends Cubit<MarketingStates> {
   MarketingCubitClass() : super(InitialMarketingState());
@@ -14,10 +17,10 @@ class MarketingCubitClass extends Cubit<MarketingStates> {
     "Assets/images/gift.svg",
   ];
   List gridTexts = [
-    "أغذية",
-    "ملابس ",
-    "شنط",
-    "هدايا",
+    LocaleKeys.marketingCategories2.tr(),
+    LocaleKeys.marketingCategories1.tr(),
+    LocaleKeys.marketingCategories4.tr(),
+    LocaleKeys.marketingCategories3.tr(),
   ];
 
   bool isClicked = false;
