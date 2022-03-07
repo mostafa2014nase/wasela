@@ -115,5 +115,12 @@
   "marketingCategories3": "هدايا",
   "marketingCategories4": "شنط",
   "marketingCategory1": "أختر المنتج",
-  "marketingCategory2": "أضف للسلة"
+  "marketingCategory2": "أضف للسلة",
+  "basketScreen1": "اقل قيمة مشتريات",
+  "basketScreen1NotFree": "قيمة الشحن",
+  "basketScreen1Free": "الشحن مجاني",
+  "total": "الأجمالي",
+  "basketContinueBuying": "استكمال عملية الشراء",
+  "noProducts": "لا يوجد أى منتجات حتى الان ... اذهب للتسوق وأضف منتجاتك",
+  "cart": "سلة المشتريات"
 }

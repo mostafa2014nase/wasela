@@ -1120,10 +1120,10 @@ class DoneCircularAvatar extends StatelessWidget {
 
   const DoneCircularAvatar({
     required this.underText,
-     this.backGroundColor = const Color(0xff7663EA),
-     this.frontGroundColor = const Color(0xff7663EA),
-     this.textColor = Colors.black,
-     this.iconColor = Colors.white,
+    this.backGroundColor = const Color(0xff7663EA),
+    this.frontGroundColor = const Color(0xff7663EA),
+    this.textColor = Colors.black,
+    this.iconColor = Colors.white,
   });
 
   @override
@@ -1335,7 +1335,8 @@ class CustomAlertDialog extends StatelessWidget {
                                           top: 5,
                                           right: 10,
                                           left: 10),
-                                      hintText: LocaleKeys.badDialogComment.tr(),
+                                      hintText:
+                                          LocaleKeys.badDialogComment.tr(),
                                       hintStyle: lightTheme.textTheme.caption,
                                       border: InputBorder.none,
                                     ),
@@ -1436,8 +1437,82 @@ class CustomAlertDialog extends StatelessWidget {
   }
 }
 
+class CustomAlertDialogForMarketing extends StatelessWidget {
+  final Widget mainWidgetText;
+  final Widget underWidget;
+  final Widget topImage;
+  final Color backGroundImageColor;
+
+  const CustomAlertDialogForMarketing({
+    required this.mainWidgetText,
+    required this.topImage,
+    this.underWidget = const SizedBox(
+      width: 0,
+      height: 0,
+    ),    this.backGroundImageColor = Colors.red
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.topCenter,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            right: 30.0,
+            left: 30.0,
+            bottom: 20.0,
+            top: 300,
+          ),
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(left: 15.0, right: 15.0, top: 60.0),
+                  child: mainWidgetText,
+                ),
+              ),
+              underWidget,
+            ],
+          ),
+        ),
+        Positioned(
+          child: CircleAvatar(
+            radius: 60,
+            backgroundColor: backGroundImageColor,
+          ),
+          bottom: 450,
+        ),
+        Positioned(
+          child: CircleAvatar(
+            radius: 55,
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.white,
+            child: topImage,
+          ),
+          bottom: 455,
+        ),
+      ],
+    );
+  }
+}
+
 void myShowDialog(
     {required BuildContext context, required CustomAlertDialog alertDialog}) {
+  showGeneralDialog(
+    context: context,
+    pageBuilder: (BuildContext buildContext, Animation animation,
+        Animation secondaryAnimation) {
+      return alertDialog;
+    },
+  );
+}void myShowDialogForMarketing(
+    {required BuildContext context, required CustomAlertDialogForMarketing alertDialog}) {
   showGeneralDialog(
     context: context,
     pageBuilder: (BuildContext buildContext, Animation animation,
@@ -1487,7 +1562,7 @@ AppBar generateAppBar(
           width: 5,
         ),
         SizedBox(
-        width: 20,
+          width: 20,
           child: InkWell(
             onTap: () {
               Scaffold.of(context).openDrawer();
@@ -1499,10 +1574,10 @@ AppBar generateAppBar(
               height: 25,
             ),
           ),
-      ),
+        ),
         SizedBox(
-        width: 5,
-      ),
+          width: 5,
+        ),
         InkWell(
           onTap: () {
             persistentTabController.jumpToTab(0);
@@ -1539,5 +1614,48 @@ AppBar generateAppBar(
       ),
     ],
   );
+}
+
+
+class SettingsButtonRow extends StatelessWidget {
+  final Widget preIcon;
+  final IconData goIcon;
+  final String text;
+  final Function() onTap;
+  const SettingsButtonRow({Key? key,required this.preIcon,required this.goIcon,required this.text,required this.onTap, }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(
+            width: 0.5
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 15.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  preIcon,
+                  SizedBox(width: 10,),
+                  Text(text,style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),),
+                ],
+              ),
+              Icon(goIcon),
+            ],
+          ),
+        )
+      ),
+    );
+  }
 }
 

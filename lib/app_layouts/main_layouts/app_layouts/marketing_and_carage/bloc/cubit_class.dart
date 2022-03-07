@@ -24,25 +24,46 @@ class MarketingCubitClass extends Cubit<MarketingStates> {
   ];
 
   bool isClicked = false;
-  void goToDetailedCategory (index){
-  }
 
+  void goToDetailedCategory(index) {}
 
   int quantity = 1;
+
   void increasQuantity() {
     quantity++;
     emit(IncreaseQuantityState());
   }
 
   void decreaseQuantity() {
+    if (quantity > 1) {
       quantity--;
       emit(DecreaseQuantityState());
-
+    }
   }
+
   int cardItems = 0;
+
   void increasCardItems() {
     cardItems++;
     emit(IncreaseCardItemsState());
   }
 
+  bool isFree = false;
+  bool replace = false;
+
+  TextEditingController addressController = TextEditingController();
+
+  void replaceAddress() {
+    if (addressController.text.isEmpty == false) {
+      replace = true;
+      emit(ReplaceSuccessState());
+    } else {
+      replace = false;
+      emit(ResetSuccessState());
+    }
+  }
+
+  void resetAll() {
+    addressController = TextEditingController();
+  }
 }

@@ -11,8 +11,10 @@ import 'package:wasela/app_layouts/main_layouts/mainscreen/nav_bloc/main_nav_cub
 import 'package:wasela/app_layouts/main_layouts/mainscreen/nav_bloc/main_nav_states.dart';
 import 'package:wasela/helper_methods/constants/endpoints.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
-import 'package:wasela/settings/settings_screen.dart';
+import 'package:wasela/settings/screens/language_screen.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
+
+import '../../../settings/settings_screen.dart';
 
 PersistentTabController persistentTabController =
     PersistentTabController(initialIndex: 0);

@@ -397,29 +397,3 @@ class EvaluateScreen extends StatelessWidget {
   }
 }
 
-class ShowDialog extends StatelessWidget {
-  const ShowDialog({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      backgroundColor: Colors.transparent,
-      content: Container(
-        decoration: BoxDecoration(
-          color: purpleColor,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              //color: greyColor,
-              spreadRadius: 1,
-              blurRadius: 0.5,
-              offset: Offset(0, 0), // changes position of shadow
-            ),
-          ],
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Column(),
-      ),
-    );
-  }
-}

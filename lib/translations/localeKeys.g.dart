@@ -118,4 +118,11 @@ abstract class  LocaleKeys {
   static const marketingCategories4 ='marketingCategories4';
   static const marketingCategory1 ='marketingCategory1';
   static const marketingCategory2 ='marketingCategory2';
+  static const basketScreen1 ='basketScreen1';
+  static const basketScreen1NotFree ='basketScreen1NotFree';
+  static const basketScreen1Free ='basketScreen1Free';
+  static const total ='total';
+  static const basketContinueBuying ='basketContinueBuying';
+  static const noProducts ='noProducts';
+  static const cart ='cart';
 }

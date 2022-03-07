@@ -1,154 +1,97 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:wasela/helper_methods/constants/endpoints.dart';
-import 'package:wasela/helper_methods/functions/functions_needed.dart';
-import 'package:wasela/helper_methods/sharedpref/shared_preference.dart';
-import 'package:wasela/settings/bloc/cubit_class.dart';
-import 'package:wasela/settings/bloc/states.dart';
+import 'package:wasela/settings/screens/language_screen.dart';
+
+import '../helper_methods/functions/functions_needed.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<DrawerCubitClass, DrawerStates>(
-      listener: (context, state) {
-        print("state now is $state");
-      },
-      builder: (context, state) {
-        var cubit = DrawerCubitClass.get(context);
-        return Scaffold(
-          body: Padding(
-            padding: const EdgeInsetsDirectional.only(start: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: () {
-                    cubit.toggleLanguage(
-                      language: "ar",
-                      context: context,
-                    );
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          CustomDesignUnActive(
-                            width: 70,
-                            height: 70,
-                            borderRadius: 70,
-                            borderWidth: 5,
-                            borderColor: purpleColor,
-                            text: Text(
-                              "AR",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            containerColor: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text(
-                            "العربية",
-                            style: TextStyle(fontSize: 25),
-                          ),
-                        ],
-                      ),
-                      isArabic == true || isArabic == null
-                          ? Padding(
-                              padding:
-                                  const EdgeInsetsDirectional.only(end: 20),
-                              child: CustomDesignUnActive(
-                                borderColor: purpleColor,
-                                text: Icon(
-                                  Icons.check,
-                                  size: 30,
-                                  color: purpleColor,
-                                ),
-                                containerColor: Colors.white,
-                                width: 50,
-                                height: 50,
-                                borderWidth: 5,
-                                borderRadius: 50,
-                              ),
-                            )
-                          : const SizedBox(),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                InkWell(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          CustomDesignUnActive(
-                            width: 70,
-                            height: 70,
-                            borderRadius: 70,
-                            borderWidth: 5,
-                            borderColor: purpleColor,
-                            text: Text(
-                              "En",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            containerColor: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text(
-                            "English",
-                            style: TextStyle(fontSize: 25),
-                          ),
-                        ],
-                      ),
-                      isArabic == false
-                          ? Padding(
-                              padding:
-                                  const EdgeInsetsDirectional.only(end: 20),
-                              child: CustomDesignUnActive(
-                                borderColor: purpleColor,
-                                text: Icon(
-                                  Icons.check,
-                                  size: 30,
-                                  color: purpleColor,
-                                ),
-                                containerColor: Colors.white,
-                                width: 50,
-                                height: 50,
-                                borderWidth: 5,
-                                borderRadius: 50,
-                              ),
-                            )
-                          : const SizedBox(),
-                    ],
-                  ),
-                  onTap: () {
-                    cubit.toggleLanguage(
-                      language: "en",
-                      context: context,
-                    );
-                  },
-                ),
-              ],
-            ),
+    return Scaffold(
+      backgroundColor: greyColor,
+      appBar: AppBar(
+        toolbarHeight: 140,
+        backgroundColor: purpleColor,
+        centerTitle: true,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+//backToPrevious(context);
+          },
+          icon: Icon(
+            Icons.arrow_back,
           ),
-        );
-      },
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: InkWell(
+                onTap: () {},
+                child: Icon(
+                  Icons.notifications,
+                  size: 35,
+                )),
+          ),
+        ],
+        title: Padding(
+          padding: isArabic!
+              ? const EdgeInsetsDirectional.only(start: 80)
+              : const EdgeInsetsDirectional.only(start: 80),
+          child: Row(
+            children: [
+              Column(
+                children: [
+                  SvgPicture.asset(
+                    "Assets/images/settings (3).svg",
+                    width: 40,
+                    height: 40,
+                    color: Colors.white,
+                  ),
+                  Text(
+                    "الإعدادات",
+                    style: TextStyle(fontSize: 25, height: 1.5),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children:  [
+          SettingsButtonRow(
+            onTap: (){},
+            text: "تعديل الحساب",
+            preIcon: Icon(Icons.person,size: 50,),
+            goIcon: Icons.arrow_forward_ios,
+          ),
+          SettingsButtonRow(
+            onTap: (){
+              navigateAndBack(context, layout: LanguageScreen());
+            },
+            text: "اللغة",
+            preIcon: Icon(Icons.person,size: 50,),
+            goIcon: Icons.arrow_forward_ios,
+          ),
+          SettingsButtonRow(
+            onTap: (){},
+            text: "تغير كلمة المرور",
+            preIcon: Icon(Icons.person,size: 50,),
+            goIcon: Icons.arrow_forward_ios,
+          ),
+          SettingsButtonRow(
+            onTap: (){},
+            text: "تواصل معنا",
+            preIcon: Icon(Icons.person,size: 50,),
+            goIcon: Icons.arrow_forward_ios,
+          ),
+        ],
+      ),
     );
   }
 }

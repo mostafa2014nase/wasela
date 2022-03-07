@@ -115,8 +115,12 @@
   "marketingCategories3": "Gifts",
   "marketingCategories4": "Bags",
   "marketingCategory1": "Choose product",
-  "marketingCategory2": "Add to card"
-
-
-
+  "marketingCategory2": "Add to card",
+  "basketScreen1": "Lowest purchase value",
+  "basketScreen1NotFree": "Shipping cost",
+  "basketScreen1Free": "Shipping is free",
+  "total": "Total",
+  "basketContinueBuying": "Continue buying process",
+  "noProducts": "There no Products yet ... Go shopping and add your products",
+  "cart": "Cart"
 }

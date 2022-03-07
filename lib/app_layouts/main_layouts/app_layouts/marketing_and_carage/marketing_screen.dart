@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:wasela/app_layouts/main_layouts/app_layouts/marketing_and_carage/basket_screen.dart';
+import 'package:wasela/app_layouts/main_layouts/app_layouts/marketing_and_carage/complete_buying/basket_screen.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/marketing_and_carage/bloc/cubit_class.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/marketing_and_carage/bloc/states.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/marketing_and_carage/detailed_category.dart';
@@ -39,17 +39,15 @@ class MarketingScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(10.0),
                 child: InkWell(
                   onTap: () {},
-                  child: SvgPicture.asset(
-                    "Assets/images/menu.svg",
-                    color: Colors.white,
-                    width: 30,
-                    height: 30,
-                  ),
+                  child: Icon(
+                    Icons.notifications,
+                    size: 35,
+                  )
                 ),
               ),
             ],
             title: Padding(
-              padding: const EdgeInsetsDirectional.only(start: 80),
+              padding: isArabic! ? const EdgeInsetsDirectional.only(start: 40):const EdgeInsetsDirectional.only(start: 60),
               child: Row(
                 children: [
                   Column(
