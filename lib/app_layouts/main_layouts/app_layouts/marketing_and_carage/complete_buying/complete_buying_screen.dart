@@ -62,7 +62,7 @@ class CompleteBuyingData extends StatelessWidget {
                             color: Colors.white,
                           ),
                           Text(
-                            "عنوان الشحن",
+                            LocaleKeys.completeShoppingAddress.tr(),
                             style: TextStyle(fontSize: 25, height: 1.5),
                           ),
                         ],
@@ -96,7 +96,7 @@ class CompleteBuyingData extends StatelessWidget {
                               width: 10,
                             ),
                             Text(
-                              "أسرع شحن",
+                              LocaleKeys.fastShipping.tr(),
                               style: TextStyle(fontSize: 25),
                             ),
                           ],
@@ -143,7 +143,7 @@ class CompleteBuyingData extends StatelessWidget {
                                             //   gapPadding: 80,
                                             // ),
                                             border: InputBorder.none,
-                                            hintText: "أضف عنوان الشحن",
+                                            hintText: LocaleKeys.addAddress.tr(),
                                             hintStyle:
                                                 lightTheme.textTheme.caption,
                                             constraints: BoxConstraints(
@@ -222,7 +222,7 @@ class CompleteBuyingData extends StatelessWidget {
                                   width: 10,
                                 ),
                                 Text(
-                                  "اضف عنوان الشحن",
+                                  LocaleKeys.addAddress.tr(),
                                   style: TextStyle(fontSize: 25),
                                 ),
                               ],
@@ -243,7 +243,7 @@ class CompleteBuyingData extends StatelessWidget {
                         child: CustomDesignUnActive(
                           borderColor: purpleColor,
                           text: Text(
-                            "انهاء عملية الشراء",
+                            LocaleKeys.finishShopping.tr(),
                             style: TextStyle(color: Colors.white, fontSize: 25),
                           ),
                           containerColor: purpleColor,

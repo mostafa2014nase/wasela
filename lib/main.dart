@@ -5,7 +5,7 @@ import 'package:wasela/app_layouts/main_layouts/app_layouts/calculate_charge/blo
 import 'package:wasela/app_layouts/main_layouts/app_layouts/home/home_bloc/home_cubit.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/marketing_and_carage/bloc/cubit_class.dart';
 import 'package:wasela/app_layouts/main_layouts/mainscreen/nav_bloc/main_nav_cubit.dart';
-import 'package:wasela/settings/bloc/cubit_class.dart';
+import 'package:wasela/drawer/settings/bloc/cubit_class.dart';
 import 'package:wasela/splach/splach_screen.dart';
 import 'app_layouts/main_layouts/app_layouts/charge/bloc/cubit_class.dart';
 import 'app_layouts/main_layouts/app_layouts/our_places/bloc/cubit_class.dart';
@@ -25,15 +25,15 @@ Future<void> main() async {
   Bloc.observer = BlocObserver();
   var onBoarding = SharedCashHelper.getValue(key: "skip");
   lang = SharedCashHelper.getValue(key: "lang");
-  isArabic = SharedCashHelper.getValue(key: "isArabic");
+  //isArabic = SharedCashHelper.getValue(key: "isArabic");
   Widget startScreen;
   print("language is ${lang} and isArabic Check = $isArabic");
-  if(isArabic == false  && lang == "en")
-  {
+  if ( lang == "en") {
     lang = "en";
-  }
-  else {
+    isArabic = false;
+  } else {
     lang = "ar";
+    isArabic = true;
   }
 
   if (onBoarding == null || onBoarding == false) {
@@ -44,7 +44,7 @@ Future<void> main() async {
 
   runApp(
     EasyLocalization(
-      child: MyApp(startScreen: startScreen,language: lang),
+      child: MyApp(startScreen: startScreen, language: lang),
       path: "Assets/translations",
       supportedLocales: const [
         Locale("en"),
@@ -61,10 +61,9 @@ class MyApp extends StatefulWidget {
   Widget startScreen;
   String language;
 
-  MyApp({required this.startScreen,required this.language});
+  MyApp({required this.startScreen, required this.language});
 
-
-  static void setLocale(BuildContext context,String myAppLanguage){
+  static void setLocale(BuildContext context, String myAppLanguage) {
     _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
     state!.setLocale(myAppLanguage);
   }
@@ -74,12 +73,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   void setLocale(String finalLanguage) {
     setState(() {
       widget.language = finalLanguage;
     });
   }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -97,14 +96,15 @@ class _MyAppState extends State<MyApp> {
         child: BlocConsumer<AppCubitClass, AppStates>(
           listener: (context, state) {},
           builder: (context, state) {
-            print ("language is ${widget.language} which is (${Locale(widget.language)})");
+            print(
+                "language is ${widget.language} which is (${Locale(widget.language)})");
             return MaterialApp(
               title: 'Flutter Demo',
               theme: lightTheme,
               debugShowCheckedModeBanner: false,
               //localizationsDelegates: context.localizationDelegates,
               supportedLocales: context.supportedLocales,
-              localizationsDelegates:  [
+              localizationsDelegates: [
                 context.localizationDelegates[0],
                 context.localizationDelegates[1],
                 context.localizationDelegates[2],
@@ -115,7 +115,7 @@ class _MyAppState extends State<MyApp> {
                 GlobalWidgetsLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
               ],
-              locale:Locale(widget.language),
+              locale: Locale(widget.language),
               home: MainSplashScreen(startScreen: widget.startScreen),
             );
           },

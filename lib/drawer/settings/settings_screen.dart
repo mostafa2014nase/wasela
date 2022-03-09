@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wasela/drawer/settings/screens/contact_us.dart';
+import 'package:wasela/drawer/settings/screens/language_screen.dart';
 import 'package:wasela/helper_methods/constants/endpoints.dart';
-import 'package:wasela/settings/screens/language_screen.dart';
 
-import '../helper_methods/functions/functions_needed.dart';
+import '../../helper_methods/functions/functions_needed.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -63,31 +64,45 @@ class SettingsScreen extends StatelessWidget {
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children:  [
+        children: [
           SettingsButtonRow(
-            onTap: (){},
+            onTap: () {},
             text: "تعديل الحساب",
-            preIcon: Icon(Icons.person,size: 50,),
+            preIcon: Icon(
+              Icons.person,
+              size: 50,
+            ),
             goIcon: Icons.arrow_forward_ios,
           ),
           SettingsButtonRow(
-            onTap: (){
+            onTap: () {
               navigateAndBack(context, layout: LanguageScreen());
             },
             text: "اللغة",
-            preIcon: Icon(Icons.person,size: 50,),
+            preIcon: Icon(
+              Icons.person,
+              size: 50,
+            ),
             goIcon: Icons.arrow_forward_ios,
           ),
           SettingsButtonRow(
-            onTap: (){},
+            onTap: () {},
             text: "تغير كلمة المرور",
-            preIcon: Icon(Icons.person,size: 50,),
+            preIcon: Icon(
+              Icons.person,
+              size: 50,
+            ),
             goIcon: Icons.arrow_forward_ios,
           ),
           SettingsButtonRow(
-            onTap: (){},
+            onTap: () {
+              navigateAndBack(context, layout: ContactUsScreen());
+            },
             text: "تواصل معنا",
-            preIcon: Icon(Icons.person,size: 50,),
+            preIcon: Icon(
+              Icons.person,
+              size: 50,
+            ),
             goIcon: Icons.arrow_forward_ios,
           ),
         ],

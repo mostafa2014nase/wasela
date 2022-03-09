@@ -9,12 +9,11 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/marketing_and_carage/marketing_screen.dart';
 import 'package:wasela/app_layouts/main_layouts/mainscreen/nav_bloc/main_nav_cubit.dart';
 import 'package:wasela/app_layouts/main_layouts/mainscreen/nav_bloc/main_nav_states.dart';
+import 'package:wasela/drawer/points_and_gifts/gifts.dart';
 import 'package:wasela/helper_methods/constants/endpoints.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
-import 'package:wasela/settings/screens/language_screen.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
-
-import '../../../settings/settings_screen.dart';
+import '../../../drawer/settings/settings_screen.dart';
 
 PersistentTabController persistentTabController =
     PersistentTabController(initialIndex: 0);
@@ -110,6 +109,8 @@ class ManNavScreen extends StatelessWidget {
                                     }
                                   :index == 4 ?  () {
                                 navigateAndBack(context, layout: SettingsScreen());
+                              }:index == 2 ? () {
+                                navigateAndBack(context, layout: PointsAndGifts());
                               }:() {},
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(

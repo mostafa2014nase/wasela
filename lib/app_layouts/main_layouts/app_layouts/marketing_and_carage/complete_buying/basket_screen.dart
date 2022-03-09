@@ -383,7 +383,7 @@ class BasketScreen extends StatelessWidget {
                                                 CrossAxisAlignment.center,
                                             children: [
                                               Text(
-                                                "قيمة المشتريات أقل من القيمة المحددة",
+                                                LocaleKeys.cartLess.tr(),
                                                 style: lightTheme
                                                     .textTheme.bodyText1
                                                     ?.copyWith(
@@ -423,7 +423,7 @@ class BasketScreen extends StatelessWidget {
                                                     onTap: (){backToPrevious(context);},
                                                     child: CustomDesignUnActive(
                                                       text: Text(
-                                                        "متابعة التسوق",
+                                                        LocaleKeys.continueShopping.tr(),
                                                         style: lightTheme
                                                             .textTheme.bodyText1
                                                             ?.copyWith(
@@ -440,7 +440,7 @@ class BasketScreen extends StatelessWidget {
                                                   ),
                                                   borderRadius:
                                                       BorderRadius.circular(
-                                                          40.0),
+                                                          40.0,),
                                                 ),
                                               ],
                                             ),

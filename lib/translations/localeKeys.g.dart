@@ -125,4 +125,10 @@ abstract class  LocaleKeys {
   static const basketContinueBuying ='basketContinueBuying';
   static const noProducts ='noProducts';
   static const cart ='cart';
+  static const cartLess ='cartLess';
+  static const continueShopping ='continueShopping';
+  static const completeShoppingAddress ='completeShoppingAddress';
+  static const fastShipping ='fastShipping';
+  static const addAddress ='addAddress';
+  static const finishShopping ='finishShopping';
 }

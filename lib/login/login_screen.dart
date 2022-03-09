@@ -1,12 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:wasela/app_layouts/main_layouts/app_layouts/home/home_screen.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
-
 import '../helper_methods/constants/endpoints.dart';
 import 'ensure_sent_code.dart';
 import '../helper_methods/functions/functions_needed.dart';
+import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
 
 class LoginScreen extends StatelessWidget {
+  var instance = FacebookAuth.getInstance();
   TextEditingController phoneController = TextEditingController();
 
   @override
@@ -18,17 +21,17 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             children: [
               Image.asset('Assets/images/3 back.jpg'),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               CustomLocalTextFormField(
                 controller: phoneController,
-                preWidget:Column(
+                preWidget: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       LocaleKeys.loginScreenMobile.tr(),
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Row(
                       children: [
@@ -36,8 +39,7 @@ class LoginScreen extends StatelessWidget {
                           CountryFlagGeneration.generateCountryFlag(),
                         ),
                         Text(
-                          '  20' +
-                              ' ',
+                          '  20' + ' ',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -64,7 +66,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                   inkwellFunc: () {
-                    navigateAndBack(context,layout: EnsureSentCode());
+                    navigateAndBack(context, layout: EnsureSentCode());
                   },
                   containerColor: purpleColor,
                 ),
@@ -73,8 +75,12 @@ class LoginScreen extends StatelessWidget {
                 height: 4,
               ),
               Container(
-                  height: 50,
-                  child: Text(LocaleKeys.loginScreen1.tr(),style: TextStyle(fontSize: 17),),),
+                height: 50,
+                child: Text(
+                  LocaleKeys.loginScreen1.tr(),
+                  style: TextStyle(fontSize: 17),
+                ),
+              ),
               SizedBox(
                 height: 15,
               ),
@@ -118,7 +124,22 @@ class LoginScreen extends StatelessWidget {
                       width: 130.0,
                       height: 50.0,
                       backgroundColor: Colors.white,
-                      onPress: () {},
+                      onPress: () async{
+                        // initialize the facebook javascript SDK
+                        // FacebookAuth.instance.webInitialize(
+                        //   appId: "155551551165454",
+                        //   cookie: true,
+                        //   xfbml: true,
+                        //   version: '1.6.10',
+                        // );
+                        await FacebookAuth.instance.login().then((value) {
+                          navigateAndBack(context, layout: const HomeScreen());
+                        }).catchError((onError){
+                          if (kDebugMode) {
+                            print(onError.toString());
+                          }
+                        });
+                      },
                     ),
                     Spacer(),
                     MakeImage.performThisImage(
@@ -145,7 +166,7 @@ class CustomLocalTextFormField extends StatelessWidget {
   final Widget preWidget;
   final TextInputType keyboardType;
 
-   const CustomLocalTextFormField({
+  const CustomLocalTextFormField({
     required this.controller,
     required this.preWidget,
     required this.keyboardType,

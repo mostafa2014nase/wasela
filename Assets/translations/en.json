@@ -122,5 +122,11 @@
   "total": "Total",
   "basketContinueBuying": "Continue buying process",
   "noProducts": "There no Products yet ... Go shopping and add your products",
-  "cart": "Cart"
+  "cart": "Cart",
+  "cartLess": "Shopping cost less than determine value",
+  "continueShopping": "Continue shopping",
+  "completeShoppingAddress": "Shipping Address",
+  "fastShipping": "Fastest Shipping",
+  "addAddress": "Add address",
+  "finishShopping": "Finish shopping process"
 }

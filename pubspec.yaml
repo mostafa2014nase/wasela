@@ -51,6 +51,7 @@ dependencies:
   flutter_svg: ^1.0.3
   animated_bottom_navigation_bar: ^0.3.2
   easy_localization: ^3.0.0
+  flutter_facebook_auth: ^4.1.1
   #google_maps_flutter: ^2.1.2
 
 dev_dependencies:

@@ -122,5 +122,11 @@
   "total": "الأجمالي",
   "basketContinueBuying": "استكمال عملية الشراء",
   "noProducts": "لا يوجد أى منتجات حتى الان ... اذهب للتسوق وأضف منتجاتك",
-  "cart": "سلة المشتريات"
+  "cart": "سلة المشتريات",
+  "cartLess": "قيمة المشتريات أقل من القيمة المحددة",
+  "continueShopping": "متابعة التسوق",
+  "completeShoppingAddress": "عنوان الشحن",
+  "fastShipping": "أسرع شحن",
+  "addAddress": "اضف عنوان الشحن",
+  "finishShopping": "انهاء عملية الشراء"
 }
