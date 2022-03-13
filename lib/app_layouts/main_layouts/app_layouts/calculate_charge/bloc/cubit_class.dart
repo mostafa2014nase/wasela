@@ -11,9 +11,11 @@ class CalculateChargingCubitClass extends Cubit<CalculateChargingStates> {
   TextEditingController longController = TextEditingController();
   TextEditingController widthController = TextEditingController();
   TextEditingController weightController = TextEditingController();
+  TextEditingController heightController = TextEditingController();
   String longHintWords = LocaleKeys.calculateScreenTab3Hint1.tr();
   String widthHintWords = LocaleKeys.calculateScreenTab3Hint2.tr();
   String weightHintWords = LocaleKeys.calculateScreenTab3Hint3.tr();
+  String heightHintWords = LocaleKeys.calculateScreenTab3Hint4.tr();
 
   bool no = true;
 
@@ -93,11 +95,31 @@ class CalculateChargingCubitClass extends Cubit<CalculateChargingStates> {
     selected = !selected;
     emit(SelectChoiceSuccessCalculateState());
   }
+  List<String> shippingKindMenu = [
+    "أثاث",
+    "ادوية",
+    "ملابس",
+  ];
+
+  var shipSelected;
+
+  void selectShipKindChoice(choice) {
+    shipSelected = choice;
+    //selected = !selected;
+    emit(SelectChoiceSuccessCalculateState());
+  }
 
   var widthSelected;
 
   void selectWidthChoice(choice) {
     widthSelected = choice;
+    selected = !selected;
+    emit(SelectChoiceSuccessCalculateState());
+  }
+  var heightSelected;
+
+  void selectHeightChoice(choice) {
+    heightSelected = choice;
     selected = !selected;
     emit(SelectChoiceSuccessCalculateState());
   }
@@ -135,4 +157,63 @@ class CalculateChargingCubitClass extends Cubit<CalculateChargingStates> {
     isPositionSelected = !isPositionSelected;
     emit(SelectChoiceSuccessCalculateState());
   }
+
+
+
+
+  TextEditingController completeName = TextEditingController();
+  TextEditingController phoneNumber = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController message = TextEditingController();
+
+
+
+
+  bool fawry = false;
+  bool vodCash = false;
+  bool visa = false;
+  bool mandoob = false;
+  bool cashPay = true;
+
+  void payFawry (){
+    fawry = true;
+    vodCash = false;
+    visa = false;
+    mandoob = false;
+    cashPay = false;
+    emit(PerformSwitchFawrySuccessCalculateState());
+  }
+  void payVodCash (){
+    fawry = false;
+    vodCash = true;
+    visa = false;
+    mandoob = false;
+    cashPay = false;
+    emit(PerformSwitchVodCashSuccessCalculateState());
+  }
+  void payVisa (){
+    fawry = false;
+    vodCash = false;
+    visa = true;
+    mandoob = false;
+    cashPay = false;
+    emit(PerformSwitchVisaSuccessCalculateState());
+  }
+  void payMandoob (){
+    fawry = false;
+    vodCash = false;
+    visa = false;
+    mandoob = true;
+    cashPay = false;
+    emit(PerformSwitchMandoobSuccessCalculateState());
+  }
+  void payCashPay (){
+    fawry = false;
+    vodCash = false;
+    visa = false;
+    mandoob = false;
+    cashPay = true;
+    emit(PerformSwitchCashSuccessCalculateState());
+  }
+
 }

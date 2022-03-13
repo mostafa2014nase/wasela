@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/calculate_charge/bloc/cubit_class.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/calculate_charge/bloc/states.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/calculate_charge/calculate_charge_screen.dart';
+import 'package:wasela/app_layouts/main_layouts/app_layouts/calculate_charge/to_who_details.dart';
 import 'package:wasela/helper_methods/constants/endpoints.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
@@ -323,7 +324,7 @@ class CalculateChargeSecondScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: ButtonCustomDesign(
                           text: Text(
-                            LocaleKeys.calculateShipping.tr(),
+                            LocaleKeys.continueShipping.tr(),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,
@@ -332,7 +333,7 @@ class CalculateChargeSecondScreen extends StatelessWidget {
                             ),
                           ),
                           inkwellFunc: () {
-                            //navigateAndBack(context, PranchesMapAndMenue());
+                            navigateAndBack(context, layout: ToWhoDataDetails());
                           },
                           containerColor: purpleColor,
                         ),

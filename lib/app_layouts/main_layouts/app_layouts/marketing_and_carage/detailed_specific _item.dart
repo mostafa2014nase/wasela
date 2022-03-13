@@ -78,7 +78,7 @@ class _DetailedItemScreenState extends State<DetailedItemScreen> {
             elevation: 0,
             leading: IconButton(
               onPressed: () {
-//backToPrevious(context);
+backToPrevious(context);
               },
               icon: Icon(
                 Icons.arrow_back,

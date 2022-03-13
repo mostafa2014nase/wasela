@@ -6,7 +6,8 @@ import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
 
 class EvaluateScreen extends StatelessWidget {
-  const EvaluateScreen({Key? key}) : super(key: key);
+  final bool fromDrawer ;
+  const EvaluateScreen({Key? key,required this.fromDrawer}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +67,7 @@ class EvaluateScreen extends StatelessWidget {
                     fontSize: 20),
               ),
               Text(
-                LocaleKeys.evaluateScreen2.tr(),
+                fromDrawer ?LocaleKeys.evaluateScreen2.tr():"ايه تقييمك للشحنة ده ؟",
                 style: TextStyle(color: textGreyTwoColor, fontSize: 17),
               ),
               Row(

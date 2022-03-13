@@ -25,15 +25,13 @@ Future<void> main() async {
   Bloc.observer = BlocObserver();
   var onBoarding = SharedCashHelper.getValue(key: "skip");
   lang = SharedCashHelper.getValue(key: "lang");
-  //isArabic = SharedCashHelper.getValue(key: "isArabic");
+  isArabic = SharedCashHelper.getValue(key: "isArabic");
   Widget startScreen;
   print("language is ${lang} and isArabic Check = $isArabic");
-  if ( lang == "en") {
+  if ( isArabic == false && lang == "en") {
     lang = "en";
-    isArabic = false;
   } else {
     lang = "ar";
-    isArabic = true;
   }
 
   if (onBoarding == null || onBoarding == false) {

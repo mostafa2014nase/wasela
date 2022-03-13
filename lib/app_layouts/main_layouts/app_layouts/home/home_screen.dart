@@ -158,7 +158,7 @@ class _HomeScreen extends State<HomeScreen> {
                               child: YellowButtonCustomDesign(
                                 text: LocaleKeys.homeScreen2.tr(),
                                 inkwellFunc: () {
-                                    persistentTabController.jumpToTab(3);
+                                    persistentTabController.jumpToTab(2);
                                 },
                               ),
                             ),

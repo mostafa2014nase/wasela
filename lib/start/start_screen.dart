@@ -12,13 +12,13 @@ class StartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(top: 50, bottom: 20),
+        padding: const EdgeInsets.only(top: 70, bottom: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset('Assets/images/3 back.jpg'),
+            Image.asset('Assets/images/04.png'),
             SizedBox(
-              height: 30,
+              height: 40,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -81,7 +81,7 @@ class StartScreen extends StatelessWidget {
                       ),
                     ),
                     inkwellFunc: () {
-                      navigateAndBack(context, layout:LoginScreen());
+                      navigateAndBack(context, layout:RegisterScreen());
                     },
                     containerColor: purpleColor,
                   ),

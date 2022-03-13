@@ -7,7 +7,6 @@ import 'package:wasela/app_layouts/main_layouts/app_layouts/calculate_charge/cal
 import 'package:wasela/app_layouts/main_layouts/app_layouts/charge/charge_screen.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/my_account/user_account_screen.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/our_places/our_places_screen.dart';
-import 'package:wasela/app_layouts/main_layouts/app_layouts/wallet/wallet_screen.dart';
 import 'package:wasela/helper_methods/constants/endpoints.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
 
@@ -21,7 +20,6 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
 
   List<Widget> Screens = [
     const HomeScreen(),
-    WalletScreen(),
     CalculateChargeScreen(),
     ChargeScreen(),
     PranchesMapAndMenue(),
@@ -38,7 +36,7 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
 
   List<String> titles = [
     LocaleKeys.bottomNavItemsName1.tr(),
-    LocaleKeys.bottomNavItemsName2.tr(),
+    //LocaleKeys.bottomNavItemsName2.tr(),
     LocaleKeys.bottomNavItemsName3.tr(),
     LocaleKeys.bottomNavItemsName4.tr(),
     LocaleKeys.bottomNavItemsName5.tr(),
@@ -47,7 +45,7 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
 
   List<IconData> iconsList = [
     Icons.home,
-    Icons.wallet_giftcard,
+    //Icons.wallet_giftcard,
     Icons.calculate,
     Icons.wallet_giftcard_sharp,
     Icons.hotel,
@@ -57,12 +55,6 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
     PersistentBottomNavBarItem(
         icon: Icon(Icons.home),
         title: (LocaleKeys.bottomNavItemsName1.tr()),
-        activeColorPrimary: yellowColor,
-        inactiveColorPrimary: textGreyTwoColor,
-        inactiveColorSecondary: textGreyTwoColor),
-    PersistentBottomNavBarItem(
-        icon: Icon(Icons.wallet_giftcard),
-        title: (LocaleKeys.bottomNavItemsName2.tr()),
         activeColorPrimary: yellowColor,
         inactiveColorPrimary: textGreyTwoColor,
         inactiveColorSecondary: textGreyTwoColor),
@@ -108,18 +100,14 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
   }
 
   List drawerSvgPics = [
-    "wallet",
     "cash-back",
-    "gift",
     "feedbackkk",
     "settings (3)",
   ];
   List drawerTexts = [
-    "محفظتى",
-    "كاش باك",
-    "نقط وهدايا",
-    "تقييمك",
-    "الأعدادات",
+   LocaleKeys.promoCodeDrawer.tr(),
+    LocaleKeys.evaluateDrawer.tr(),
+    LocaleKeys.settingsDrawer.tr(),
   ];
 
 //   UserModel? model;

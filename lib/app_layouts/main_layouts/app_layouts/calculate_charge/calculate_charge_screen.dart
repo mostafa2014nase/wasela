@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/calculate_charge/bloc/cubit_class.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/calculate_charge/bloc/states.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/calculate_charge/padge_two.dart';
@@ -52,7 +53,7 @@ class CalculateChargeScreen extends StatelessWidget {
                               ),
                               containerColor:
                                   cubit.rightChoice ? purpleColor : greyColor,
-                              paddingValue: 10,
+                              paddingValue: 8,
                               borderRadius: 15,
                             ),
                              Padding(
@@ -76,7 +77,7 @@ class CalculateChargeScreen extends StatelessWidget {
                               ),
                               containerColor:
                                   cubit.middleChoice ? purpleColor : greyColor,
-                              paddingValue: 10,
+                              paddingValue: 8,
                               borderRadius: 15,
                               iconColor: Colors.black,
                             ),
@@ -101,7 +102,7 @@ class CalculateChargeScreen extends StatelessWidget {
                               ),
                               containerColor:
                                   cubit.leftChoice ? purpleColor : greyColor,
-                              paddingValue: 10,
+                              paddingValue: 8,
                               borderRadius: 15,
                               iconColor: Colors.black,
                             ),
@@ -143,60 +144,46 @@ class ChargeKind extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(
-                height: 30,
+                height: 10,
               ),
-              cubit.right
-                  ? ToggleCustomDesign(
-                sizedBoxWidthForDownPart: lang == "en" ?10: 30,
-                      downOnTapFunction: () {
-                        cubit.toggleLeft();
-                      },
-                      upOnTapFunction: () {
-                        cubit.toggleRight();
-                      },
-                      containerColor: greyColor,
-                      upContainerColor: yellowColor,
-                      downContainerColor: purpleColor,
-                      upIcon: const Icon(Icons.inbox_sharp),
-                      downIcon:const Icon(
-                        Icons.inbox_sharp,
-                        color: Colors.white,
-                      ),
-                      upText: Text(
-                        LocaleKeys.calculateScreenTab3Details1.tr(),
-                        style:TextStyle(fontSize: 25,),
-                      ),
-                      downText:  Text(
-                        LocaleKeys.calculateScreenTab3Details2.tr(),
-                        style: TextStyle(color: Colors.white, fontSize: 25),
-                      ),
-                    )
-                  : ToggleCustomDesignUpdate(
-                      downOnTapFunction: () {
-                        cubit.toggleLeft();
-                      },
-                      upOnTapFunction: () {
-                        cubit.toggleRight();
-                      },
-                      containerColor: greyColor,
-                      upContainerColor: purpleColor,
-                      downContainerColor: yellowColor,
-                      upIcon: const Icon(
-                        Icons.inbox_sharp,
-                        color: Colors.white,
-                      ),
-                      downIcon: const Icon(
-                        Icons.inbox_sharp,
-                      ),
-                      upText:  Text(
-                        LocaleKeys.calculateScreenTab3Details1.tr(),
-                        style: TextStyle(color: Colors.white, fontSize: 25),
-                      ),
-                      downText:  Text(
-                        LocaleKeys.calculateScreenTab3Details2.tr(),
-                        style: TextStyle(fontSize: 25),
+              SizedBox(
+                height: 175,
+                child: Container(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 40.0),
+                    alignment: AlignmentDirectional.center,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: yellowColor,
+                      borderRadius: BorderRadius.horizontal(
+                        right: Radius.circular(50.0),
+                        left: Radius.circular(50.0),
                       ),
                     ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SvgPicture.asset(
+                            "Assets/images/placeholder.svg",
+                            color: Colors.black,
+                            width: 30,
+                            height: 30,
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            LocaleKeys.calculateScreenTab3Details1.tr(),
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ],
+                      ),
+                    )),
+              ),
               CustomTextFormField(
                 keyboardType: TextInputType.number,
                 hintText: cubit.longHintWords,
@@ -263,6 +250,61 @@ class ChargeKind extends StatelessWidget {
                       cubit.selectWeightChoice(newVal);
                     },
                     items: cubit.menu1List.map((val) {
+                      return DropdownMenuItem(
+                        value: val,
+                        child: Text(
+                          val,
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                      );
+                    }).toList()),
+              ),
+              CustomTextFormField(
+                keyboardType: TextInputType.number,
+                hintText: cubit.heightHintWords,
+                controller: cubit.heightController,
+                postWidget:  DropdownButton(
+                    underline: const SizedBox(),
+                    focusColor: Colors.black,
+                    dropdownColor: yellowColor,
+                    autofocus: true,
+                    hint:  Text(LocaleKeys.cm.tr(), style: TextStyle(color: Colors.black)),
+                    onTap: () {},
+                    value: cubit.heightSelected,
+                    onChanged: (newVal) {
+                      cubit.selectHeightChoice(newVal);
+                    },
+                    items: cubit.menuList.map((val) {
+                      return DropdownMenuItem(
+                        value: val,
+                        child: Text(
+                          val,
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                      );
+                    }).toList()),
+              ),
+              SizedBox(height: 20,),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal:30.0),
+                child: DropdownButton(
+                    isExpanded: true,
+                    menuMaxHeight: 250.0,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.0
+                    ),
+                    focusColor: Colors.black,
+                    dropdownColor: yellowColor,
+                    autofocus: true,
+                    hint:  Text(LocaleKeys.kind.tr(), style: TextStyle(color: Colors.black)),
+                    onTap: () {},
+                    value: cubit.shipSelected,
+                    onChanged: (newVal) {
+                      cubit.selectShipKindChoice(newVal);
+                    },
+                    items: cubit.shippingKindMenu.map((val) {
                       return DropdownMenuItem(
                         value: val,
                         child: Text(

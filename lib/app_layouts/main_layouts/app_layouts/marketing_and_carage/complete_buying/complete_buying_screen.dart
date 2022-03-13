@@ -30,7 +30,7 @@ class CompleteBuyingData extends StatelessWidget {
                 elevation: 0,
                 leading: IconButton(
                   onPressed: () {
-//backToPrevious(context);
+                    backToPrevious(context);
                   },
                   icon: Icon(
                     Icons.arrow_back,
@@ -143,7 +143,8 @@ class CompleteBuyingData extends StatelessWidget {
                                             //   gapPadding: 80,
                                             // ),
                                             border: InputBorder.none,
-                                            hintText: LocaleKeys.addAddress.tr(),
+                                            hintText:
+                                                LocaleKeys.addAddress.tr(),
                                             hintStyle:
                                                 lightTheme.textTheme.caption,
                                             constraints: BoxConstraints(

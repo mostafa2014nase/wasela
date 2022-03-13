@@ -1,13 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:wasela/app_layouts/main_layouts/mainscreen/main_nav_screen.dart';
+import 'package:wasela/register/complete_register_data.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
 import '../helper_methods/constants/endpoints.dart';
 import '../helper_methods/functions/functions_needed.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class EnsureSentCode extends StatelessWidget {
-  TextEditingController phoneController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +20,10 @@ class EnsureSentCode extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    child: Image.asset('Assets/images/3 back.jpg'),
-                    height: 350,
+                    child: Image.asset('Assets/images/06.png'),
+                    height: 300,
                   ),
+                  SizedBox(height: 50,),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
@@ -63,7 +63,7 @@ class EnsureSentCode extends StatelessWidget {
                             ),
                           ),
                           inkwellFunc: () {
-                            navigateAndBack(context, layout:ManNavScreen());
+                            navigateAndBack(context, layout:CompleteRegisterData());
                           },
                           containerColor: purpleColor,
                         ),
@@ -117,34 +117,6 @@ class EnsureSentCode extends StatelessWidget {
                         ),
                       ),
                     ],
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 60.0, vertical: 8.0),
-                    child: Row(
-                      children: [
-                        MakeImage.performThisImage(
-                          text: "Facebook",
-                          icon: Icon(Icons.facebook),
-                          width: 130.0,
-                          height: 50.0,
-                          backgroundColor: Colors.white,
-                          onPress: () {},
-                        ),
-                        Spacer(),
-                        MakeImage.performThisImage(
-                          text: "Google",
-                          icon: Icon(Icons.mail),
-                          width: 130.0,
-                          height: 50.0,
-                          backgroundColor: Colors.white,
-                          onPress: () {},
-                        ),
-                      ],
-                    ),
                   ),
                 ],
               ),

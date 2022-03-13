@@ -95,7 +95,7 @@ class PranchesMapAndMenue extends StatelessWidget {
                             ),
                             Expanded(
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     "القاهرة",

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wasela/helper_methods/constants/endpoints.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
+import 'package:wasela/translations/localeKeys.g.dart';
 
 import '../bloc/cubit_class.dart';
 import '../bloc/states.dart';
@@ -29,7 +31,7 @@ class ContactUsScreen extends StatelessWidget {
             elevation: 0,
             leading: IconButton(
               onPressed: () {
-//backToPrevious(context);
+backToPrevious(context);
               },
               icon: Icon(
                 Icons.arrow_back,
@@ -64,7 +66,7 @@ class ContactUsScreen extends StatelessWidget {
                         color: Colors.white,
                       ),
                       Text(
-                        "تواصل معنا",
+                        LocaleKeys.settings4.tr(),
                         style: TextStyle(fontSize: 25, height: 1.5),
                       ),
                     ],
@@ -108,7 +110,7 @@ class ContactUsScreen extends StatelessWidget {
                               width: 5,
                             ),
                             Text(
-                              "الرد عن طريق مكالمة",
+                              LocaleKeys.contactUs1.tr(),
                               style: TextStyle(
                                 fontSize: 25,
                               ),
@@ -136,7 +138,7 @@ class ContactUsScreen extends StatelessWidget {
                               width: 5,
                             ),
                             Text(
-                              "الرد عن طريق الأيميل",
+                              LocaleKeys.contactUs2.tr(),
                               style: TextStyle(
                                 fontSize: 25,
                               ),
@@ -161,7 +163,7 @@ class ContactUsScreen extends StatelessWidget {
                   ButtonCustomDesign(
                     width: 300,
                     text: Text(
-                      "إرسال",
+                      LocaleKeys.dialogSend.tr(),
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 25,
@@ -216,7 +218,7 @@ class CallAnswer extends StatelessWidget {
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                   fillColor: Colors.white,
-                  hintText: "الاسم بالكامل",
+                  hintText: LocaleKeys.contactUsCall1.tr(),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.horizontal(
                     right: Radius.circular(10.0),
@@ -237,7 +239,7 @@ class CallAnswer extends StatelessWidget {
               controller: phone,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                  hintText: "رقم الهاتف",
+                  hintText: LocaleKeys.contactUsCall2.tr(),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.horizontal(
                     right: Radius.circular(10.0),
@@ -258,7 +260,7 @@ class CallAnswer extends StatelessWidget {
               controller: email,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
-                  hintText: "البريد الإلكترونى",
+                  hintText: LocaleKeys.contactUsCall3.tr(),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.horizontal(
                     right: Radius.circular(10.0),
@@ -290,7 +292,7 @@ class CallAnswer extends StatelessWidget {
               decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(
                       top: 10.0, left: 10.0, right: 10.0, bottom: 50.0),
-                  hintText: "نص الرسالة",
+                  hintText: LocaleKeys.contactUsCall4.tr(),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.horizontal(
                     right: Radius.circular(10.0),
@@ -333,7 +335,7 @@ class EmailAnswer extends StatelessWidget {
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                   fillColor: Colors.white,
-                  hintText: "الاسم بالكامل",
+                  hintText: LocaleKeys.contactUsCall1.tr(),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.horizontal(
                     right: Radius.circular(10.0),
@@ -354,7 +356,7 @@ class EmailAnswer extends StatelessWidget {
               controller: email,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
-                  hintText: "البريد الإلكترونى",
+                  hintText: LocaleKeys.contactUsCall3.tr(),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.horizontal(
                     right: Radius.circular(10.0),
@@ -386,7 +388,7 @@ class EmailAnswer extends StatelessWidget {
               decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(
                       top: 10.0, left: 10.0, right: 10.0, bottom: 50.0),
-                  hintText: "نص الرسالة",
+                  hintText: LocaleKeys.contactUsCall4.tr(),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.horizontal(
                     right: Radius.circular(10.0),

@@ -1,15 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:wasela/app_layouts/main_layouts/app_layouts/charge/evaluate.dart';
 import 'package:wasela/app_layouts/main_layouts/app_layouts/marketing_and_carage/marketing_screen.dart';
 import 'package:wasela/app_layouts/main_layouts/mainscreen/nav_bloc/main_nav_cubit.dart';
 import 'package:wasela/app_layouts/main_layouts/mainscreen/nav_bloc/main_nav_states.dart';
-import 'package:wasela/drawer/points_and_gifts/gifts.dart';
 import 'package:wasela/helper_methods/constants/endpoints.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
@@ -18,8 +17,9 @@ import '../../../drawer/settings/settings_screen.dart';
 PersistentTabController persistentTabController =
     PersistentTabController(initialIndex: 0);
 
-class ManNavScreen extends StatelessWidget {
-  const ManNavScreen({Key? key}) : super(key: key);
+class MainNavScreen extends StatelessWidget {
+   MainNavScreen({Key? key}) : super(key: key);
+  GlobalKey<ScaffoldState> globalKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +28,7 @@ class ManNavScreen extends StatelessWidget {
       builder: (context, state) {
         var cubit = MainNavCubitClass.get(context);
         return Scaffold(
+          key: globalKey,
           drawer: Drawer(
             backgroundColor: Colors.white,
             child: SafeArea(
@@ -36,7 +37,10 @@ class ManNavScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      persistentTabController.jumpToTab(4);
+                      Navigator.of(context).pop();
+                    },
                     child: Container(
                       padding: const EdgeInsets.only(bottom: 25, top: 25),
                       color: Colors.white,
@@ -93,25 +97,28 @@ class ManNavScreen extends StatelessWidget {
                   ),
                   put_line(color: purpleColor),
                   SizedBox(
-                    height: 350,
+                    height: 215,
                     child: Container(
                         color: Colors.white,
                         child: ListView.separated(
                           separatorBuilder: (context, index) =>
                               put_line(color: purpleColor),
-                          itemCount: 5,
+                          itemCount: cubit.drawerTexts.length,
                           itemBuilder: (context, index) {
                             return InkWell(
-                              onTap: index == 0
+                              onTap: index == 2
                                   ? () {
-                                      persistentTabController.jumpToTab(1);
-                                      backToPrevious(context);
+                                      navigateAndBack(context,
+                                          layout: SettingsScreen());
                                     }
-                                  :index == 4 ?  () {
-                                navigateAndBack(context, layout: SettingsScreen());
-                              }:index == 2 ? () {
-                                navigateAndBack(context, layout: PointsAndGifts());
-                              }:() {},
+                                  : index == 1
+                                      ? () {
+                                          navigateAndBack(context,
+                                              layout: EvaluateScreen(
+                                                fromDrawer: true,
+                                              ));
+                                        }
+                                      : () {},
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10.0, vertical: 20.0),
@@ -154,8 +161,8 @@ class ManNavScreen extends StatelessWidget {
                         const SizedBox(
                           width: 10,
                         ),
-                        const Text(
-                          "خروج",
+                        Text(
+                          LocaleKeys.logOutDrawer.tr(),
                           style: TextStyle(color: Colors.red, fontSize: 25),
                         ),
                       ],
@@ -165,23 +172,35 @@ class ManNavScreen extends StatelessWidget {
               ),
             ),
           ),
-          body: PersistentTabView(
-            context,
-          padding: isArabic == false ? NavBarPadding.only(left: 70.0, right: 0.0):NavBarPadding.only(left: 0.0, right: 90.0) ,
-            screens: cubit.Screens,
-            items: cubit.navigationBarItems,
-            backgroundColor: Colors.white,
-            //resizeToAvoidBottomInset: true,
-            controller: persistentTabController,
-            navBarHeight: 60,
-            navBarStyle: NavBarStyle.style6,
-            onItemSelected: (index) {
-              cubit.changeBarItem(index);
-              print(persistentTabController.index);
-            },
-            popAllScreensOnTapOfSelectedTab: false,
-            //hideNavigationBar: false,
-            resizeToAvoidBottomInset: true,
+          body: WillPopScope(
+            onWillPop: () {
+            if (globalKey.currentState!.isDrawerOpen) {
+              Navigator.pop(context); // closes the drawer if opened
+              return Future.value(false); // won't exit the app
+            } else {
+              return Future.value(true); // exits the app
+            }
+          },
+            child: PersistentTabView(
+              context,
+              padding: isArabic == false
+                  ? NavBarPadding.only(left: 70.0, right: 0.0)
+                  : NavBarPadding.only(left: 0.0, right: 90.0),
+              screens: cubit.Screens,
+              items: cubit.navigationBarItems,
+              backgroundColor: Colors.white,
+              //resizeToAvoidBottomInset: true,
+              controller: persistentTabController,
+              navBarHeight: 60,
+              navBarStyle: NavBarStyle.style6,
+              onItemSelected: (index) {
+                cubit.changeBarItem(index);
+                print(persistentTabController.index);
+              },
+              popAllScreensOnTapOfSelectedTab: false,
+              //hideNavigationBar: false,
+              resizeToAvoidBottomInset: true,
+            ),
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.startDocked,
@@ -200,7 +219,8 @@ class ManNavScreen extends StatelessWidget {
                       color: iconBlackColor,
                       size: 35,
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 10, vertical: 12),
                     decoration: BoxDecoration(
                       color: yellowColor,
                       borderRadius: BorderRadius.circular(60.0),

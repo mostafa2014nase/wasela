@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,7 +5,6 @@ import 'package:wasela/drawer/settings/bloc/cubit_class.dart';
 import 'package:wasela/drawer/settings/bloc/states.dart';
 import 'package:wasela/helper_methods/constants/endpoints.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
-import 'package:wasela/helper_methods/sharedpref/shared_preference.dart';
 
 class LanguageScreen extends StatelessWidget {
   const LanguageScreen({Key? key}) : super(key: key);
@@ -27,11 +25,11 @@ class LanguageScreen extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
-                    // cubit.toggleLanguage(
-                    //   language: "ar",
-                    //   context: context,
-                    // );
-                    cubit.setArabic(context: context);
+                    cubit.toggleLanguage(
+                      language: "ar",
+                      context: context,
+                    );
+                    //cubit.setArabic(context: context);
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -139,11 +137,11 @@ class LanguageScreen extends StatelessWidget {
                     ],
                   ),
                   onTap: () {
-                    // cubit.toggleLanguage(
-                    //   language: "en",
-                    //   context: context,
-                    // );
-                    cubit.setEnglish(context: context);
+                    cubit.toggleLanguage(
+                      language: "en",
+                      context: context,
+                    );
+                    //cubit.setEnglish(context: context);
                   },
                 ),
               ],

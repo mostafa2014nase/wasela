@@ -743,70 +743,10 @@ class ChargeScreen extends StatelessWidget {
                                                     SizedBox(
                                                       width: 10,
                                                     ),
-                                                    Expanded(
-                                                      child: InkWell(
-                                                        onTap: () {
-                                                          navigateAndBack(
-                                                            context,
-                                                            layout:EvaluateScreen(),);
-                                                        },
-                                                        child:
-                                                        CustomContainerForDetails(
-                                                          text1:
-                                                          LocaleKeys.shippingEvaluate.tr(),
-                                                          icon: Icon(
-                                                            Icons
-                                                                .arrow_back_ios,
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
                                                     SizedBox(
                                                       width: 10,
                                                     ),
                                                   ],
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                      .only(
-                                                      top: 10,bottom: 40),
-                                                  child: Stack(
-                                                    alignment: Alignment.center,
-                                                    children: [
-                                                      SizedBox(
-                                                        child: MySeparator(
-                                                          color: Colors.red,
-                                                          height: 1.7,
-                                                        ),
-                                                        width: 300,
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                        children: [
-                                                          DoneCircularAvatar(
-                                                            underText:
-                                                            LocaleKeys.shippingQueSteps1.tr(),
-                                                          ),
-                                                          DoneCircularAvatar(
-                                                            underText:
-                                                            LocaleKeys.shippingQueSteps2.tr(),
-                                                          ),
-                                                          NotYetYellowContainer(
-                                                            underText: LocaleKeys.shippingQueSteps3.tr(),
-                                                          ),
-                                                          NotYetYellowContainer(
-                                                            underText: LocaleKeys.shippingQueSteps4.tr(),
-                                                          ),
-                                                          NotYetYellowContainer(
-                                                            underText: LocaleKeys.shippingQueSteps5.tr(),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
                                                 ),
                                               ],
                                             ),

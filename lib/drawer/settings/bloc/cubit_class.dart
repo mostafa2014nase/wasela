@@ -15,60 +15,57 @@ class DrawerCubitClass extends Cubit<DrawerStates> {
   String? myLanguage;
 
   void toggleLanguage(
-      {required String language, required BuildContext context}) {
-    SharedCashHelper.setValue(key: "lang", value: language).then((value) async {
-      if (language == "en") {
-        myLanguage = language;
-        setLanguageNow(context: context);
-        isArabic = false;
-        await context.setLocale(Locale("en")).then((value) {
-          SharedCashHelper.setValue(key: "isArabic", value: false)
-              .then((value) {
-            emit(PerformEnglishLanguageSuccessState());
-          });
-        });
-      } else {
-        myLanguage = language;
-        setLanguageNow(context: context);
-        isArabic = true;
-        await context.setLocale(Locale("ar")).then((value) {
-          SharedCashHelper.setValue(key: "isArabic", value: true).then((value) {
-            emit(PerformArabicLanguageSuccessState());
-          });
-        });
-      }
+      {required String language, required BuildContext context}) async {
+    await context.setLocale(Locale(language)).then((value) {
+      MyApp.setLocale(context, language);
+      SharedCashHelper.setValue(key: "lang", value: language);
+      emit(PerformChangeLanguageSuccessState());
     });
-  }
-
-  void setLanguageNow({required BuildContext context}) {
-    if (myLanguage == null) {
-      myLanguage = "ar";
-      MyApp.setLocale(context, myLanguage!);
-    } else
-      MyApp.setLocale(context, myLanguage!);
-  }
-
-  void setArabic({required BuildContext context}) async {
-    MyApp.setLocale(context, "ar");
-    await context.setLocale(Locale("ar")).then((value) {
-      isArabic = true;
-      emit(SetArabicNow());
-      // SharedCashHelper.setValue(key: "isArabic", value: true).then((value) {
-      //   emit(PerformArabicLanguageSuccessState());
-      // });
-    });
-  }
-
-  void setEnglish({required BuildContext context}) async {
-    MyApp.setLocale(context, "en");
-    await context.setLocale(Locale("en")).then((value) {
+    if (language == "en") {
       isArabic = false;
-      emit(SetEnglishNow());
-      // SharedCashHelper.setValue(key: "isArabic", value: false).then((value) {
-      //   emit(PerformEnglishLanguageSuccessState());
-      // });
-    });
+      SharedCashHelper.setValue(key: "isArabic", value: false).then((value) {
+        //isArabic = false;
+        emit(PerformEnglishLanguageSuccessState());
+      });
+    } else {
+      isArabic = true;
+      SharedCashHelper.setValue(key: "isArabic", value: true).then((value) {
+        //isArabic = true;
+        emit(PerformArabicLanguageSuccessState());
+      });
+    }
+    //SharedCashHelper.setValue(key: "isArabic", value: false)
   }
+
+  // void setLanguageNow({required BuildContext context}) {
+  //   if (myLanguage == null) {
+  //     myLanguage = "ar";
+  //     MyApp.setLocale(context, myLanguage!);
+  //   } else
+  //     MyApp.setLocale(context, myLanguage!);
+  // }
+
+  // void setArabic({required BuildContext context}) async {
+  //   MyApp.setLocale(context, "ar");
+  //   await context.setLocale(Locale("ar")).then((value) {
+  //     isArabic = true;
+  //     emit(SetArabicNow());
+  //     // SharedCashHelper.setValue(key: "isArabic", value: true).then((value) {
+  //     //   emit(PerformArabicLanguageSuccessState());
+  //     // });
+  //   });
+  // }
+  //
+  // void setEnglish({required BuildContext context}) async {
+  //   MyApp.setLocale(context, "en");
+  //   await context.setLocale(Locale("en")).then((value) {
+  //     isArabic = false;
+  //     emit(SetEnglishNow());
+  //     // SharedCashHelper.setValue(key: "isArabic", value: false).then((value) {
+  //     //   emit(PerformEnglishLanguageSuccessState());
+  //     // });
+  //   });
+  // }
 
   // for contact us screen
   TextEditingController completeName = TextEditingController();

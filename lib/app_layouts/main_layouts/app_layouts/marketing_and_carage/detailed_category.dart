@@ -31,7 +31,7 @@ class DetailedCategory extends StatelessWidget {
             elevation: 0,
             leading: IconButton(
               onPressed: () {
-//backToPrevious(context);
+backToPrevious(context);
               },
               icon: Icon(
                 Icons.arrow_back,

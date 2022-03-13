@@ -8,6 +8,7 @@ import 'package:wasela/app_layouts/main_layouts/mainscreen/main_nav_screen.dart'
 import '../../translations/localeKeys.g.dart';
 import '../constants/endpoints.dart';
 
+
 navigateAndFinish(context, {required Widget layout}) {
   Navigator.pushReplacement(
       context, MaterialPageRoute(builder: (context) => layout));
@@ -87,10 +88,16 @@ class BoardingModel {
 }
 
 Widget buildBoardingItem(BoardingModel model) => Padding(
-      padding: const EdgeInsets.only(top: 50, bottom: 20),
+      padding: const EdgeInsets.only(top: 100.0),
       child: Column(
         children: [
-          Image.asset(model.image),
+          SizedBox(
+              child: Image.asset(
+                model.image,
+                fit: BoxFit.fill,
+                width: 320,
+                height: 300,
+              )),
           SizedBox(
             height: 20,
           ),
@@ -136,7 +143,7 @@ class TransportCustomDesign extends StatelessWidget {
       onTap: onTap,
       child: Container(
         child: icon,
-        padding: EdgeInsetsDirectional.only(start: paddingValue),
+        padding: EdgeInsetsDirectional.all(paddingValue),
         decoration: BoxDecoration(
           color: containerColor,
           borderRadius: BorderRadius.circular(borderRadius),
@@ -1442,6 +1449,9 @@ class CustomAlertDialogForMarketing extends StatelessWidget {
   final Widget underWidget;
   final Widget topImage;
   final Color backGroundImageColor;
+  final double topPadding;
+  final double bottomPicPadding;
+  final double containerPadding;
 
   const CustomAlertDialogForMarketing({
     required this.mainWidgetText,
@@ -1449,7 +1459,11 @@ class CustomAlertDialogForMarketing extends StatelessWidget {
     this.underWidget = const SizedBox(
       width: 0,
       height: 0,
-    ),    this.backGroundImageColor = Colors.red
+    ),
+    this.backGroundImageColor = Colors.red,
+    this.topPadding = 300.0,
+    this.bottomPicPadding = 450.0,
+    this.containerPadding = 20.0,
   });
 
   @override
@@ -1458,11 +1472,11 @@ class CustomAlertDialogForMarketing extends StatelessWidget {
       alignment: Alignment.topCenter,
       children: [
         Padding(
-          padding: const EdgeInsets.only(
-            right: 30.0,
-            left: 30.0,
+          padding: EdgeInsets.only(
+            right: 10.0,
+            left: 10.0,
             bottom: 20.0,
-            top: 300,
+            top: topPadding,
           ),
           child: Column(
             children: [
@@ -1472,8 +1486,10 @@ class CustomAlertDialogForMarketing extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: Padding(
-                  padding:
-                      const EdgeInsets.only(left: 15.0, right: 15.0, top: 60.0),
+                  padding: EdgeInsets.only(
+                      left: containerPadding,
+                      right: containerPadding,
+                      top: 60.0),
                   child: mainWidgetText,
                 ),
               ),
@@ -1486,7 +1502,7 @@ class CustomAlertDialogForMarketing extends StatelessWidget {
             radius: 60,
             backgroundColor: backGroundImageColor,
           ),
-          bottom: 450,
+          bottom: bottomPicPadding,
         ),
         Positioned(
           child: CircleAvatar(
@@ -1495,15 +1511,17 @@ class CustomAlertDialogForMarketing extends StatelessWidget {
             foregroundColor: Colors.white,
             child: topImage,
           ),
-          bottom: 455,
+          bottom: (bottomPicPadding + 5),
         ),
       ],
     );
   }
 }
 
-void myShowDialog(
-    {required BuildContext context, required CustomAlertDialog alertDialog}) {
+void myShowDialog({
+  required BuildContext context,
+  required CustomAlertDialog alertDialog,
+}) {
   showGeneralDialog(
     context: context,
     pageBuilder: (BuildContext buildContext, Animation animation,
@@ -1511,10 +1529,15 @@ void myShowDialog(
       return alertDialog;
     },
   );
-}void myShowDialogForMarketing(
-    {required BuildContext context, required CustomAlertDialogForMarketing alertDialog}) {
+}
+
+void myShowDialogForMarketing(
+    {required BuildContext context,
+    required CustomAlertDialogForMarketing alertDialog,
+    Color barrierColor = const Color(0x80000000)}) {
   showGeneralDialog(
     context: context,
+    barrierColor: barrierColor,
     pageBuilder: (BuildContext buildContext, Animation animation,
         Animation secondaryAnimation) {
       return alertDialog;
@@ -1616,46 +1639,54 @@ AppBar generateAppBar(
   );
 }
 
-
 class SettingsButtonRow extends StatelessWidget {
   final Widget preIcon;
   final IconData goIcon;
   final String text;
   final Function() onTap;
-  const SettingsButtonRow({Key? key,required this.preIcon,required this.goIcon,required this.text,required this.onTap, }) : super(key: key);
+
+  const SettingsButtonRow({
+    Key? key,
+    required this.preIcon,
+    required this.goIcon,
+    required this.text,
+    required this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-            width: 0.5
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(width: 0.5),
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 15.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  preIcon,
-                  SizedBox(width: 10,),
-                  Text(text,style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  ),),
-                ],
-              ),
-              Icon(goIcon),
-            ],
-          ),
-        )
-      ),
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    preIcon,
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      text,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                Icon(goIcon),
+              ],
+            ),
+          )),
     );
   }
 }
-

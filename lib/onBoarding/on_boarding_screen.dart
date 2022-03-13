@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:wasela/app_layouts/main_layouts/mainscreen/main_nav_screen.dart';
 import 'package:wasela/helper_methods/constants/endpoints.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'package:wasela/start/start_screen.dart';
@@ -17,7 +18,7 @@ class OnBoardingScreen extends StatefulWidget {
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   List<BoardingModel> boardingList = [
     BoardingModel(
-      image: 'Assets/images/1 back.jpg',
+      image: 'Assets/images/01.png',
       text: Column(
         children: [
           Text(
@@ -25,7 +26,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             style: TextStyle(fontSize: 30, color: textBlueColor),
             textAlign: TextAlign.center,
           ),
-           Text(
+          Text(
             LocaleKeys.onBoarding12.tr(),
             style: TextStyle(fontSize: 20),
             textAlign: TextAlign.center,
@@ -34,7 +35,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       ),
     ),
     BoardingModel(
-      image: 'Assets/images/3 back.jpg',
+      image: 'Assets/images/02.png',
       text: Column(
         children: [
           Text(
@@ -42,7 +43,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             style: TextStyle(fontSize: 30, color: textBlueColor),
             textAlign: TextAlign.center,
           ),
-           Text(
+          Text(
             LocaleKeys.onBoarding22.tr(),
             style: TextStyle(fontSize: 20),
             textAlign: TextAlign.center,
@@ -51,7 +52,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       ),
     ),
     BoardingModel(
-      image: 'Assets/images/1 ktakeet.jpg',
+      image: 'Assets/images/03.png',
       text: Column(
         children: [
           Text(
@@ -59,8 +60,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             style: TextStyle(fontSize: 30, color: textBlueColor),
             textAlign: TextAlign.center,
           ),
-           Text(
-             LocaleKeys.onBoarding32.tr(),
+          Text(
+            LocaleKeys.onBoarding32.tr(),
             style: TextStyle(fontSize: 20),
             textAlign: TextAlign.center,
           ),
@@ -76,48 +77,45 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   void initState() {
     super.initState();
-    Timer.periodic(
-        const Duration(
-          seconds: 5,
-        ), (Timer timer) {
-      if (currentPage < boardingList.length - 1) {
-        currentPage++;
-      } else {
-        currentPage = 0;
-      }
-      boardController.animateToPage(currentPage,
-          duration: const Duration(seconds: 1), curve: Curves.easeInCubic);
-    });
+    // Timer.periodic(
+    //     const Duration(
+    //       seconds: 5,
+    //     ), (Timer timer) {
+    //   if (currentPage < boardingList.length - 1) {
+    //     currentPage++;
+    //   } else {
+    //     currentPage = 0;
+    //   }
+    //   boardController.animateToPage(currentPage,
+    //       duration: const Duration(seconds: 1), curve: Curves.easeInCubic);
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              height: 500,
-              child: Expanded(
-                child: PageView.builder(
-                  scrollDirection: Axis.horizontal,
-                  onPageChanged: (int index) {
-                    setState(() {
-                      currentPage = index;
-                    });
-                  },
-                  controller: boardController,
-                  physics: BouncingScrollPhysics(),
-                  itemBuilder: (context, index) =>
-                      buildBoardingItem(boardingList[index]),
-                  itemCount: boardingList.length,
-                ),
+            Expanded(
+              child: PageView.builder(
+                scrollDirection: Axis.horizontal,
+                onPageChanged: (int index) {
+                  setState(() {
+                    currentPage = index;
+                  });
+                },
+                controller: boardController,
+                physics: const BouncingScrollPhysics(),
+                itemBuilder: (context, index) =>
+                    buildBoardingItem(boardingList[index]),
+                itemCount: boardingList.length,
               ),
             ),
             Center(
               child: Padding(
-                padding: const EdgeInsets.only(top: 40.0),
+                padding: const EdgeInsets.only(top: 20.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -145,15 +143,20 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         ),
         floatingActionButton: Row(
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40.0),
-              child: Text(
-                LocaleKeys.skip.tr(),
-                textAlign: TextAlign.end,
-                style: TextStyle(fontSize: 20),
+            InkWell(
+              onTap: () {
+                navigateAndFinish(context, layout: StartScreen());
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 40.0),
+                child: Text(
+                  LocaleKeys.skip.tr(),
+                  textAlign: TextAlign.end,
+                  style: TextStyle(fontSize: 20),
+                ),
               ),
             ),
-           const Spacer(),
+            const Spacer(),
             Container(
               height: 70,
               width: 70,
@@ -167,7 +170,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 onPressed: () {
                   // SharedCashHelper.setValue(key: "skip", value: true).then((value) {
                   //if (value) {
-                  navigateAndFinish(context, layout: StartScreen());
+                  setState(() {
+                      if (currentPage < boardingList.length - 1) {
+                        currentPage++;
+                      } else {
+                        navigateAndFinish(context, layout: StartScreen(),);
+                      }
+                      boardController.animateToPage(currentPage,
+                          duration: const Duration(seconds: 1), curve: Curves.easeInCubic);
+                  });
                   // }
                   // });
                 },

@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wasela/drawer/settings/screens/contact_us.dart';
 import 'package:wasela/drawer/settings/screens/language_screen.dart';
 import 'package:wasela/helper_methods/constants/endpoints.dart';
+import 'package:wasela/translations/localeKeys.g.dart';
 
 import '../../helper_methods/functions/functions_needed.dart';
 
@@ -21,7 +23,7 @@ class SettingsScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           onPressed: () {
-//backToPrevious(context);
+backToPrevious(context);
           },
           icon: Icon(
             Icons.arrow_back,
@@ -53,7 +55,7 @@ class SettingsScreen extends StatelessWidget {
                     color: Colors.white,
                   ),
                   Text(
-                    "الإعدادات",
+                  LocaleKeys.settingsAddress.tr(),
                     style: TextStyle(fontSize: 25, height: 1.5),
                   ),
                 ],
@@ -67,7 +69,7 @@ class SettingsScreen extends StatelessWidget {
         children: [
           SettingsButtonRow(
             onTap: () {},
-            text: "تعديل الحساب",
+            text: LocaleKeys.settings1.tr(),
             preIcon: Icon(
               Icons.person,
               size: 50,
@@ -78,7 +80,7 @@ class SettingsScreen extends StatelessWidget {
             onTap: () {
               navigateAndBack(context, layout: LanguageScreen());
             },
-            text: "اللغة",
+            text: LocaleKeys.settings2.tr(),
             preIcon: Icon(
               Icons.person,
               size: 50,
@@ -87,7 +89,7 @@ class SettingsScreen extends StatelessWidget {
           ),
           SettingsButtonRow(
             onTap: () {},
-            text: "تغير كلمة المرور",
+            text: LocaleKeys.settings3.tr(),
             preIcon: Icon(
               Icons.person,
               size: 50,
@@ -98,7 +100,7 @@ class SettingsScreen extends StatelessWidget {
             onTap: () {
               navigateAndBack(context, layout: ContactUsScreen());
             },
-            text: "تواصل معنا",
+            text: LocaleKeys.settings4.tr(),
             preIcon: Icon(
               Icons.person,
               size: 50,

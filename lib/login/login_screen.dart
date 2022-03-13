@@ -1,16 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:wasela/app_layouts/main_layouts/app_layouts/home/home_screen.dart';
+import 'package:wasela/app_layouts/main_layouts/mainscreen/main_nav_screen.dart';
+import 'package:wasela/login/reback_password/return_password.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
 import '../helper_methods/constants/endpoints.dart';
-import 'ensure_sent_code.dart';
 import '../helper_methods/functions/functions_needed.dart';
-import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
 
 class LoginScreen extends StatelessWidget {
-  var instance = FacebookAuth.getInstance();
   TextEditingController phoneController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,138 +20,131 @@ class LoginScreen extends StatelessWidget {
           padding: const EdgeInsets.only(top: 50, bottom: 20),
           child: Column(
             children: [
-              Image.asset('Assets/images/3 back.jpg'),
+              Image.asset('Assets/images/09.png',width: 300,height: 300,),
               const SizedBox(
                 height: 15,
               ),
-              CustomLocalTextFormField(
-                controller: phoneController,
-                preWidget: Column(
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      LocaleKeys.loginScreenMobile.tr(),
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      LocaleKeys.loginScreen2.tr(),
+                      style:const TextStyle(color: Colors.red, fontSize: 20),
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          CountryFlagGeneration.generateCountryFlag(),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.horizontal(
+                          right: Radius.circular(10.0),
+                          left: Radius.circular(10.0),
                         ),
-                        Text(
-                          '  20' + ' ',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      child: TextFormField(
+                        controller: phoneController,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                            fillColor: Colors.white,
+                            hintText: LocaleKeys.loginScreenHint1.tr(),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: const BorderRadius.horizontal(
+                                right: Radius.circular(10.0),
+                                left: Radius.circular(10.0),
+                              ),
+                              borderSide:
+                              BorderSide(color: purpleColor, width: 1.2)),
+                          hintStyle: TextStyle(color: purpleColor),
+                          border: const OutlineInputBorder(),),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      decoration:const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.horizontal(
+                          right: Radius.circular(10.0),
+                          left: Radius.circular(10.0),
                         ),
-                      ],
+                      ),
+                      child: TextFormField(
+                        controller: passwordController,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                            fillColor: Colors.white,
+                            hintText: LocaleKeys.loginScreenHint2.tr(),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius:const BorderRadius.horizontal(
+                                right: Radius.circular(10.0),
+                                left: Radius.circular(10.0),
+                              ),
+                              borderSide:
+                              BorderSide(color: purpleColor, width: 1.2)),
+                          hintStyle: TextStyle(color: purpleColor),
+                          border:const OutlineInputBorder(),),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 15,
                     ),
                   ],
                 ),
-                keyboardType: TextInputType.number,
-              ),
-              SizedBox(
-                height: 30,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
+                  horizontal: 40.0,
                 ),
-                child: ButtonCustomDesign(
-                  text: Text(
-                    LocaleKeys.loginScreenLogIn.tr(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  inkwellFunc: () {
-                    navigateAndBack(context, layout: EnsureSentCode());
-                  },
-                  containerColor: purpleColor,
-                ),
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Container(
-                height: 50,
-                child: Text(
-                  LocaleKeys.loginScreen1.tr(),
-                  style: TextStyle(fontSize: 17),
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(30.0),
-                    child: put_line(line_height: 1.0, color: Colors.grey),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    width: 120,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    child: Text(
-                      LocaleKeys.loginScreenEnter.tr(),
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: textGreyTwoColor,
-                        fontWeight: FontWeight.bold,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        navigateAndBack(context, layout: ReturnPassword());
+                      },
+                      child: Text(
+                        LocaleKeys.loginScreenTextButton.tr(),
+                        style: TextStyle(
+                            color: purpleColor,
+                            decoration: TextDecoration.underline,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 60.0, vertical: 8.0),
-                child: Row(
-                  children: [
-                    MakeImage.performThisImage(
-                      text: "Facebook",
-                      icon: Icon(Icons.facebook),
-                      width: 130.0,
-                      height: 50.0,
-                      backgroundColor: Colors.white,
-                      onPress: () async{
-                        // initialize the facebook javascript SDK
-                        // FacebookAuth.instance.webInitialize(
-                        //   appId: "155551551165454",
-                        //   cookie: true,
-                        //   xfbml: true,
-                        //   version: '1.6.10',
-                        // );
-                        await FacebookAuth.instance.login().then((value) {
-                          navigateAndBack(context, layout: const HomeScreen());
-                        }).catchError((onError){
-                          if (kDebugMode) {
-                            print(onError.toString());
-                          }
-                        });
-                      },
+                    const SizedBox(
+                      height: 15,
                     ),
-                    Spacer(),
-                    MakeImage.performThisImage(
-                      text: "Google",
-                      icon: Icon(Icons.mail),
-                      width: 130.0,
-                      height: 50.0,
-                      backgroundColor: Colors.white,
-                      onPress: () {},
+                    ButtonCustomDesign(
+                      text: Text(
+                        LocaleKeys.loginScreenLogIn.tr(),
+                        textAlign: TextAlign.center,
+                        style:const TextStyle(
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      inkwellFunc: () {
+                        navigateAndFinish(context, layout: MainNavScreen());
+                      },
+                      containerColor: purpleColor,
                     ),
                   ],
                 ),
+              ),
+              // Container(
+              //   height: 50,
+              //   child: Text(
+              //     LocaleKeys.loginScreen1.tr(),
+              //     style: TextStyle(fontSize: 17),
+              //   ),
+              // ),
+              const SizedBox(
+                height: 30,
               ),
             ],
           ),
