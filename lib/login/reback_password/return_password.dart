@@ -1,11 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:wasela/helper_methods/constants/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:wasela/helper_methods/constants/endpoints.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
-
-import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
 import 'package:wasela/translations/localeKeys.g.dart';
 
 import 'change_password.dart';

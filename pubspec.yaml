@@ -35,10 +35,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   smooth_page_indicator: ^1.0.0+2
-  bloc: ^7.2.0
-  flutter_bloc: ^7.3.0
+  bloc: ^8.0.3
+  flutter_bloc: ^8.0.1
   conditional_builder_null_safety: ^0.0.6
-  #dio: ^4.0.0
   #image_picker: ^0.8.3+2
   shared_preferences: ^2.0.11
   dio: ^4.0.4
@@ -51,8 +50,11 @@ dependencies:
   flutter_svg: ^1.0.3
   animated_bottom_navigation_bar: ^0.3.2
   easy_localization: ^3.0.0
-  flutter_facebook_auth: ^4.1.1
+  flutter_facebook_auth: ^4.1.2
   #google_maps_flutter: ^2.1.2
+  firebase_messaging: ^11.2.11
+  firebase_core: ^1.13.1
+  fl_chart: ^0.46.0
 
 dev_dependencies:
   flutter_test:

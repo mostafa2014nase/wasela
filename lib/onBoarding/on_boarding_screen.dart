@@ -3,8 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:wasela/app_layouts/main_layouts/mainscreen/main_nav_screen.dart';
-import 'package:wasela/helper_methods/constants/endpoints.dart';
+import 'package:wasela/helper_methods/constants/themes.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'package:wasela/start/start_screen.dart';
 import '../helper_methods/sharedpref/shared_preference.dart';
@@ -145,7 +144,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           children: [
             InkWell(
               onTap: () {
-                navigateAndFinish(context, layout: StartScreen());
+                SharedCashHelper.setValue(key: "skip", value: true)
+                    .then((value) {
+                  if (value) {
+                    navigateAndFinish(
+                      context,
+                      layout: StartScreen(),
+                    );
+                  }
+                });
               },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 40.0),
@@ -171,13 +178,22 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   // SharedCashHelper.setValue(key: "skip", value: true).then((value) {
                   //if (value) {
                   setState(() {
-                      if (currentPage < boardingList.length - 1) {
-                        currentPage++;
-                      } else {
-                        navigateAndFinish(context, layout: StartScreen(),);
-                      }
-                      boardController.animateToPage(currentPage,
-                          duration: const Duration(seconds: 1), curve: Curves.easeInCubic);
+                    if (currentPage < boardingList.length - 1) {
+                      currentPage++;
+                    } else {
+                      SharedCashHelper.setValue(key: "skip", value: true)
+                          .then((value) {
+                        if (value) {
+                          navigateAndFinish(
+                            context,
+                            layout: StartScreen(),
+                          );
+                        }
+                      });
+                    }
+                    boardController.animateToPage(currentPage,
+                        duration: const Duration(seconds: 1),
+                        curve: Curves.easeInCubic);
                   });
                   // }
                   // });

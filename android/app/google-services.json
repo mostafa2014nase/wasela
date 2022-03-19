@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "556948427373",
+    "project_id": "wasela-e3eba",
+    "storage_bucket": "wasela-e3eba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:556948427373:android:8d461453aae6123d15e564",
+        "android_client_info": {
+          "package_name": "com.example.wasela"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "556948427373-mqsa040goblbmlipr2ecs0tek3ls1b61.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.wasela",
+            "certificate_hash": "99957cac1cb0a23e8ca6e082712086e007d03371"
+          }
+        },
+        {
+          "client_id": "556948427373-4ncfoqvphed734gmuk8jv4j9vi7p26tq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAD8xdMQ244YJ5IVxk8_qmq5cwqW5-x20"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "556948427373-4ncfoqvphed734gmuk8jv4j9vi7p26tq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

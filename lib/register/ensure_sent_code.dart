@@ -1,12 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:wasela/helper_methods/constants/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:wasela/register/complete_register_data.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
-import '../helper_methods/constants/endpoints.dart';
 import '../helper_methods/functions/functions_needed.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class EnsureSentCode extends StatelessWidget {
+  final TextEditingController phoneController;
+
+  const EnsureSentCode({Key? key, required this.phoneController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +27,9 @@ class EnsureSentCode extends StatelessWidget {
                     child: Image.asset('Assets/images/06.png'),
                     height: 300,
                   ),
-                  SizedBox(height: 50,),
+                  SizedBox(
+                    height: 50,
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
@@ -63,7 +69,10 @@ class EnsureSentCode extends StatelessWidget {
                             ),
                           ),
                           inkwellFunc: () {
-                            navigateAndBack(context, layout:CompleteRegisterData());
+                            navigateAndBack(context,
+                                layout: CompleteRegisterData(
+                                  phoneController: phoneController,
+                                ));
                           },
                           containerColor: purpleColor,
                         ),
@@ -77,7 +86,8 @@ class EnsureSentCode extends StatelessWidget {
                     LocaleKeys.ensureScreen1.tr(),
                     style: TextStyle(fontSize: 17, color: textGreyTwoColor),
                     textAlign: TextAlign.center,
-                  ),   Text(
+                  ),
+                  Text(
                     LocaleKeys.ensureScreen2.tr(),
                     style: TextStyle(fontSize: 17, color: textGreyTwoColor),
                     textAlign: TextAlign.center,

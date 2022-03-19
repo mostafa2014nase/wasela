@@ -7,7 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wasela/helper_methods/constants/endpoints.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
-
+import 'package:wasela/helper_methods/constants/themes.dart';
 import '../bloc/cubit_class.dart';
 import '../bloc/states.dart';
 

@@ -2,10 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wasela/drawer/settings/screens/contact_us.dart';
-import 'package:wasela/drawer/settings/screens/language_screen.dart';
-import 'package:wasela/helper_methods/constants/endpoints.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
-
+import 'package:wasela/helper_methods/constants/themes.dart';
 import '../../helper_methods/functions/functions_needed.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -23,7 +21,7 @@ class SettingsScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           onPressed: () {
-backToPrevious(context);
+            backToPrevious(context);
           },
           icon: Icon(
             Icons.arrow_back,
@@ -41,9 +39,10 @@ backToPrevious(context);
           ),
         ],
         title: Padding(
-          padding: isArabic!
-              ? const EdgeInsetsDirectional.only(start: 80)
-              : const EdgeInsetsDirectional.only(start: 80),
+          padding: const EdgeInsetsDirectional.only(start: 80),
+          // isArabic == false
+          //     ? const EdgeInsetsDirectional.only(start: 80)
+          //     : const EdgeInsetsDirectional.only(start: 80),
           child: Row(
             children: [
               Column(
@@ -55,7 +54,7 @@ backToPrevious(context);
                     color: Colors.white,
                   ),
                   Text(
-                  LocaleKeys.settingsAddress.tr(),
+                    LocaleKeys.settingsAddress.tr(),
                     style: TextStyle(fontSize: 25, height: 1.5),
                   ),
                 ],
@@ -76,17 +75,17 @@ backToPrevious(context);
             ),
             goIcon: Icons.arrow_forward_ios,
           ),
-          SettingsButtonRow(
-            onTap: () {
-              navigateAndBack(context, layout: LanguageScreen());
-            },
-            text: LocaleKeys.settings2.tr(),
-            preIcon: Icon(
-              Icons.person,
-              size: 50,
-            ),
-            goIcon: Icons.arrow_forward_ios,
-          ),
+          // SettingsButtonRow(
+          //   onTap: () {
+          //     navigateAndBack(context, layout: LanguageScreen());
+          //   },
+          //   text: LocaleKeys.settings2.tr(),
+          //   preIcon: Icon(
+          //     Icons.person,
+          //     size: 50,
+          //   ),
+          //   goIcon: Icons.arrow_forward_ios,
+          // ),
           SettingsButtonRow(
             onTap: () {},
             text: LocaleKeys.settings3.tr(),

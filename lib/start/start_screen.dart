@@ -1,11 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:wasela/helper_methods/constants/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'package:wasela/login/login_screen.dart';
 import 'package:wasela/register/register_screen.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
-
-import '../helper_methods/constants/endpoints.dart';
 
 class StartScreen extends StatelessWidget {
   @override
@@ -55,7 +54,7 @@ class StartScreen extends StatelessWidget {
                   ),
                   ButtonCustomDesign(
                     text: Text(
-                      LocaleKeys.startScreenLogIn.tr(),
+                      LocaleKeys.loginScreenLogIn.tr(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 20.0,
@@ -63,7 +62,7 @@ class StartScreen extends StatelessWidget {
                       ),
                     ),
                     inkwellFunc: () {
-                      navigateAndBack(context, layout:LoginScreen());
+                      navigateAndBack(context, layout: LoginScreen());
                     },
                     containerColor: yellowColor,
                   ),
@@ -72,7 +71,7 @@ class StartScreen extends StatelessWidget {
                   ),
                   ButtonCustomDesign(
                     text: Text(
-                      LocaleKeys.startScreenRegister.tr(),
+                      "${LocaleKeys.startScreenRegister.tr()} ( ${LocaleKeys.company.tr()} / ${LocaleKeys.client.tr()} )",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
@@ -81,7 +80,7 @@ class StartScreen extends StatelessWidget {
                       ),
                     ),
                     inkwellFunc: () {
-                      navigateAndBack(context, layout:RegisterScreen());
+                      navigateAndBack(context, layout: RegisterScreen());
                     },
                     containerColor: purpleColor,
                   ),

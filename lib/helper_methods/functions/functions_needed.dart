@@ -3,11 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:wasela/app_layouts/main_layouts/mainscreen/main_nav_screen.dart';
 
+import '../../mainscreen/main_nav_screen.dart';
 import '../../translations/localeKeys.g.dart';
-import '../constants/endpoints.dart';
-
+import 'package:wasela/helper_methods/constants/themes.dart';
 
 navigateAndFinish(context, {required Widget layout}) {
   Navigator.pushReplacement(
@@ -93,11 +92,11 @@ Widget buildBoardingItem(BoardingModel model) => Padding(
         children: [
           SizedBox(
               child: Image.asset(
-                model.image,
-                fit: BoxFit.fill,
-                width: 320,
-                height: 300,
-              )),
+            model.image,
+            fit: BoxFit.fill,
+            width: 320,
+            height: 300,
+          )),
           SizedBox(
             height: 20,
           ),
@@ -1449,6 +1448,8 @@ class CustomAlertDialogForMarketing extends StatelessWidget {
   final Widget underWidget;
   final Widget topImage;
   final Color backGroundImageColor;
+  final Color imageBackColor;
+  final Color bodyColor;
   final double topPadding;
   final double bottomPicPadding;
   final double containerPadding;
@@ -1461,6 +1462,8 @@ class CustomAlertDialogForMarketing extends StatelessWidget {
       height: 0,
     ),
     this.backGroundImageColor = Colors.red,
+    this.imageBackColor = Colors.white,
+    this.bodyColor = Colors.white,
     this.topPadding = 300.0,
     this.bottomPicPadding = 450.0,
     this.containerPadding = 20.0,
@@ -1482,7 +1485,7 @@ class CustomAlertDialogForMarketing extends StatelessWidget {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color:bodyColor,
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: Padding(
@@ -1507,7 +1510,7 @@ class CustomAlertDialogForMarketing extends StatelessWidget {
         Positioned(
           child: CircleAvatar(
             radius: 55,
-            backgroundColor: Colors.white,
+            backgroundColor:imageBackColor,
             foregroundColor: Colors.white,
             child: topImage,
           ),

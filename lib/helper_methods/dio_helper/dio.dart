@@ -6,17 +6,23 @@ class DioHelper {
   static init() {
     dio = Dio(
       BaseOptions(
-        baseUrl: "",
+        baseUrl: "https://wasela.innovations-eg.com/",
+        //"https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
         receiveDataWhenStatusError: true,
-        headers: {},
       ),
     );
   }
 
   static Future<Response> postData({
     required String url,
+    required String? token,
+    required String? accessToken,
     required Map<String, dynamic> data,
   }) {
+    dio!.options.headers={
+      "token": token ?? "",
+      "access_token": accessToken ?? "",
+    };
     return dio!.post(url, data: data);
   }
 

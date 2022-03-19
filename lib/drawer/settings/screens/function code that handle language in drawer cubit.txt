@@ -1,0 +1,23 @@
+  String? myLanguage;
+
+  void toggleLanguage(
+      {required String language, required BuildContext context}) async {
+    await context.setLocale(Locale(language)).then((value) {
+      MyApp.setLocale(context, language);
+      SharedCashHelper.setValue(key: "lang", value: language);
+      emit(PerformChangeLanguageSuccessState());
+    });
+    if (language == "en") {
+      isArabic = false;
+      SharedCashHelper.setValue(key: "isArabic", value: false).then((value) {
+        //isArabic = false;
+        emit(PerformEnglishLanguageSuccessState());
+      });
+    } else {
+      isArabic = true;
+      SharedCashHelper.setValue(key: "isArabic", value: true).then((value) {
+        //isArabic = true;
+        emit(PerformArabicLanguageSuccessState());
+      });
+    }
+  }
