@@ -19,10 +19,12 @@ class HomeScreenForCompanyApp extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: greyColor,
-            appBar: generateAppBar(
+            appBar: generateAppBarForCompanyMainScreens(
+              mainScreen: true,
               context: context,
               title: LocaleKeys.bottomNavItemsName1.tr(),
               svgPath: "home",
+              textHeight: 2.0,
             ),
             body: SingleChildScrollView(
               child: Stack(

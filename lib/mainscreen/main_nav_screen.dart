@@ -1,10 +1,13 @@
+import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:wasela/clients_app/app_layouts/main_layouts/app_layouts/charge/evaluate.dart';
+import 'package:wasela/comapny_app/app_layouts/calculations/calculations_screen.dart';
+import 'package:wasela/comapny_app/app_layouts/comapany_profile/user_account_screen.dart';
+import 'package:wasela/drawer/settings/screens/contact_us.dart';
+import 'package:wasela/evaluate/evaluate_screen.dart';
 import 'package:wasela/mainscreen/nav_bloc/main_nav_cubit.dart';
 import 'package:wasela/drawer/settings/settings_screen.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
@@ -42,8 +45,13 @@ class MainNavScreen extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
-                        persistentTabController.jumpToTab(4);
-                        Navigator.of(context).pop();
+                        if (isCompany == 1) {
+                          persistentTabController.jumpToTab(4);
+                          Navigator.of(context).pop();
+                        } else {
+                          navigateAndBack(context,
+                              layout: const CompanyAccountScreen());
+                        }
                       },
                       child: Container(
                         padding: const EdgeInsets.only(bottom: 25, top: 25),
@@ -100,55 +108,123 @@ class MainNavScreen extends StatelessWidget {
                       ),
                     ),
                     put_line(color: purpleColor),
-                    SizedBox(
+                    isCompany == 1 ?
+                    Container(
                       height: 215,
-                      child: Container(
-                          color: Colors.white,
-                          child: ListView.separated(
-                            separatorBuilder: (context, index) =>
-                                put_line(color: purpleColor),
-                            itemCount: cubit.drawerTexts.length,
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                onTap: index == 2
-                                    ? () {
-                                        navigateAndBack(context,
-                                            layout: SettingsScreen());
-                                      }
-                                    : index == 1
+                        color: Colors.white,
+                        child: ListView.separated(
+                          separatorBuilder: (context, index) =>
+                              put_line(color: purpleColor),
+                          itemCount: cubit.drawerTexts.length,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                                    onTap: index == 2
                                         ? () {
                                             navigateAndBack(context,
-                                                layout: EvaluateScreen(
-                                                  fromDrawer: true,
-                                                ));
+                                                layout: SettingsScreen());
                                           }
-                                        : () {},
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10.0, vertical: 20.0),
-                                  child: Row(
-                                    children: [
-                                      SvgPicture.asset(
-                                        "Assets/images/${cubit.drawerSvgPics[index]}.svg",
-                                        width: 30,
-                                        height: 30,
-                                        color: purpleColor,
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        "${cubit.drawerTexts[index]}",
-                                        style: TextStyle(
+                                        : index == 1
+                                            ? () {
+                                                navigateAndBack(context,
+                                                    layout: EvaluateScreen(
+                                                      fromDrawer: true,
+                                                    ));
+                                              }
+                                            : () {},
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10.0, vertical: 20.0),
+                                      child: Row(
+                                        children: [
+                                          SvgPicture.asset(
+                                            "Assets/images/${cubit.drawerSvgPics[index]}.svg",
+                                            width: 30,
+                                            height: 30,
                                             color: purpleColor,
-                                            fontWeight: FontWeight.bold),
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            "${cubit.drawerTexts[index]}",
+                                            style: TextStyle(
+                                              color: purpleColor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ],
+                                    ),
+                                  );
+                          },
+                        ),
+                    ):Container(
+                      height: 405,
+                      color: Colors.white,
+                      child: ListView.separated(
+                        separatorBuilder: (context, index) =>
+                            put_line(color: purpleColor),
+                        itemCount: cubit.drawerCompanyTexts.length,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: index == 1
+                                ? () {
+                              log("${cubit.drawerSvgPicsCompany.length}");
+                              navigateAndBack(context,
+                                  layout: SettingsScreen());
+                            }
+                                : index == 0
+                                ? () {
+                              navigateAndBack(context,
+                                  layout: EvaluateScreen(
+                                    fromDrawer: true,
+                                  ));
+                            }
+                                : index == 2
+                                ? () {
+                              navigateAndBack(context,
+                                  layout:
+                                  const ContactUsScreen());
+                            }
+                                :index == 3
+                                ? () {
+                              navigateAndBack(context,
+                                  layout:
+                                  const CalculationsScreenForCompanyApp());
+                            }
+                                : () {},
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10.0, vertical: 20.0),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width : 40,
+                                    height: 40,
+                                    padding: EdgeInsets.all(index == 0 || index == 1 ? 7.5:index == 2 ? 0:3.5),
+                                    child: SvgPicture.asset(
+                                      "Assets/images/${cubit.drawerSvgPicsCompany[index]}.svg",
+                                      width:  50,
+                                      height: 50,
+                                      color: purpleColor,
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                          )),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    "${cubit.drawerCompanyTexts[index]}",
+                                    style: TextStyle(
+                                      color: purpleColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                     put_line(color: purpleColor),
                     Padding(
@@ -219,7 +295,10 @@ class MainNavScreen extends StatelessWidget {
                 : cubit.screensForCompanyApp[cubit.indexForCompanyApp],
             bottomNavigationBar: isCompany != 1
                 ? BottomNavigationBar(
+              key: globalKey,
+                    enableFeedback: false,
                     showUnselectedLabels: true,
+                    type: BottomNavigationBarType.shifting,
                     iconSize: 25,
                     unselectedFontSize: 12,
                     selectedFontSize: 15,
@@ -272,80 +351,3 @@ class MainNavScreen extends StatelessWidget {
   }
 }
 
-/*
-
-          floatingActionButton: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-            decoration: BoxDecoration(
-              color: yellowColor,
-              borderRadius: BorderRadius.circular(60.0),
-            ),
-            child: Icon(Icons.hotel, color: Colors.black, size: 35),
-          ),
-          body: navCubit.Screens[navCubit.index],
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.startDocked,
-          bottomNavigationBar: BottomNavigationBar(
-            items: navCubit.bottomNavigationBarItems,
-            backgroundColor: greyColor,
-            onTap: (index) => navCubit.changeBarItem(index),
-            showUnselectedLabels: true,
-            unselectedItemColor: Colors.black,
-            selectedItemColor: yellowColor,
-          ),
-
- */
-
-/*
-
-          leading: IconButton(
-              onPressed: () {
-                persistentTabController.jumpToTab(0);
-              },
-              icon: Icon(
-                Icons.arrow_back,
-              ),
-            ),
-            actions: [
-              Row(
-                textDirection: TextDirection.rtl,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Scaffold.of(context).openDrawer();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 2.0,horizontal: 20),
-                      child: SvgPicture.asset(
-                        "Assets/images/menu.svg",
-                        color: Colors.white,
-                        width: 30,
-                        height: 30,
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.notifications_none,
-                        size: 40,
-                      )),
-                ],
-              ),
-            ],
-            title: Column(
-              children: [
-                SvgPicture.asset(
-                  "Assets/images/${cubit.svgGenerate(persistentTabController.index)}.svg",
-                  width: 40,
-                  height: 40,
-                  color: Colors.white,
-                ),
-                Text(
-                  "${cubit.addressGenerate(persistentTabController.index)}",
-                  style: TextStyle(fontSize: 25, height: 1.5),
-                ),
-              ],
-            ),
-
- */

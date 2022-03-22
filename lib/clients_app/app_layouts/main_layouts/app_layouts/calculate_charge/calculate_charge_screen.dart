@@ -19,7 +19,8 @@ class CalculateChargeScreen extends StatelessWidget {
       builder: (context, state) {
         var cubit = CalculateChargingCubitClass.get(context);
         return Scaffold(
-          appBar: generateAppBar(
+          appBar: generateAppBarForCompanyMainScreens(
+            mainScreen: true,
             title: LocaleKeys.bottomNavItemsName3.tr(),
             svgPath: "wallet",
             context: context,
@@ -57,8 +58,7 @@ class CalculateChargeScreen extends StatelessWidget {
                             ),
                             Padding(
                               padding: EdgeInsets.all(8.0),
-                              child:
-                                  Text(LocaleKeys.calculateScreenTabs1.tr()),
+                              child: Text(LocaleKeys.calculateScreenTabs1.tr()),
                             ),
                           ],
                         ),
@@ -75,17 +75,15 @@ class CalculateChargeScreen extends StatelessWidget {
                                     : Colors.black,
                                 size: 80,
                               ),
-                              containerColor: cubit.middleChoice
-                                  ? purpleColor
-                                  : greyColor,
+                              containerColor:
+                                  cubit.middleChoice ? purpleColor : greyColor,
                               paddingValue: 8,
                               borderRadius: 15,
                               iconColor: Colors.black,
                             ),
                             Padding(
                               padding: EdgeInsets.all(8.0),
-                              child:
-                                  Text(LocaleKeys.calculateScreenTabs2.tr()),
+                              child: Text(LocaleKeys.calculateScreenTabs2.tr()),
                             ),
                           ],
                         ),
@@ -110,8 +108,7 @@ class CalculateChargeScreen extends StatelessWidget {
                             ),
                             Padding(
                               padding: EdgeInsets.all(8.0),
-                              child:
-                                  Text(LocaleKeys.calculateScreenTabs3.tr()),
+                              child: Text(LocaleKeys.calculateScreenTabs3.tr()),
                             ),
                           ],
                         ),

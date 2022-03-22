@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:wasela/clients_app/app_layouts/main_layouts/app_layouts/calculate_charge/bloc/cubit_class.dart';
 import 'package:wasela/comapny_app/app_layouts/add_new_ship/bloc/cubit_class.dart';
+import 'package:wasela/comapny_app/app_layouts/add_order/bloc/add_order_cubit_class.dart';
+import 'package:wasela/comapny_app/app_layouts/calculations/calculations_bloc/calculations_cubit.dart';
 import 'package:wasela/comapny_app/app_layouts/injunction/bloc/cubit_class.dart';
 import 'package:wasela/comapny_app/app_layouts/notifications/bloc/cubit_class.dart';
 import 'package:wasela/comapny_app/app_layouts/offers/bloc/cubit_class.dart';
@@ -114,6 +116,8 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(create: (context) => OfferCubitClass()),
           BlocProvider(create: (context) => ShipForCompanyAppCubitClass()),
           BlocProvider(create: (context) => TradeStoreSystemCubitClass()),
+          BlocProvider(create: (context) => AddOrderCubitClass()),
+          BlocProvider(create: (context) => CalculationsCubitClassForCompany()),
         ],
         child: BlocConsumer<AppCubitClass, AppStates>(
           listener: (context, state) {},

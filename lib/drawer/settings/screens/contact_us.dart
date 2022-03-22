@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:wasela/helper_methods/constants/endpoints.dart';
+import 'package:wasela/comapny_app/app_layouts/notifications/notifications_screen.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
@@ -31,7 +31,7 @@ class ContactUsScreen extends StatelessWidget {
             elevation: 0,
             leading: IconButton(
               onPressed: () {
-backToPrevious(context);
+                backToPrevious(context);
               },
               icon: Icon(
                 Icons.arrow_back,
@@ -39,22 +39,21 @@ backToPrevious(context);
             ),
             actions: [
               Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: InkWell(
-                  onTap: () {},
-                  child: SvgPicture.asset(
-                    "Assets/images/menu.svg",
-                    width: 30,
-                    height: 30,
-                    color: Colors.white,
-                  ),
-                ),
+                padding: const EdgeInsetsDirectional.only(end: 10.0),
+                child: IconButton(
+                    onPressed: () {
+                      navigateAndBack(context,
+                          layout: NotificationsForCompanyApp());
+                    },
+                    icon: Icon(
+                      Icons.notifications_none,
+                      size: 40,
+                    )),
               ),
             ],
             title: Padding(
-              padding: isArabic!
-                  ? const EdgeInsetsDirectional.only(start: 80)
-                  : const EdgeInsetsDirectional.only(start: 80),
+              padding: const EdgeInsetsDirectional.only(start: 80),
+              // : const EdgeInsetsDirectional.only(start: 80),
               child: Row(
                 children: [
                   Column(

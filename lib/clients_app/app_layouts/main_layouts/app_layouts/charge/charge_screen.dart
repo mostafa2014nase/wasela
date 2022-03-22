@@ -29,10 +29,12 @@ class ChargeScreen extends StatelessWidget {
               child: DefaultTabController(
                 length: 3,
                 child: Scaffold(
-                  appBar: generateAppBar(
+                  appBar: generateAppBarForCompanyMainScreens(
+                    mainScreen: true,
                     title: LocaleKeys.bottomNavItemsName4.tr(),
                     svgPath: "wallet",
                     context: context,
+                    textHeight: 2.0,
                   ),
                   primary: true,
                   resizeToAvoidBottomInset: false,
@@ -69,7 +71,7 @@ class ChargeScreen extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: TabBarView(
-                              physics: BouncingScrollPhysics(),
+                              physics: const BouncingScrollPhysics(),
                               children: [
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -276,7 +278,7 @@ class ChargeScreen extends StatelessWidget {
                                                                 .tr(),
                                                             icon: Icon(
                                                               Icons
-                                                                  .arrow_back_ios,
+                                                                  .arrow_forward_ios,
                                                               color:
                                                                   Colors.white,
                                                             ),
@@ -554,7 +556,7 @@ class ChargeScreen extends StatelessWidget {
                                                                 .tr(),
                                                             icon: Icon(
                                                               Icons
-                                                                  .arrow_back_ios,
+                                                                  .arrow_forward_ios,
                                                               color:
                                                                   Colors.white,
                                                             ),

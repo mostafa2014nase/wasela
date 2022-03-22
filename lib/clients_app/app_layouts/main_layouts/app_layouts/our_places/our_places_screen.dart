@@ -22,8 +22,10 @@ class PranchesMapAndMenue extends StatelessWidget {
         builder: (context, state) {
           var cubit = OurBranchesCubitClass.get(context);
           return Scaffold(
+            backgroundColor: greyColor,
             resizeToAvoidBottomInset: false,
-            appBar: generateAppBar(
+            appBar: generateAppBarForCompanyMainScreens(
+              mainScreen: true,
               title: LocaleKeys.bottomNavItemsName5.tr(),
               svgPath: "wallet",
               context: context,

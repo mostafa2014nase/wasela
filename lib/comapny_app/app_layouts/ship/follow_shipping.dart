@@ -12,45 +12,13 @@ class FollowShippingOnMapScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: greyColor,
-      appBar: AppBar(
-        toolbarHeight: 100,
-        backgroundColor: purpleColor,
-        foregroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        title: Column(
-          children: [
-            SvgPicture.asset(
-              "Assets/images/track.svg",
-              width: 40,
-              height: 40,
-              color: Colors.white,
-            ),
-            Text(
-              LocaleKeys.followShippingAddress.tr(),
-              style: TextStyle(fontSize: 25, height: 1.5),
-            ),
-          ],
-        ),
-        leading: IconButton(
-          onPressed: () {
-            backToPrevious(context);
-          },
-          icon: Icon(
-            Icons.arrow_back,
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsetsDirectional.only(end: 10.0),
-            child: IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.notifications_none,
-                  size: 40,
-                )),
-          ),
-        ],
+      appBar:generateAppBarForCompanyMainScreens(
+        mainScreen: false,
+        title: LocaleKeys.followShippingAddress.tr(),
+        svgPath: "track",
+        context: context,
+        textHeight: 2.0,
+        imageSize: 70,
       ),
       body: Stack(
         alignment: Alignment.topCenter,

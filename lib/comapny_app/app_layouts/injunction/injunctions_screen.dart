@@ -4,7 +4,6 @@ import 'package:wasela/comapny_app/app_layouts/injunction/bloc/states.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
 
@@ -16,499 +15,258 @@ class InjunctionsScreenForCompanyApp extends StatelessWidget {
     return BlocConsumer<InjunctionsAppCubitClass, InjunctionsStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        var cubit = InjunctionsAppCubitClass.get(context);
+        //var cubit = InjunctionsAppCubitClass.get(context);
         return Scaffold(
-          appBar: generateAppBar(
-            title: LocaleKeys.bottomNavItemsName3.tr(),
-            svgPath: "wallet",
+          backgroundColor: greyColor,
+          appBar: generateAppBarForCompanyMainScreens(
+            mainScreen: true,
+            title: "التلسيمات",
+            svgPath: "noun-pick-up-4160044",
             context: context,
+            imageSize: 80.0,
+
           ),
           resizeToAvoidBottomInset: false,
-          body: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 175,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            TransportCustomDesign(
-                              onTap: () {
-                                cubit.chooseRight();
-                              },
-                              icon: Icon(
-                                Icons.car_repair,
-                                color: cubit.rightChoice
-                                    ? Colors.white
-                                    : Colors.black,
-                                size: 80,
-                              ),
-                              containerColor:
-                                  cubit.rightChoice ? purpleColor : greyColor,
-                              paddingValue: 8,
-                              borderRadius: 15,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(LocaleKeys.calculateScreenTabs1.tr()),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            TransportCustomDesign(
-                              onTap: () {
-                                cubit.chooseMiddle();
-                              },
-                              icon: Icon(
-                                Icons.car_repair,
-                                color: cubit.middleChoice
-                                    ? Colors.white
-                                    : Colors.black,
-                                size: 80,
-                              ),
-                              containerColor:
-                                  cubit.middleChoice ? purpleColor : greyColor,
-                              paddingValue: 8,
-                              borderRadius: 15,
-                              iconColor: Colors.black,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(LocaleKeys.calculateScreenTabs2.tr()),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            TransportCustomDesign(
-                              onTap: () {
-                                cubit.chooseLeft();
-                              },
-                              icon: Icon(
-                                Icons.car_repair,
-                                color: cubit.leftChoice
-                                    ? Colors.white
-                                    : Colors.black,
-                                size: 80,
-                              ),
-                              containerColor:
-                                  cubit.leftChoice ? purpleColor : greyColor,
-                              paddingValue: 8,
-                              borderRadius: 15,
-                              iconColor: Colors.black,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(LocaleKeys.calculateScreenTabs3.tr()),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                cubit.leftChoice
-                    ? const ChargeKind()
-                    : cubit.middleChoice
-                        ? const ChargeTo()
-                        : const ChargeFrom()
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class ChargeKind extends StatelessWidget {
-  const ChargeKind({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<InjunctionsAppCubitClass, InjunctionsStates>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        var cubit = InjunctionsAppCubitClass.get(context);
-        return Container(
-          color: greyColor,
-          child: Column(
+          body: Column(
             children: [
-              const SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                height: 175,
-                child: Container(
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 40.0),
-                    alignment: AlignmentDirectional.center,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: yellowColor,
-                      borderRadius: BorderRadius.horizontal(
-                        right: Radius.circular(50.0),
-                        left: Radius.circular(50.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "الأستلامات",
+                        style: TextStyle(
+                          color: purpleColor,
+                          fontSize: 18.0,
+                        ),
                       ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
+                      const SizedBox(
+                        height: 10.0,
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                      Row(
                         children: [
-                          SvgPicture.asset(
-                            "Assets/images/placeholder.svg",
-                            color: Colors.black,
-                            width: 30,
-                            height: 30,
+                          put_line(
+                            line_height: 5.0,
+                            color: yellowColor,
+                            line_width: 100.0,
                           ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            LocaleKeys.calculateScreenTab3Details1.tr(),
-                            style: TextStyle(fontSize: 20),
+                          Expanded(
+                            child: put_line(
+                              line_height: 5.0,
+                              color: Colors.black38,
+                            ),
                           ),
                         ],
                       ),
-                    )),
-              ),
-              CustomTextFormField(
-                keyboardType: TextInputType.number,
-                hintText: cubit.longHintWords,
-                controller: cubit.longController,
-                postWidget: DropdownButton(
-                    underline: const SizedBox(),
-                    focusColor: Colors.black,
-                    dropdownColor: yellowColor,
-                    autofocus: true,
-                    hint: Text(LocaleKeys.cm.tr(),
-                        style: TextStyle(color: Colors.black)),
-                    onTap: () {},
-                    value: cubit.lengthSelected,
-                    onChanged: (newVal) {
-                      cubit.selectLengthChoice(newVal);
-                    },
-                    items: cubit.menuList.map((val) {
-                      return DropdownMenuItem(
-                        value: val,
-                        child: Text(
-                          val,
-                          style: const TextStyle(color: Colors.black),
-                        ),
-                      );
-                    }).toList()),
-              ),
-              CustomTextFormField(
-                keyboardType: TextInputType.number,
-                hintText: cubit.widthHintWords,
-                controller: cubit.widthController,
-                postWidget: DropdownButton(
-                    underline: const SizedBox(),
-                    focusColor: Colors.black,
-                    dropdownColor: yellowColor,
-                    autofocus: true,
-                    hint: Text(LocaleKeys.cm.tr(),
-                        style: TextStyle(color: Colors.black)),
-                    onTap: () {},
-                    value: cubit.widthSelected,
-                    onChanged: (newVal) {
-                      cubit.selectWidthChoice(newVal);
-                    },
-                    items: cubit.menuList.map((val) {
-                      return DropdownMenuItem(
-                        value: val,
-                        child: Text(
-                          val,
-                          style: const TextStyle(color: Colors.black),
-                        ),
-                      );
-                    }).toList()),
-              ),
-              CustomTextFormField(
-                keyboardType: TextInputType.number,
-                hintText: cubit.weightHintWords,
-                controller: cubit.weightController,
-                postWidget: DropdownButton(
-                    underline: const SizedBox(),
-                    focusColor: Colors.black,
-                    dropdownColor: yellowColor,
-                    autofocus: true,
-                    hint: Text(LocaleKeys.weight1.tr(),
-                        style: TextStyle(color: Colors.black)),
-                    onTap: () {},
-                    value: cubit.weightSelected,
-                    onChanged: (newVal) {
-                      cubit.selectWeightChoice(newVal);
-                    },
-                    items: cubit.menu1List.map((val) {
-                      return DropdownMenuItem(
-                        value: val,
-                        child: Text(
-                          val,
-                          style: const TextStyle(color: Colors.black),
-                        ),
-                      );
-                    }).toList()),
-              ),
-              CustomTextFormField(
-                keyboardType: TextInputType.number,
-                hintText: cubit.heightHintWords,
-                controller: cubit.heightController,
-                postWidget: DropdownButton(
-                    underline: const SizedBox(),
-                    focusColor: Colors.black,
-                    dropdownColor: yellowColor,
-                    autofocus: true,
-                    hint: Text(LocaleKeys.cm.tr(),
-                        style: TextStyle(color: Colors.black)),
-                    onTap: () {},
-                    value: cubit.heightSelected,
-                    onChanged: (newVal) {
-                      cubit.selectHeightChoice(newVal);
-                    },
-                    items: cubit.menuList.map((val) {
-                      return DropdownMenuItem(
-                        value: val,
-                        child: Text(
-                          val,
-                          style: const TextStyle(color: Colors.black),
-                        ),
-                      );
-                    }).toList()),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                child: DropdownButton(
-                    isExpanded: true,
-                    menuMaxHeight: 250.0,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20.0),
-                    focusColor: Colors.black,
-                    dropdownColor: yellowColor,
-                    autofocus: true,
-                    hint: Text(LocaleKeys.kind.tr(),
-                        style: TextStyle(color: Colors.black)),
-                    onTap: () {},
-                    value: cubit.shipSelected,
-                    onChanged: (newVal) {
-                      cubit.selectShipKindChoice(newVal);
-                    },
-                    items: cubit.shippingKindMenu.map((val) {
-                      return DropdownMenuItem(
-                        value: val,
-                        child: Text(
-                          val,
-                          style: const TextStyle(color: Colors.black),
-                        ),
-                      );
-                    }).toList()),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50.0),
-                child: Row(
-                  children: [
-                    Text(LocaleKeys.toggle.tr()),
-                    cubit.no
-                        ? ToggleNoIconCustomDesign(
-                            downOnTapFunction: () {
-                              cubit.performYes();
-                            },
-                            upOnTapFunction: () {
-                              cubit.performNo();
-                            },
-                            containerColor: greyColor,
-                            upContainerColor: yellowColor,
-                            downContainerColor: darkGreyColor,
-                            upText: Text(LocaleKeys.no.tr()),
-                            downText: Text(LocaleKeys.yes.tr()),
-                          )
-                        : ToggleNoIconCustomDesignUpdate(
-                            downOnTapFunction: () {
-                              cubit.performYes();
-                            },
-                            upOnTapFunction: () {
-                              cubit.performNo();
-                            },
-                            containerColor: greyColor,
-                            upContainerColor: darkGreyColor,
-                            downContainerColor: yellowColor,
-                            upText: Text(LocaleKeys.no.tr()),
-                            downText: Text(LocaleKeys.yes.tr()),
+                      const SizedBox(
+                        height: 30.0,
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            width: 90,
+                            decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(10.0),
+                                border: Border.all(
+                                  width: 0.8,
+                                  color: purpleColor,
+                                )),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    LocaleKeys.shippingSearch1.tr(),
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                  const Spacer(),
+                                  Icon(
+                                    Icons.calendar_today,
+                                    color: purpleColor,
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: ButtonCustomDesign(
-                  text: Text(
-                    LocaleKeys.calculateShipping.tr(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  inkwellFunc: () {},
-                  containerColor: purpleColor,
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
-
-class ChargeTo extends StatelessWidget {
-  const ChargeTo({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<InjunctionsAppCubitClass, InjunctionsStates>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        var cubit = InjunctionsAppCubitClass.get(context);
-        return Container(
-          color: greyColor,
-          child: Column(
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: DropdownButton(
-                      alignment: AlignmentDirectional.bottomCenter,
-                      underline: put_line(),
-                      focusColor: Colors.black,
-                      dropdownColor: yellowColor,
-                      isExpanded: true,
-                      hint: Text(LocaleKeys.calculateScreenChoose.tr(),
-                          style: TextStyle(color: Colors.black)),
-                      onTap: () {},
-                      value: cubit.selectedCity,
-                      onChanged: (newVal) {
-                        cubit.selectFromCityChoices(newVal);
-                      },
-                      items: cubit.cityList.map((val) {
-                        return DropdownMenuItem(
-                          alignment: AlignmentDirectional.centerStart,
-                          value: val,
-                          child: Text(
-                            val,
-                            style: const TextStyle(color: Colors.black),
-                            //textAlign: TextAlign.right,
+                          const SizedBox(
+                            width: 5,
                           ),
-                        );
-                      }).toList()),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40),
-                child: ButtonCustomDesign(
-                  text: Text(
-                    LocaleKeys.calculateScreenNext.tr(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  inkwellFunc: () {
-                    cubit.chooseLeft();
-                  },
-                  containerColor: purpleColor,
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
-
-class ChargeFrom extends StatelessWidget {
-  const ChargeFrom({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<InjunctionsAppCubitClass, InjunctionsStates>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        var cubit = InjunctionsAppCubitClass.get(context);
-        return Container(
-          color: greyColor,
-          child: Column(
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: DropdownButton(
-                      alignment: AlignmentDirectional.bottomCenter,
-                      underline: put_line(),
-                      focusColor: Colors.black,
-                      dropdownColor: yellowColor,
-                      isExpanded: true,
-                      hint: Text(LocaleKeys.calculateScreenChoose.tr(),
-                          style: TextStyle(color: Colors.black)),
-                      onTap: () {},
-                      value: cubit.selectedPosition,
-                      onChanged: (newVal) {
-                        cubit.selectFromPositionChoices(newVal);
-                      },
-                      items: cubit.cityList.map((val) {
-                        return DropdownMenuItem(
-                          alignment: AlignmentDirectional.centerStart,
-                          value: val,
-                          child: Text(
-                            val,
-                            style: const TextStyle(color: Colors.black),
-                            //textAlign: TextAlign.right,
+                          Container(
+                            width: 90,
+                            decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(10.0),
+                                border: Border.all(
+                                  width: 0.8,
+                                  color: purpleColor,
+                                )),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    LocaleKeys.shippingSearch2.tr(),
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                  const Spacer(),
+                                  Icon(
+                                    Icons.calendar_today,
+                                    color: purpleColor,
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        );
-                      }).toList()),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Expanded(
+                            child: Stack(
+                              alignment: AlignmentDirectional.centerEnd,
+                              children: [
+                                Container(
+                                  alignment: AlignmentDirectional.centerStart,
+                                  padding: EdgeInsetsDirectional.only(start: 5),
+                                  width: 200,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                      color: greyColor,
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      border: Border.all(
+                                        color: purpleColor,
+                                      )),
+                                  child: Text(
+                                    LocaleKeys.shippingSearch3.tr(),
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                ),
+                                Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                      color: purpleColor,
+                                      borderRadius:
+                                          const BorderRadiusDirectional.only(
+                                              bottomEnd: Radius.circular(10.0),
+                                              topEnd: Radius.circular(10.0)),
+                                      border: Border.all(
+                                        width: 0.8,
+                                        color: purpleColor,
+                                      )),
+                                  child: const Expanded(
+                                    child: Icon(
+                                      Icons.search,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40),
-                child: ButtonCustomDesign(
-                  text: Text(
-                    LocaleKeys.calculateScreenNext.tr(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
+              Expanded(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
+                  child: ListView.separated(
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return DecoratedContainerWithShadow(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Column(
+                                  children: [
+                                    CustomRowForDetails(
+                                      text1: LocaleKeys
+                                          .walletScreenListItemDetails1
+                                          .tr(),
+                                      text2: "1855",
+                                    ),
+                                    CustomRowForDetails(
+                                      text1: LocaleKeys.shippingListItemDetails2
+                                          .tr(),
+                                      text2: "1855",
+                                    ),
+                                    CustomRowForDetails(
+                                      text1: LocaleKeys
+                                          .walletScreenListItemDetails2
+                                          .tr(),
+                                      text2: "1855",
+                                    ),
+                                    CustomRowForDetails(
+                                      text1: LocaleKeys.shippingListItemDetails4
+                                          .tr(),
+                                      text2: "1855",
+                                    ),
+                                    CustomRowForDetails(
+                                      text1: LocaleKeys.shippingListItemDetails5
+                                          .tr(),
+                                      text2: "1855",
+                                    ),
+                                    CustomRowForDetails(
+                                      text1: LocaleKeys.shippingListItemDetails6
+                                          .tr(),
+                                      text2: "1855",
+                                    ),
+                                    CustomRowForDetails(
+                                      text1: LocaleKeys.shippingListItemDetails7
+                                          .tr(),
+                                      text2: "1855",
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: InkWell(
+                                    onTap: () {
+                                      // navigateAndBack(
+                                      //     context,
+                                      //     layout:
+                                      //     FollowShippingOnMapScreen());
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20.0, vertical: 5.0),
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 10.0),
+                                      child: const CustomContainerForDetails(
+                                        text1: "تفاصيل",
+                                        icon: Icon(
+                                          Icons.arrow_forward_ios,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return SizedBox(
+                        height: 20,
+                      );
+                    },
+                    itemCount: 10,
                   ),
-                  inkwellFunc: () {
-                    cubit.chooseMiddle();
-                  },
-                  containerColor: purpleColor,
                 ),
               ),
             ],

@@ -57,10 +57,12 @@ class _HomeScreen extends State<HomeScreen> {
       listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
-          appBar: generateAppBar(
+          appBar: generateAppBarForCompanyMainScreens(
+            mainScreen: true,
             context: context,
             title: LocaleKeys.bottomNavItemsName1.tr(),
             svgPath: "home",
+            textHeight: 2.0
           ),
           body: Column(
             children: [

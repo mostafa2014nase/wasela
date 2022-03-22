@@ -13,7 +13,7 @@ class FollowShippingOnMapScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: greyColor,
       appBar: AppBar(
-        toolbarHeight: 100,
+        toolbarHeight: 140,
         backgroundColor: purpleColor,
         foregroundColor: Colors.white,
         elevation: 0,
@@ -235,7 +235,7 @@ class FollowShippingOnMapScreen extends StatelessWidget {
                 ),
               ),
             ),
-            bottom: 505,
+            bottom: 470,
           ),
         ],
       ),

@@ -18,59 +18,28 @@ class AddNewShipForCompanyApp extends StatelessWidget {
       builder: (context, state) {
         var cubit = AddNewShipCubitClass.get(context);
         return Scaffold(
-          appBar: AppBar(
-            toolbarHeight: 140,
-            backgroundColor: purpleColor,
-            centerTitle: true,
-            foregroundColor: Colors.white,
-            elevation: 0,
-            leading: IconButton(
-              onPressed: () {
-                backToPrevious(context);
-              },
-              icon: Icon(
-                Icons.arrow_back,
-              ),
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: InkWell(
-                    onTap: () {},
-                    child: Icon(
-                      Icons.notifications,
-                      size: 35,
-                    )),
-              ),
-            ],
-            title: Column(
-              children: [
-                SvgPicture.asset(
-                  "Assets/images/wallet.svg",
-                  width: 40,
-                  height: 40,
-                  color: Colors.white,
-                ),
-                Text(
-                  "أضافة شحنة من على التطبيق",
-                  style: TextStyle(fontSize: 22,),
-                ),
-              ],
-            ),
+          appBar: generateAppBarForCompanyMainScreens(
+            title: "أضافة شحنة جديدة",
+            svgPath: "noun-shipping-3484992",
+            context: context,
+            imageSize: 80.0,
+            mainScreen: true,
           ),
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 15,),
+                  SizedBox(
+                    height: 15,
+                  ),
                   Text(
                     "أختر طريقة أدخال الشحنة",
                     style: TextStyle(color: Colors.black, fontSize: 25),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 30.0,horizontal: 15),
+                        vertical: 30.0, horizontal: 15),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -84,7 +53,7 @@ class AddNewShipForCompanyApp extends StatelessWidget {
                                 color: purpleColor,
                               ),
                               InkWell(
-                                onTap: (){},
+                                onTap: () {},
                                 child: CustomDesignUnActive(
                                   containerColor: Colors.transparent,
                                   borderColor: purpleColor,
@@ -95,8 +64,7 @@ class AddNewShipForCompanyApp extends StatelessWidget {
                                     style: TextStyle(
                                         color: purpleColor,
                                         fontSize: 13,
-                                        fontWeight: FontWeight.bold
-                                    ),
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   height: 50,
                                 ),
@@ -104,7 +72,9 @@ class AddNewShipForCompanyApp extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(width: 20,),
+                        SizedBox(
+                          width: 20,
+                        ),
                         Expanded(
                           child: Column(
                             children: [
@@ -115,7 +85,7 @@ class AddNewShipForCompanyApp extends StatelessWidget {
                                 color: purpleColor,
                               ),
                               InkWell(
-                                onTap: (){},
+                                onTap: () {},
                                 child: CustomDesignUnActive(
                                   containerColor: Colors.transparent,
                                   borderColor: purpleColor,
@@ -126,8 +96,7 @@ class AddNewShipForCompanyApp extends StatelessWidget {
                                     style: TextStyle(
                                         color: purpleColor,
                                         fontSize: 13,
-                                        fontWeight: FontWeight.bold
-                                    ),
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   height: 50,
                                 ),
@@ -138,7 +107,9 @@ class AddNewShipForCompanyApp extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 30.0,),
+                  SizedBox(
+                    height: 30.0,
+                  ),
                   Column(
                     children: [
                       SvgPicture.asset(
@@ -148,8 +119,9 @@ class AddNewShipForCompanyApp extends StatelessWidget {
                         color: purpleColor,
                       ),
                       InkWell(
-                        onTap: (){
-                          navigateAndBack(context, layout: AddShipFromMobileApp());
+                        onTap: () {
+                          navigateAndBack(context,
+                              layout: AddShipFromMobileApp());
                         },
                         child: CustomDesignUnActive(
                           width: 180,
@@ -162,8 +134,7 @@ class AddNewShipForCompanyApp extends StatelessWidget {
                             style: TextStyle(
                                 color: purpleColor,
                                 fontSize: 13,
-                                fontWeight: FontWeight.bold
-                            ),
+                                fontWeight: FontWeight.bold),
                           ),
                           height: 50,
                         ),

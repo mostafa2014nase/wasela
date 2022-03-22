@@ -19,7 +19,7 @@ class ToWhoDataDetails extends StatelessWidget {
         var cubit = CalculateChargingCubitClass.get(context);
         return Scaffold(
           appBar: AppBar(
-            toolbarHeight: 100,
+            toolbarHeight: 140,
             backgroundColor: purpleColor,
             foregroundColor: Colors.white,
             elevation: 0,

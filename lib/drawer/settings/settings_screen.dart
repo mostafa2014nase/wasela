@@ -27,40 +27,19 @@ class SettingsScreen extends StatelessWidget {
             Icons.arrow_back,
           ),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: InkWell(
-                onTap: () {},
-                child: Icon(
-                  Icons.notifications,
-                  size: 35,
-                )),
-          ),
-        ],
-        title: Padding(
-          padding: const EdgeInsetsDirectional.only(start: 80),
-          // isArabic == false
-          //     ? const EdgeInsetsDirectional.only(start: 80)
-          //     : const EdgeInsetsDirectional.only(start: 80),
-          child: Row(
-            children: [
-              Column(
-                children: [
-                  SvgPicture.asset(
-                    "Assets/images/settings (3).svg",
-                    width: 40,
-                    height: 40,
-                    color: Colors.white,
-                  ),
-                  Text(
-                    LocaleKeys.settingsAddress.tr(),
-                    style: TextStyle(fontSize: 25, height: 1.5),
-                  ),
-                ],
-              ),
-            ],
-          ),
+        title: Column(
+          children: [
+            SvgPicture.asset(
+              "Assets/images/settings (3).svg",
+              width: 40,
+              height: 40,
+              color: Colors.white,
+            ),
+            Text(
+              LocaleKeys.settingsAddress.tr(),
+              style: TextStyle(fontSize: 25, height: 1.5),
+            ),
+          ],
         ),
       ),
       body: Column(

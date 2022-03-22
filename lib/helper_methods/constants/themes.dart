@@ -29,3 +29,6 @@ Color textGreyTwoColor = const Color(0xff4D4D4D);
 Color textBlueColor = const Color(0xff213959);
 Color iconBlackColor = const Color(0xff1A1A1A);
 Color greyColortwoo = const Color(0xffE3E3E3);
+Color blueColor = const Color(0xff0071BC);
+Color greenColor = const Color(0xff0F9850);
+Color orangeColor = const Color(0xffF15A24);

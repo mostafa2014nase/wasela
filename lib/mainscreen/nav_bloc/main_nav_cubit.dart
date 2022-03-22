@@ -13,7 +13,6 @@ import 'package:wasela/comapny_app/app_layouts/add_new_ship/add_new_ship_screen.
 import 'package:wasela/comapny_app/app_layouts/add_order/add_order_screen.dart';
 import 'package:wasela/comapny_app/app_layouts/home/home_screen.dart';
 import 'package:wasela/comapny_app/app_layouts/injunction/injunctions_screen.dart';
-import 'package:wasela/comapny_app/app_layouts/notifications/notifications_screen.dart';
 import 'package:wasela/comapny_app/app_layouts/offers/offers_screen.dart';
 import 'package:wasela/comapny_app/app_layouts/ship/charge_screen.dart';
 import 'package:wasela/comapny_app/app_layouts/trade_store/trade_store_screen.dart';
@@ -112,7 +111,6 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
     AddOrder(),
     TradeStoreSystem(),
     OffersScreenForCompanyApp(),
-    NotificationsForCompanyApp(),
   ];
   List<String> titlesForCompanyApp = [
     LocaleKeys.bottomNavItemsName1.tr(),
@@ -122,17 +120,8 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
   "اضافة طلب",
   "نظام التخزين للتجار",
   "العروض",
-  "الأشعارات",
   ];
 
-  List<IconData> iconsListForCompanyApp = [
-    Icons.home,
-    //Icons.wallet_giftcard,
-    Icons.calculate,
-    Icons.wallet_giftcard_sharp,
-    Icons.hotel,
-    Icons.person,
-  ];
   List<BottomNavigationBarItem> navigationBarItemsForCompanyApp = [
     BottomNavigationBarItem(
         label: (LocaleKeys.bottomNavItemsName1.tr()),
@@ -162,14 +151,9 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
       label: "العروض",
       icon: Icon(Icons.home),
     ),
-    BottomNavigationBarItem(
-      label: "الأشعارات",
-      icon: Icon(Icons.home),
-    ),
   ];
-  PersistentTabController persistentTabControllerForCompanyApp =
-      PersistentTabController();
 
+  GlobalKey<ScaffoldState> globalKey = GlobalKey();
   int indexForCompanyApp = 0;
 
   changeBarItemForCompanyApp(barIndex) {
@@ -193,6 +177,21 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
     LocaleKeys.promoCodeDrawer.tr(),
     LocaleKeys.evaluateDrawer.tr(),
     LocaleKeys.settingsDrawer.tr(),
+  ];
+
+  List drawerSvgPicsCompany = [
+    "feedbackkk",
+    "settings (3)",
+    "Contact US-2",
+    "noun-accounting-4679331",
+    "Edit-2",
+  ];
+  List drawerCompanyTexts = [
+    LocaleKeys.evaluateDrawer.tr(),
+    LocaleKeys.settingsDrawer.tr(),
+    "تواصل معنا",
+    "الحسابات",
+    "تعديل بياناتي",
   ];
 
   void getFirebaseToken() {

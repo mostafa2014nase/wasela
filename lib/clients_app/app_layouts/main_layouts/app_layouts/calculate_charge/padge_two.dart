@@ -27,50 +27,12 @@ class CalculateChargeSecondScreen extends StatelessWidget {
       builder: (context, state) {
         var cubit = CalculateChargingCubitClass.get(context);
         return Scaffold(
-          appBar: AppBar(
-            toolbarHeight: 100,
-            backgroundColor: purpleColor,
-            foregroundColor: Colors.white,
-            elevation: 0,
-            centerTitle: true,
-            title: SizedBox(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(start: 50),
-                    child: Column(
-                      children: [
-                        SvgPicture.asset(
-                          "Assets/images/wallet.svg",
-                          width: 40,
-                          height: 40,
-                          color: Colors.white,
-                        ),
-                        Text(
-                          LocaleKeys.bottomNavItemsName3.tr(),
-                          style: TextStyle(fontSize: 25, height: 1.5),
-                        ),
-                      ],
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.notifications_none,
-                        size: 40,
-                      )),
-                ],
-              ),
-            ),
-            leading: IconButton(
-              onPressed: () {
-                backToPrevious(context);
-              },
-              icon: Icon(
-                Icons.arrow_back,
-              ),
-            ),
+          appBar: generateAppBarForCompanyMainScreens(
+            mainScreen: false,
+            title: LocaleKeys.bottomNavItemsName3.tr(),
+            svgPath: "wallet",
+            context: context,
+            textHeight: 2.0,
           ),
           resizeToAvoidBottomInset: false,
           body: SingleChildScrollView(

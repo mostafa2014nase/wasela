@@ -19,7 +19,7 @@ class ContineuPayingMethod extends StatelessWidget {
         return Scaffold(
           backgroundColor: greyColor,
           appBar: AppBar(
-            toolbarHeight: 100,
+            toolbarHeight: 140,
             backgroundColor: purpleColor,
             foregroundColor: Colors.white,
             elevation: 0,

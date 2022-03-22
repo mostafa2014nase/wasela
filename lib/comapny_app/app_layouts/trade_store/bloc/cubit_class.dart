@@ -6,15 +6,11 @@ class TradeStoreSystemCubitClass extends Cubit<TradeStoreSystemStates> {
 
   static TradeStoreSystemCubitClass get(context) => BlocProvider.of(context);
 
-  bool map = true;
-
-  void toggleMap() {
-    map = true;
-    emit(PerformToggleMenuSuccessState());
-  }
-
-  void toggleMenu() {
-    map = false;
-    emit(PerformToggleMenuSuccessState());
-  }
+  List<String> storeStyleName = [
+    "التخزين انظمة (Drive-in )",
+    "نظام 2 ",
+    "نظام 3",
+    "نظام 4",
+    "نظام 5",
+  ];
 }

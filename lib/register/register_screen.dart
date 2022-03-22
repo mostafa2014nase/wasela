@@ -61,7 +61,7 @@ class RegisterScreen extends StatelessWidget {
                                             ? purpleColor
                                             : yellowColor,
                                         text: SvgPicture.asset(
-                                          'Assets/images/client.svg',
+                                          'Assets/images/Client-2.svg',
                                           color: isCompany == 0
                                               ? purpleColor
                                               : yellowColor,

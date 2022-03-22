@@ -66,13 +66,13 @@ class AddNewShipCubitClass extends Cubit<AddNewShipStates> {
   }
 
   // complete progress
-  bool isDataSent = false;
+  //bool isDataSent = false;
 
   void makeDataSent() {
-    isDataSent = true;
-    emit(DataSentSuccessState());
-  }  void makeDataNotSent() {
-    isDataSent = false;
     emit(DataSentSuccessState());
   }
+  void loadingFun() {
+    emit(DataSentLoadingState());
+  }
+
 }

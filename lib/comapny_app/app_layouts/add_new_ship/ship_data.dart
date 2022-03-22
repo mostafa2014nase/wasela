@@ -15,49 +15,124 @@ class ShipData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AddNewShipCubitClass, AddNewShipStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is DataSentLoadingState) {
+          var cubit = AddNewShipCubitClass.get(context);
+          myShowDialogForMarketing(
+              context: context,
+              alertDialog: CustomAlertDialogForMarketing(
+                bodyColor: purpleColor,
+                imageBackColor: purpleColor,
+                backGroundImageColor: Colors.white,
+                mainWidgetText: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Material(
+                      child: InkWell(
+                        child: Text(
+                          "جاري رفع بيانات الشحنة",
+                          style: lightTheme.textTheme.bodyText1?.copyWith(
+                            fontSize: 25,
+                            color: Colors.white,
+                          ),
+                        ),
+                        onTap: () {
+                          cubit.makeDataSent();
+                        },
+                      ),
+                      color: Colors.transparent,
+                    ),
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    const CupertinoActivityIndicator(
+                      radius: 50.0,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                  ],
+                ),
+                topImage: SvgPicture.asset(
+                  "Assets/images/noun-excel-2788108.svg",
+                  width: 80,
+                  height: 80,
+                  color: Colors.white,
+                ),
+              ));
+        } else if (state is DataSentSuccessState) {
+          Navigator.pop(context);
+          myShowDialogForMarketing(
+              context: context,
+              alertDialog: CustomAlertDialogForMarketing(
+                bodyColor: purpleColor,
+                imageBackColor: purpleColor,
+                backGroundImageColor: Colors.white,
+                mainWidgetText: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "تم رفع بيانات الشحنة بنجاح",
+                      style: lightTheme.textTheme.bodyText1?.copyWith(
+                        fontSize: 25,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    const Icon(
+                      Icons.check_circle,
+                      color: Colors.white,
+                      size: 80.0,
+                    ),
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {},
+                        child: CustomDesignUnActive(
+                          text: Text(
+                            "الذهاب للشحنات",
+                            style: lightTheme.textTheme.bodyText1?.copyWith(
+                              fontSize: 25,
+                              color: purpleColor,
+                            ),
+                          ),
+                          borderColor: Colors.white,
+                          containerColor: Colors.white,
+                          borderRadius: 10.0,
+                          width: 200.0,
+                          height: 60.0,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                  ],
+                ),
+                topImage: SvgPicture.asset(
+                  "Assets/images/wallet.svg",
+                  width: 40,
+                  height: 40,
+                  color: Colors.white,
+                ),
+              ));
+        }
+      },
       builder: (context, state) {
         var cubit = AddNewShipCubitClass.get(context);
         return Scaffold(
-          appBar: AppBar(
-            toolbarHeight: 140,
-            backgroundColor: purpleColor,
-            centerTitle: true,
-            foregroundColor: Colors.white,
-            elevation: 0,
-            leading: IconButton(
-              onPressed: () {
-                backToPrevious(context);
-              },
-              icon: Icon(
-                Icons.arrow_back,
-              ),
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: InkWell(
-                    onTap: () {},
-                    child: Icon(
-                      Icons.notifications,
-                      size: 35,
-                    )),
-              ),
-            ],
-            title: Column(
-              children: [
-                SvgPicture.asset(
-                  "Assets/images/noun-application-1603837.svg",
-                  width: 100,
-                  height: 100,
-                  color: Colors.white,
-                ),
-                Text(
-                  "أضافة شحنة جديدة",
-                  style: TextStyle(fontSize: 25, height: 0.5),
-                ),
-              ],
-            ),
+          appBar:generateAppBarForCompanyMainScreens(
+            title: "أضافة شحنة جديدة",
+            svgPath: "noun-application-1603837",
+            context: context,
+            imageSize: 80.0,
+            mainScreen: false,
           ),
           body: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -66,22 +141,22 @@ class ShipData extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
-                    Text(
+                    const Text(
                       "بيانات الشحنة",
                       style: TextStyle(color: Colors.black, fontSize: 25),
                     ),
                     Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.horizontal(
                           right: Radius.circular(10.0),
                           left: Radius.circular(10.0),
                         ),
                       ),
-                      margin: EdgeInsets.symmetric(vertical: 10),
+                      margin: const EdgeInsets.symmetric(vertical: 10),
                       child: TextFormField(
                         controller: cubit.productName,
                         keyboardType: TextInputType.text,
@@ -92,11 +167,11 @@ class ShipData extends StatelessWidget {
                             enabledBorder: OutlineInputBorder(
                                 borderSide:
                                     BorderSide(color: purpleColor, width: 1.5),
-                                borderRadius: BorderRadius.horizontal(
+                                borderRadius: const BorderRadius.horizontal(
                                   right: Radius.circular(10.0),
                                   left: Radius.circular(10.0),
                                 )),
-                            border: OutlineInputBorder(
+                            border: const OutlineInputBorder(
                                 borderRadius: BorderRadius.horizontal(
                               right: Radius.circular(10.0),
                               left: Radius.circular(10.0),
@@ -107,17 +182,17 @@ class ShipData extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Container(
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.horizontal(
                                 right: Radius.circular(10.0),
                                 left: Radius.circular(10.0),
                               ),
                             ),
-                            margin: EdgeInsets.symmetric(vertical: 10),
+                            margin: const EdgeInsets.symmetric(vertical: 10),
                             child: TextFormField(
                               controller: cubit.weight,
-                              keyboardType: TextInputType.text,
+                              keyboardType: TextInputType.numberWithOptions(),
                               decoration: InputDecoration(
                                   fillColor: Colors.white,
                                   hintStyle: TextStyle(color: purpleColor),
@@ -125,11 +200,12 @@ class ShipData extends StatelessWidget {
                                   enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: purpleColor, width: 1.5),
-                                      borderRadius: BorderRadius.horizontal(
+                                      borderRadius:
+                                          const BorderRadius.horizontal(
                                         right: Radius.circular(10.0),
                                         left: Radius.circular(10.0),
                                       )),
-                                  border: OutlineInputBorder(
+                                  border: const OutlineInputBorder(
                                       borderRadius: BorderRadius.horizontal(
                                     right: Radius.circular(10.0),
                                     left: Radius.circular(10.0),
@@ -137,22 +213,22 @@ class ShipData extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Expanded(
                           child: Container(
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.horizontal(
                                 right: Radius.circular(10.0),
                                 left: Radius.circular(10.0),
                               ),
                             ),
-                            margin: EdgeInsets.symmetric(vertical: 10),
+                            margin: const EdgeInsets.symmetric(vertical: 10),
                             child: TextFormField(
                               controller: cubit.size,
-                              keyboardType: TextInputType.text,
+                              keyboardType: TextInputType.numberWithOptions(),
                               decoration: InputDecoration(
                                   fillColor: Colors.white,
                                   hintStyle: TextStyle(color: purpleColor),
@@ -160,11 +236,12 @@ class ShipData extends StatelessWidget {
                                   enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: purpleColor, width: 1.5),
-                                      borderRadius: BorderRadius.horizontal(
+                                      borderRadius:
+                                          const BorderRadius.horizontal(
                                         right: Radius.circular(10.0),
                                         left: Radius.circular(10.0),
                                       )),
-                                  border: OutlineInputBorder(
+                                  border: const OutlineInputBorder(
                                       borderRadius: BorderRadius.horizontal(
                                     right: Radius.circular(10.0),
                                     left: Radius.circular(10.0),
@@ -175,17 +252,17 @@ class ShipData extends StatelessWidget {
                       ],
                     ),
                     Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.horizontal(
                           right: Radius.circular(10.0),
                           left: Radius.circular(10.0),
                         ),
                       ),
-                      margin: EdgeInsets.symmetric(vertical: 10),
+                      margin: const EdgeInsets.symmetric(vertical: 10),
                       child: TextFormField(
                         controller: cubit.number,
-                        keyboardType: TextInputType.numberWithOptions(),
+                        keyboardType: const TextInputType.numberWithOptions(),
                         decoration: InputDecoration(
                             fillColor: Colors.white,
                             hintStyle: TextStyle(color: purpleColor),
@@ -193,11 +270,11 @@ class ShipData extends StatelessWidget {
                             enabledBorder: OutlineInputBorder(
                                 borderSide:
                                     BorderSide(color: purpleColor, width: 1.5),
-                                borderRadius: BorderRadius.horizontal(
+                                borderRadius: const BorderRadius.horizontal(
                                   right: Radius.circular(10.0),
                                   left: Radius.circular(10.0),
                                 )),
-                            border: OutlineInputBorder(
+                            border: const OutlineInputBorder(
                                 borderRadius: BorderRadius.horizontal(
                               right: Radius.circular(10.0),
                               left: Radius.circular(10.0),
@@ -205,17 +282,17 @@ class ShipData extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.horizontal(
                           right: Radius.circular(10.0),
                           left: Radius.circular(10.0),
                         ),
                       ),
-                      margin: EdgeInsets.symmetric(vertical: 10),
+                      margin: const EdgeInsets.symmetric(vertical: 10),
                       child: TextFormField(
                         controller: cubit.description,
-                        keyboardType: TextInputType.numberWithOptions(),
+                        keyboardType:  TextInputType.text,
                         decoration: InputDecoration(
                             fillColor: Colors.white,
                             hintStyle: TextStyle(color: purpleColor),
@@ -223,18 +300,18 @@ class ShipData extends StatelessWidget {
                             enabledBorder: OutlineInputBorder(
                                 borderSide:
                                     BorderSide(color: purpleColor, width: 1.5),
-                                borderRadius: BorderRadius.horizontal(
+                                borderRadius: const BorderRadius.horizontal(
                                   right: Radius.circular(10.0),
                                   left: Radius.circular(10.0),
                                 )),
-                            border: OutlineInputBorder(
+                            border: const OutlineInputBorder(
                                 borderRadius: BorderRadius.horizontal(
                               right: Radius.circular(10.0),
                               left: Radius.circular(10.0),
                             ))),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     CustomDesignUnActive(
@@ -244,7 +321,7 @@ class ShipData extends StatelessWidget {
                       containerColor: Colors.transparent,
                       text: DropdownButton(
                           alignment: AlignmentDirectional.bottomCenter,
-                          underline: SizedBox(),
+                          underline: const SizedBox(),
                           focusColor: Colors.black,
                           dropdownColor: yellowColor,
                           icon: CustomDesignUnActive(
@@ -253,7 +330,7 @@ class ShipData extends StatelessWidget {
                             borderRadius: 5.0,
                             containerColor: purpleColor,
                             borderColor: purpleColor,
-                            text: Icon(Icons.arrow_drop_down,
+                            text: const Icon(Icons.arrow_drop_down,
                                 color: Colors.white, size: 30.0),
                           ),
                           isExpanded: true,
@@ -284,26 +361,26 @@ class ShipData extends StatelessWidget {
                             );
                           }).toList()),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.horizontal(
                           right: Radius.circular(10.0),
                           left: Radius.circular(10.0),
                         ),
                       ),
-                      margin: EdgeInsets.symmetric(vertical: 10),
+                      margin: const EdgeInsets.symmetric(vertical: 10),
                       child: TextFormField(
                         textAlign: TextAlign.start,
                         maxLines: 8,
                         textAlignVertical: TextAlignVertical.top,
                         controller: cubit.mobile,
-                        keyboardType: TextInputType.numberWithOptions(),
+                        keyboardType:  TextInputType.text,
                         decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(
+                            contentPadding: const EdgeInsets.only(
                                 left: 10.0, right: 10.0, top: 20.0),
                             fillColor: Colors.white,
                             hintStyle: TextStyle(color: purpleColor),
@@ -311,18 +388,18 @@ class ShipData extends StatelessWidget {
                             enabledBorder: OutlineInputBorder(
                                 borderSide:
                                     BorderSide(color: purpleColor, width: 1.5),
-                                borderRadius: BorderRadius.horizontal(
+                                borderRadius: const BorderRadius.horizontal(
                                   right: Radius.circular(10.0),
                                   left: Radius.circular(10.0),
                                 )),
-                            border: OutlineInputBorder(
+                            border: const OutlineInputBorder(
                                 borderRadius: BorderRadius.horizontal(
                               right: Radius.circular(10.0),
                               left: Radius.circular(10.0),
                             ))),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Row(
@@ -360,7 +437,7 @@ class ShipData extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10.0,
                                   ),
                                   Text(
@@ -373,111 +450,14 @@ class ShipData extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 20,
                         ),
                         Expanded(
                           flex: 1,
                           child: InkWell(
                             onTap: () {
-                              cubit.makeDataNotSent();
-                              myShowDialogForMarketing(
-                                  context: context,
-                                  alertDialog: CustomAlertDialogForMarketing(
-                                    bodyColor: purpleColor,
-                                    imageBackColor: purpleColor,
-                                    backGroundImageColor: Colors.white,
-                                    mainWidgetText: cubit.isDataSent == false
-                                        ? Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Material(
-                                                child: InkWell(
-                                                  child: Text(
-                                                    "جاري رفع بيانات الشحنة",
-                                                    style: lightTheme
-                                                        .textTheme.bodyText1
-                                                        ?.copyWith(
-                                                      fontSize: 25,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                  onTap: () {
-                                                    cubit.makeDataSent();
-                                                  },
-                                                ),
-                                                color: Colors.transparent,
-                                              ),
-                                              SizedBox(
-                                                height: 30.0,
-                                              ),
-                                              CupertinoActivityIndicator(
-                                                radius: 50.0,
-                                                color: Colors.white,
-                                              ),
-                                              SizedBox(
-                                                height: 20.0,
-                                              ),
-                                            ],
-                                          )
-                                        : Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "تم رفع بيانات الشحنة بنجاح",
-                                                style: lightTheme
-                                                    .textTheme.bodyText1
-                                                    ?.copyWith(
-                                                  fontSize: 25,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 30.0,
-                                              ),
-                                              Icon(
-                                                Icons.check_circle,
-                                                color: Colors.white,
-                                                size: 80.0,
-                                              ),
-                                              SizedBox(
-                                                height: 30.0,
-                                              ),
-                                              Material(
-                                                color: Colors.transparent,
-                                                child: InkWell(
-                                                  onTap: () {},
-                                                  child: CustomDesignUnActive(
-                                                    text:
-                                                        Text("الذهاب للشحنات",       style: lightTheme
-                                                            .textTheme.bodyText1
-                                                            ?.copyWith(
-                                                          fontSize: 25,
-                                                          color: purpleColor,
-                                                        ),),
-                                                    borderColor: Colors.white,
-                                                    containerColor:
-                                                        Colors.white,
-                                                    borderRadius: 10.0,
-                                                    width: 200.0,
-                                                    height: 60.0,
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 20.0,
-                                              ),
-                                            ],
-                                          ),
-                                    topImage: SvgPicture.asset(
-                                      "Assets/images/wallet.svg",
-                                      width: 40,
-                                      height: 40,
-                                      color: Colors.white,
-                                    ),
-                                  ));
+                              cubit.loadingFun();
                             },
                             child: Container(
                               alignment: Alignment.center,
@@ -488,8 +468,8 @@ class ShipData extends StatelessWidget {
                                     width: 0.8,
                                     color: Colors.white,
                                   )),
-                              child: Padding(
-                                padding: const EdgeInsets.all(6.0),
+                              child: const Padding(
+                                padding: EdgeInsets.all(6.0),
                                 child: Text(
                                   "أتمام الشحنة",
                                   style: TextStyle(
@@ -501,7 +481,7 @@ class ShipData extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30.0,
                     ),
                   ],

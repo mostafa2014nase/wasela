@@ -20,45 +20,12 @@ class AddShipFromMobileApp extends StatelessWidget {
       builder: (context, state) {
         var cubit = AddNewShipCubitClass.get(context);
         return Scaffold(
-          appBar: AppBar(
-            toolbarHeight: 140,
-            backgroundColor: purpleColor,
-            centerTitle: true,
-            foregroundColor: Colors.white,
-            elevation: 0,
-            leading: IconButton(
-              onPressed: () {
-                backToPrevious(context);
-              },
-              icon: Icon(
-                Icons.arrow_back,
-              ),
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: InkWell(
-                    onTap: () {},
-                    child: Icon(
-                      Icons.notifications,
-                      size: 35,
-                    )),
-              ),
-            ],
-            title: Column(
-              children: [
-                SvgPicture.asset(
-                  "Assets/images/noun-application-1603837.svg",
-                  width: 100,
-                  height: 100,
-                  color: Colors.white,
-                ),
-                Text(
-                  "أضافة شحنة جديدة",
-                  style: TextStyle(fontSize: 25, height: 0.5),
-                ),
-              ],
-            ),
+          appBar:generateAppBarForCompanyMainScreens(
+            title: "أضافة شحنة جديدة",
+            svgPath: "noun-application-1603837",
+            context: context,
+            imageSize: 80.0,
+            mainScreen: false,
           ),
           body: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),

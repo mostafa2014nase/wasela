@@ -3,10 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wasela/comapny_app/app_layouts/notifications/notifications_screen.dart';
 
 import '../../mainscreen/main_nav_screen.dart';
 import '../../translations/localeKeys.g.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
+
+import '../constants/endpoints.dart';
 
 navigateAndFinish(context, {required Widget layout}) {
   Navigator.pushReplacement(
@@ -933,7 +936,7 @@ class CustomTextFormField extends StatelessWidget {
 
 class CustomContainerForDetails extends StatelessWidget {
   final String text1;
-  final Icon icon;
+  final Widget icon;
 
   const CustomContainerForDetails({
     required this.text1,
@@ -970,25 +973,29 @@ class CustomContainerForDetails extends StatelessWidget {
 class CustomRowForDetails extends StatelessWidget {
   final String text1;
   final String text2;
+  final double firstTextWidth;
+  final double rowWidth;
 
   const CustomRowForDetails({
     required this.text1,
     required this.text2,
+    this.firstTextWidth = 130.0,
+    this.rowWidth = 185.0,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 185,
+      width: rowWidth,
       child: Row(
         children: [
           SizedBox(
-            width: 130,
+            width: firstTextWidth,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 2.0),
               child: Row(
                 children: [
-                  Icon(Icons.check_circle_outline),
+                  const Icon(Icons.check_circle_outline),
                   Text(
                     text1,
                   ),
@@ -1001,7 +1008,10 @@ class CustomRowForDetails extends StatelessWidget {
               Text(":"),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Text(text2),
+                child: Text(
+                  text2,
+                  maxLines: 4,
+                ),
               ),
             ],
           ),
@@ -1064,7 +1074,7 @@ class DecoratedContainerWithShadow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Colors.black12,
             //color: greyColor,
@@ -1452,7 +1462,10 @@ class CustomAlertDialogForMarketing extends StatelessWidget {
   final Color bodyColor;
   final double topPadding;
   final double bottomPicPadding;
+  final double bottomSmallPicPadding;
   final double containerPadding;
+  final double bigCircleRaduis;
+  final double smallCircleRaduis;
 
   const CustomAlertDialogForMarketing({
     required this.mainWidgetText,
@@ -1466,7 +1479,10 @@ class CustomAlertDialogForMarketing extends StatelessWidget {
     this.bodyColor = Colors.white,
     this.topPadding = 300.0,
     this.bottomPicPadding = 450.0,
+    this.bottomSmallPicPadding = 450.0,
     this.containerPadding = 20.0,
+    this.bigCircleRaduis = 60.0,
+    this.smallCircleRaduis = 55.0,
   });
 
   @override
@@ -1485,7 +1501,7 @@ class CustomAlertDialogForMarketing extends StatelessWidget {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color:bodyColor,
+                  color: bodyColor,
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: Padding(
@@ -1502,19 +1518,19 @@ class CustomAlertDialogForMarketing extends StatelessWidget {
         ),
         Positioned(
           child: CircleAvatar(
-            radius: 60,
+            radius: bigCircleRaduis,
             backgroundColor: backGroundImageColor,
           ),
           bottom: bottomPicPadding,
         ),
         Positioned(
           child: CircleAvatar(
-            radius: 55,
-            backgroundColor:imageBackColor,
+            radius: smallCircleRaduis,
+            backgroundColor: imageBackColor,
             foregroundColor: Colors.white,
             child: topImage,
           ),
-          bottom: (bottomPicPadding + 5),
+          bottom: (bottomSmallPicPadding + 5),
         ),
       ],
     );
@@ -1570,14 +1586,18 @@ Color chooseToastColor(ToastStates states) {
   return color;
 }
 
-AppBar generateAppBar(
-    {required String title,
-    required String svgPath,
-    required BuildContext context}) {
+AppBar generateAppBar({
+  required String title,
+  required String svgPath,
+  required BuildContext context,
+  double imageSize = 40,
+  double textHeight = 1.5,
+  double textSize = 25,
+}) {
   return AppBar(
     //excludeHeaderSemantics:true,
     automaticallyImplyLeading: false,
-    toolbarHeight: 100,
+    toolbarHeight: 140,
     backgroundColor: purpleColor,
     foregroundColor: Colors.white,
     centerTitle: true,
@@ -1596,8 +1616,8 @@ AppBar generateAppBar(
             child: SvgPicture.asset(
               "Assets/images/menu.svg",
               color: Colors.white,
-              width: 25,
-              height: 25,
+              width: 25.0,
+              height: 25.0,
             ),
           ),
         ),
@@ -1618,13 +1638,13 @@ AppBar generateAppBar(
       children: [
         SvgPicture.asset(
           "Assets/images/${svgPath}.svg",
-          width: 40,
-          height: 40,
+          width: imageSize,
+          height: imageSize,
           color: Colors.white,
         ),
         Text(
           "${title}",
-          style: TextStyle(fontSize: 25, height: 1.5),
+          style: TextStyle(fontSize: textSize, height: textHeight),
         ),
       ],
     ),
@@ -1632,7 +1652,9 @@ AppBar generateAppBar(
       Padding(
         padding: const EdgeInsetsDirectional.only(end: 10.0),
         child: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              navigateAndBack(context, layout: NotificationsForCompanyApp());
+            },
             icon: Icon(
               Icons.notifications_none,
               size: 40,
@@ -1641,6 +1663,110 @@ AppBar generateAppBar(
     ],
   );
 }
+AppBar generateAppBarForCompanyMainScreens({
+  required String title,
+  required String svgPath,
+  required BuildContext context,
+  required bool mainScreen,
+  double imageSize = 50,
+  double textHeight = 1.5,
+  double textSize = 25,
+}) {
+  return AppBar(
+    toolbarHeight: 140,
+    backgroundColor: purpleColor,
+    centerTitle: true,
+    foregroundColor: Colors.white,
+    elevation: 0,
+    leading: Padding(
+      padding: const EdgeInsets.all(10.0),
+      child:mainScreen ? InkWell(
+        onTap: () {
+          Scaffold.of(context).openDrawer();
+        },
+        child: SvgPicture.asset(
+          "Assets/images/menu.svg",
+          color: Colors.white,
+          width: 30.0,
+          height: 30.0,
+        ),):InkWell(
+        onTap: () {
+          backToPrevious(context);
+        },
+        child: Icon(
+          Icons.arrow_back,
+        ),),
+    ),
+    actions: [
+      Padding(
+        padding: const EdgeInsetsDirectional.only(end: 10.0),
+        child: IconButton(
+            onPressed: () {
+              navigateAndBack(context, layout: NotificationsForCompanyApp());
+            },
+            icon: Icon(
+              Icons.notifications_none,
+              size: 40,
+            )),
+      ),
+    ],
+    title: Column(
+      children: [
+        SvgPicture.asset(
+          "Assets/images/${svgPath}.svg",
+          width: imageSize,
+          height: imageSize,
+          color: Colors.white,
+        ),
+        Text(
+          title,
+          style: TextStyle(fontSize: 25, height: textHeight),
+        ),
+      ],
+    ),
+  );
+}
+
+// AppBar(
+// toolbarHeight: 140,
+// backgroundColor: purpleColor,
+// centerTitle: true,
+// foregroundColor: Colors.white,
+// elevation: 0,
+// leading: IconButton(
+// onPressed: () {
+// backToPrevious(context);
+// },
+// icon: Icon(
+// Icons.arrow_back,
+// ),
+// ),
+// actions: [
+// Padding(
+// padding: const EdgeInsets.all(10.0),
+// child: InkWell(
+// onTap: () {},
+// child: Icon(
+// Icons.notifications,
+// size: 35,
+// )),
+// ),
+// ],
+// title: Column(
+// children: [
+// SvgPicture.asset(
+// "Assets/images/noun-application-1603837.svg",
+// width: 100,
+// height: 100,
+// color: Colors.white,
+// ),
+// Text(
+// "أضافة شحنة جديدة",
+// style: TextStyle(fontSize: 25, height: 0.5),
+// ),
+// ],
+// ),
+// ),
 
 class SettingsButtonRow extends StatelessWidget {
   final Widget preIcon;
