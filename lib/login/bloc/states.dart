@@ -12,6 +12,7 @@ class MakeItNotCompanySuccessState extends LoginStates {}
 class RememberSuccessState extends LoginStates {}
 class NotRememberSuccessState extends LoginStates {}
 
+class ShowErrorInSnackBar extends LoginStates {}
 class LoginLoadingState extends LoginStates {}
 class LoginSuccessState extends LoginStates {}
 class LoginErrorState extends LoginStates {

@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wasela/helper_methods/dio_helper/dio.dart';
 import 'package:wasela/helper_methods/modules/const%20classes.dart';
-
 import 'package:wasela/login/bloc/states.dart';
 import '../../helper_methods/constants/end_points_urls_api.dart';
 import '../../helper_methods/sharedpref/shared_preference.dart';
@@ -14,59 +13,73 @@ class LoginCubitClass extends Cubit<LoginStates> {
 
   static LoginCubitClass get(context) => BlocProvider.of(context);
 
-   TextEditingController phoneController = TextEditingController();
-   TextEditingController passwordController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
-  //
-  // void resetAll() {
-  //   phoneController = TextEditingController();
-  //   nameController = TextEditingController();
-  //   emailController = TextEditingController();
-  //   passwordController = TextEditingController();
-  //   rePasswordController = TextEditingController();
-  //   emit(ResetControllersSuccessState());
-  // }
+  void resetAll() {
+    phoneController = TextEditingController();
+    passwordController = TextEditingController();
+    emit(ResetControllersSuccessState());
+  }
+
   bool isPassword = true;
-  void makeItReadAble (){
+
+  void makeItReadAble() {
     isPassword = !isPassword;
     emit(SwapSeeAndNotSuccessState());
   }
 
   bool remember = false;
 
-  void makeRemember(){
+  void makeRemember() {
     remember = true;
     emit(RememberSuccessState());
   }
-  void makeNotRemember(){
+
+  void makeNotRemember() {
     remember = false;
     emit(NotRememberSuccessState());
   }
 
+  String errorMessage = "";
+  bool isError = false;
+
   void login() {
     emit(LoginLoadingState());
-    FirebaseMessaging.instance.getToken().then((token) {
+    FirebaseMessaging.instance.getToken().then((token) async {
       SaveValueInKey.firebaseToken = token.toString();
       log(SaveValueInKey.firebaseToken.toString());
       DioHelper.postData(
+        authorization: "",
         accessToken: '',
-        token: "$token",
+        token: SaveValueInKey.firebaseToken,
         url: LOGIN,
         data: {
           "phone_number": phoneController.text,
           "password": passwordController.text,
         },
       ).then((value) {
-        SaveValueInKey.accessToken = value.data["access_token"];
-        log("is company = ${value.data["user"]["user_data"]["is_company"]}");
-        SharedCashHelper.setValue(key: "accessToken", value: SaveValueInKey.accessToken).then((value) {
-          print(SaveValueInKey.accessToken.toString());
-          emit(LoginSuccessState());
-        });
+        if (value.data["errNum"] == null) {
+          SaveValueInKey.accessToken = value.data["access_token"];
+          SharedCashHelper.setValue(
+                  key: "accessToken", value: SaveValueInKey.accessToken)
+              .then((value) {
+            log(SaveValueInKey.accessToken.toString());
+            emit(LoginSuccessState());
+            resetAll();
+          });
+        } else {
+          if (value.data["errNum"] == "0") {
+            errorMessage = "لا يوجد حساب مسجل بهذا الرقم";
+          } else if (value.data["errNum"] == "1") {
+            errorMessage = "كلمة السر غير صحيحة";
+          }
+          emit(ShowErrorInSnackBar());
+        }
       }).catchError((error) {
-        print(error.toString());
+        log(error.toString());
         emit(LoginErrorState(error.toString()));
       });
-      });
+    });
   }
 }

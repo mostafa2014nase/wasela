@@ -17,11 +17,13 @@ class DioHelper {
     required String url,
     required String? token,
     required String? accessToken,
+    required String? authorization,
     required Map<String, dynamic> data,
   }) {
     dio!.options.headers={
       "token": token ?? "",
       "access_token": accessToken ?? "",
+      "Authorization": authorization ?? "",
     };
     return dio!.post(url, data: data);
   }
@@ -29,8 +31,12 @@ class DioHelper {
 
   static Future<Response> getData({
     required String url,
-    required Map<String, dynamic> data,
+    Map<String, dynamic>? data,
+    required String ? authorization,
   }) {
+    dio!.options.headers={
+      "Authorization": authorization ?? "",
+    };
     return dio!.get(url,queryParameters: data);
   }
 

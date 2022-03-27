@@ -1,3 +1,4 @@
+
 class UserDataModel {
   String? email;
   int? isActive;
@@ -47,6 +48,43 @@ class ClientModel{
       "name": name,
       "image_path": image,
       "phone": phone,
+    };
+  }
+
+}
+
+
+class CompanyModel{
+  String? email;
+  String? name;
+  String? phoneNumber;
+  String? photo;
+  String? image;
+  int? id;
+
+  CompanyModel({
+    required this.email,
+    required this.name,
+    required this.phoneNumber,
+    required this.photo,
+    required this.image,
+    required this.id,
+  });
+
+  CompanyModel.fromJson(Map<String, dynamic> json) {
+    email = json["email"];
+    name = json["company"]["name"];
+    photo = json["company"]["photo"];
+    phoneNumber = json["phone_number"];
+    image = json["company"]["image_path"];
+    id = json["company"]["id"];
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "name": name,
+      "photo": photo,
+      "phone": phoneNumber,
     };
   }
 

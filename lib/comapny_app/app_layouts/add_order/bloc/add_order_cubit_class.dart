@@ -45,5 +45,4 @@ class AddOrderCubitClass extends Cubit<AddOrderStates> {
     isTransportSelected = !isTransportSelected;
     emit(SelectChoiceSuccessState());
   }
-
 }

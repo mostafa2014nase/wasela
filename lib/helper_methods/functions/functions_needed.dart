@@ -1,15 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wasela/comapny_app/app_layouts/notifications/notifications_screen.dart';
-
 import '../../mainscreen/main_nav_screen.dart';
 import '../../translations/localeKeys.g.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
-
-import '../constants/endpoints.dart';
 
 navigateAndFinish(context, {required Widget layout}) {
   Navigator.pushReplacement(
@@ -116,7 +112,7 @@ class BoardingModelForMainScreen {
   });
 }
 
-Widget buildBoradingForMainScreen(BoardingModelForMainScreen model) =>
+Widget buildBoardingForMainScreen(BoardingModelForMainScreen model) =>
     Image.asset(
       '${model.image}',
       fit: BoxFit.fill,
@@ -1288,11 +1284,11 @@ class NotYetFollowChargeYellowContainer extends StatelessWidget {
           ),
           Text(
             underText,
-            style: TextStyle(fontSize: 12),
+            style: const TextStyle(fontSize: 12),
           ),
         ],
       ),
-      margin: EdgeInsets.only(top: 25, left: 5, right: 5),
+      margin: const EdgeInsets.only(top: 25, left: 5, right: 5),
     );
   }
 }

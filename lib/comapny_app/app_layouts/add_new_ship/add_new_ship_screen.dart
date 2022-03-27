@@ -5,11 +5,12 @@ import 'package:wasela/comapny_app/app_layouts/add_new_ship/add_ship_form_app.da
 import 'package:wasela/comapny_app/app_layouts/add_new_ship/bloc/states.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
-
 import 'bloc/cubit_class.dart';
 
+
+
 class AddNewShipForCompanyApp extends StatelessWidget {
-  const AddNewShipForCompanyApp({Key? key}) : super(key: key);
+   const AddNewShipForCompanyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +43,7 @@ class AddNewShipForCompanyApp extends StatelessWidget {
                         vertical: 30.0, horizontal: 15),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: Column(
@@ -85,14 +87,16 @@ class AddNewShipForCompanyApp extends StatelessWidget {
                                 color: purpleColor,
                               ),
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  cubit.selectFile();
+                                },
                                 child: CustomDesignUnActive(
                                   containerColor: Colors.transparent,
                                   borderColor: purpleColor,
                                   borderWidth: 2,
                                   borderRadius: 5,
                                   text: Text(
-                                    "تحميل نسخة الأكسيل الأفتراضية",
+                                    "رفع بيانات الشحنة",
                                     style: TextStyle(
                                         color: purpleColor,
                                         fontSize: 13,
@@ -100,6 +104,13 @@ class AddNewShipForCompanyApp extends StatelessWidget {
                                   ),
                                   height: 50,
                                 ),
+                              ),
+                              Text(
+                                cubit.fileName,
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -150,3 +161,5 @@ class AddNewShipForCompanyApp extends StatelessWidget {
     );
   }
 }
+
+

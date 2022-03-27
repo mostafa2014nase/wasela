@@ -79,7 +79,7 @@ class _HomeScreen extends State<HomeScreen> {
                     controller: boardController,
                     physics: const BouncingScrollPhysics(),
                     itemBuilder: (context, index) =>
-                        buildBoradingForMainScreen(homeImagesList[index]),
+                        buildBoardingForMainScreen(homeImagesList[index]),
                     itemCount: homeImagesList.length,
                   ),
                 ),

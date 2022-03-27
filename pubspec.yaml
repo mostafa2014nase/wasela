@@ -55,6 +55,8 @@ dependencies:
   firebase_messaging: ^11.2.11
   firebase_core: ^1.13.1
   fl_chart: ^0.46.0
+  cloud_firestore: ^3.1.10
+  file_picker: ^4.5.1
 
 dev_dependencies:
   flutter_test:

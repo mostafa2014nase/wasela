@@ -205,7 +205,7 @@ class ChargeScreen extends StatelessWidget {
                                         padding: const EdgeInsets.only(
                                             right: 10, left: 10, top: 40),
                                         child: ListView.separated(
-                                          physics: BouncingScrollPhysics(),
+                                          physics: const BouncingScrollPhysics(),
                                           itemBuilder: (context, index) {
                                             return DecoratedContainerWithShadow(
                                               child: Column(

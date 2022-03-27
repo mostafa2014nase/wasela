@@ -12,23 +12,35 @@ class RegisterCubitClass extends Cubit<RegisterStates> {
   RegisterCubitClass() : super(RegisterStatesInitState());
 
   static RegisterCubitClass get(context) => BlocProvider.of(context);
-
+// phone for two modules
   TextEditingController phoneController = TextEditingController();
+// client data
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController rePasswordController = TextEditingController();
-
+// company data
+  TextEditingController nameCompanyController = TextEditingController();
   TextEditingController phoneForCompanyController = TextEditingController();
-  TextEditingController optionalPhoneForCompanyController =
-      TextEditingController();
+  TextEditingController optionalPhoneForCompanyController = TextEditingController();
+  TextEditingController emailCompanyController = TextEditingController();
+  TextEditingController passwordCompanyController = TextEditingController();
+  TextEditingController rePasswordCompanyController = TextEditingController();
 
   void resetAll() {
+    // client clear
     phoneController = TextEditingController();
     nameController = TextEditingController();
     emailController = TextEditingController();
     passwordController = TextEditingController();
     rePasswordController = TextEditingController();
+    // company clear
+    nameCompanyController = TextEditingController();
+    phoneForCompanyController = TextEditingController();
+    optionalPhoneForCompanyController = TextEditingController();
+    emailCompanyController = TextEditingController();
+    passwordCompanyController = TextEditingController();
+    rePasswordCompanyController = TextEditingController();
     emit(ResetControllersSuccessState());
   }
 
@@ -53,9 +65,40 @@ class RegisterCubitClass extends Cubit<RegisterStates> {
     });
   }
 
-  void register(String phone) {
-    emit(RegisterWithPhonesLoadingState());
+  void registerCompany() {
+    emit(RegisterCompanyLoadingState());
     DioHelper.postData(
+      authorization: "",
+      accessToken: '',
+      token: '',
+      url: REGISTER_COMPANY,
+      data: {
+        "name": nameCompanyController.text,
+        "phone_number": phoneForCompanyController.text,
+        "password": passwordCompanyController.text,
+        "password_confirmation": rePasswordCompanyController.text,
+        "email": emailCompanyController.text,
+      },
+    ).then((value) {
+      SaveValueInKey.accessToken = value.data["access_token"];
+      log("user_type = ${value.data["user"]["user_type"]}");
+      SharedCashHelper.setValue(
+              key: "accessToken", value: SaveValueInKey.accessToken)
+          .then((value) {
+        print(SaveValueInKey.accessToken.toString());
+        emit(RegisterCompanySuccessState());
+      });
+    }).catchError((error) {
+      print(error.toString());
+      emit(RegisterCompanyErrorState(error.toString()));
+    });
+  }
+
+
+  void registerClient(String phone) {
+    emit(RegisterClientLoadingState());
+    DioHelper.postData(
+      authorization: "",
       accessToken: '',
       token: '',
       url: REGISTER,
@@ -65,20 +108,19 @@ class RegisterCubitClass extends Cubit<RegisterStates> {
         "password": passwordController.text,
         "password_confirmation": rePasswordController.text,
         "email": emailController.text,
-        "is_company": isCompany,
       },
     ).then((value) {
       SaveValueInKey.accessToken = value.data["access_token"];
-      log("is company = ${value.data["user"]["user_data"]["is_company"]}");
+      log("user_type = ${value.data["user"]["user_type"]}");
       SharedCashHelper.setValue(
               key: "accessToken", value: SaveValueInKey.accessToken)
           .then((value) {
         print(SaveValueInKey.accessToken.toString());
-        emit(RegisterWithPhonesSuccessState());
+        emit(RegisterClientSuccessState());
       });
     }).catchError((error) {
       print(error.toString());
-      emit(RegisterWithPhonesErrorState(error.toString()));
+      emit(RegisterClientErrorState(error.toString()));
     });
   }
 }

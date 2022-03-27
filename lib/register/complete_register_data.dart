@@ -38,7 +38,7 @@ class CompleteRegisterDataForClient extends StatelessWidget {
     return BlocConsumer<RegisterCubitClass, RegisterStates>(
       listener: (context, state) {
         print(state.toString());
-        if (state is RegisterWithPhonesSuccessState) {
+        if (state is RegisterClientSuccessState || state is RegisterCompanySuccessState) {
           navigateAndFinish(context, layout: MainNavScreen());
         }
       },
@@ -247,7 +247,7 @@ class CompleteRegisterDataForClient extends StatelessWidget {
                       height: 20,
                     ),
                     ConditionalBuilder(
-                      condition: state is! RegisterWithPhonesLoadingState,
+                      condition: state is! RegisterClientLoadingState,
                       fallback: (context) => Center(
                         child: CircularProgressIndicator(),
                       ),
@@ -266,10 +266,9 @@ class CompleteRegisterDataForClient extends StatelessWidget {
                             ),
                           ),
                           inkwellFunc: () {
-                            // if (formValid.currentState!.validate()) {
-                            //   cubit.register(phoneController.text);
-                            // }
-                            navigateAndFinish(context, layout: MainNavScreen());
+                            if (formValid.currentState!.validate()) {
+                              cubit.registerClient(phoneController.text);
+                            }
                           },
                           containerColor: purpleColor,
                         ),
@@ -301,7 +300,7 @@ class CompleteRegisterDataForCompany extends StatelessWidget {
     return BlocConsumer<RegisterCubitClass, RegisterStates>(
       listener: (context, state) {
         print(state.toString());
-        if (state is RegisterWithPhonesSuccessState) {
+        if (state is RegisterCompanySuccessState) {
           navigateAndFinish(context, layout: MainNavScreen());
         }
       },
@@ -352,7 +351,7 @@ class CompleteRegisterDataForCompany extends StatelessWidget {
                                 }
                                 return null;
                               },
-                              controller: cubit.nameController,
+                              controller: cubit.nameCompanyController,
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
                                 fillColor: Colors.white,
@@ -371,7 +370,7 @@ class CompleteRegisterDataForCompany extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Container(
@@ -393,7 +392,7 @@ class CompleteRegisterDataForCompany extends StatelessWidget {
                                 }
                                 return null;
                               },
-                              controller: cubit.emailController,
+                              controller: cubit.emailCompanyController,
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
                                 fillColor: Colors.white,
@@ -410,7 +409,7 @@ class CompleteRegisterDataForCompany extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Container(
@@ -424,7 +423,7 @@ class CompleteRegisterDataForCompany extends StatelessWidget {
                             child: TextFormField(
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return "password must be not empty";
+                                  return "phone must be not empty";
                                 }
                                 if (value.length != 11) {
                                   return "phone number is not correct";
@@ -435,7 +434,7 @@ class CompleteRegisterDataForCompany extends StatelessWidget {
                                 return null;
                               },
                               controller: cubit.phoneForCompanyController,
-                              keyboardType: TextInputType.numberWithOptions(),
+                              keyboardType: TextInputType.phone,
                               decoration: InputDecoration(
                                 fillColor: Colors.white,
                                 hintText: LocaleKeys.phoneHint1.tr(),
@@ -451,7 +450,7 @@ class CompleteRegisterDataForCompany extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 15,
                           ),
                           Container(
@@ -462,51 +461,22 @@ class CompleteRegisterDataForCompany extends StatelessWidget {
                                 left: Radius.circular(10.0),
                               ),
                             ),
-                            // child: TextFormField(
-                            //   validator: (value) {
-                            //     if (cubit.passwordController.text !=
-                            //         cubit.rePasswordController.text) {
-                            //       return "password must be the same";
-                            //     }
-                            //     return null;
-                            //   },
-                            //   controller: cubit.rePasswordController,
-                            //   keyboardType: TextInputType.visiblePassword,
-                            //   decoration: InputDecoration(
-                            //     suffixIcon: InkWell(
-                            //       child: Icon(!cubit.isPassword
-                            //           ? Icons.visibility_off
-                            //           : Icons.remove_red_eye),
-                            //       onTap: () {
-                            //         cubit.makeItReadAble();
-                            //       },
-                            //     ),
-                            //     fillColor: Colors.white,
-                            //     hintText: LocaleKeys.registerScreenHint4.tr(),
-                            //     enabledBorder: OutlineInputBorder(
-                            //         borderRadius: BorderRadius.horizontal(
-                            //           right: Radius.circular(10.0),
-                            //           left: Radius.circular(10.0),
-                            //         ),
-                            //         borderSide: BorderSide(
-                            //             color: purpleColor, width: 1.2)),
-                            //     hintStyle: TextStyle(color: purpleColor),
-                            //     border: OutlineInputBorder(),
-                            //   ),
-                            // ),
                             child: TextFormField(
                               validator: (value) {
-                                if (value!.length != 11) {
-                                  return "phone number is not correct";
-                                }
-                                if (value == phoneController.text) {
-                                  return "phone number must be different or leave it empty";
+                                if(value!.isEmpty == false){
+                                  if (value.length != 11) {
+                                    return "phone number is not correct";
+                                  }
+                                  if (value == cubit.phoneController.text) {
+                                    return "phone number must be different or leave it empty";
+                                  }
                                 }
                                 return null;
                               },
                               controller:
                                   cubit.optionalPhoneForCompanyController,
-                              keyboardType: TextInputType.numberWithOptions(),
+                              keyboardType:
+                                   TextInputType.phone,
                               decoration: InputDecoration(
                                 fillColor: Colors.white,
                                 hintText: LocaleKeys.phoneHint2.tr(),
@@ -525,15 +495,103 @@ class CompleteRegisterDataForCompany extends StatelessWidget {
                           SizedBox(
                             height: 15,
                           ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.horizontal(
+                                right: Radius.circular(10.0),
+                                left: Radius.circular(10.0),
+                              ),
+                            ),
+                            child: TextFormField(
+                              obscureText: cubit.isPassword ? true : false,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "password must be not empty";
+                                }
+                                if (value.length < 8) {
+                                  return "password must be 8 at least characters";
+                                }
+                                return null;
+                              },
+                              controller: cubit.passwordCompanyController,
+                              keyboardType: TextInputType.visiblePassword,
+                              decoration: InputDecoration(
+                                suffixIcon: InkWell(
+                                  child: Icon(!cubit.isPassword
+                                      ? Icons.visibility_off
+                                      : Icons.remove_red_eye),
+                                  onTap: () {
+                                    cubit.makeItReadAble();
+                                  },
+                                ),
+                                fillColor: Colors.white,
+                                hintText: LocaleKeys.registerScreenHint3.tr(),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.horizontal(
+                                      right: Radius.circular(10.0),
+                                      left: Radius.circular(10.0),
+                                    ),
+                                    borderSide: BorderSide(
+                                        color: purpleColor, width: 1.2)),
+                                hintStyle: TextStyle(color: purpleColor),
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.horizontal(
+                                right: Radius.circular(10.0),
+                                left: Radius.circular(10.0),
+                              ),
+                            ),
+                            child: TextFormField(
+                              validator: (value) {
+                                if (cubit.rePasswordCompanyController.text !=
+                                    cubit.passwordCompanyController.text) {
+                                  return "password must be the same";
+                                }
+                                return null;
+                              },
+                              controller: cubit.rePasswordCompanyController,
+                              keyboardType: TextInputType.visiblePassword,
+                              decoration: InputDecoration(
+                                suffixIcon: InkWell(
+                                  child: Icon(!cubit.isPassword
+                                      ? Icons.visibility_off
+                                      : Icons.remove_red_eye),
+                                  onTap: () {
+                                    cubit.makeItReadAble();
+                                  },
+                                ),
+                                fillColor: Colors.white,
+                                hintText: LocaleKeys.registerScreenHint4.tr(),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.horizontal(
+                                      right: Radius.circular(10.0),
+                                      left: Radius.circular(10.0),
+                                    ),
+                                    borderSide: BorderSide(
+                                        color: purpleColor, width: 1.2)),
+                                hintStyle: TextStyle(color: purpleColor),
+                                border: const OutlineInputBorder(),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     ConditionalBuilder(
-                      condition: state is! RegisterWithPhonesLoadingState,
-                      fallback: (context) => Center(
+                      condition: state is! RegisterCompanyLoadingState,
+                      fallback: (context) => const Center(
                         child: CircularProgressIndicator(),
                       ),
                       builder: (context) => Padding(
@@ -551,7 +609,9 @@ class CompleteRegisterDataForCompany extends StatelessWidget {
                             ),
                           ),
                           inkwellFunc: () {
-                            navigateAndBack(context, layout: MainNavScreen());
+                            if (formValid.currentState!.validate()) {
+                              cubit.registerCompany();
+                            }
                             // if (formValid.currentState!.validate()) {
                             //   myShowDialogForMarketing(
                             //       context: context,

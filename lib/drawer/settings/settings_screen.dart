@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wasela/drawer/settings/screens/change_password.dart';
 import 'package:wasela/drawer/settings/screens/contact_us.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
@@ -31,8 +32,8 @@ class SettingsScreen extends StatelessWidget {
           children: [
             SvgPicture.asset(
               "Assets/images/settings (3).svg",
-              width: 40,
-              height: 40,
+              width: 50,
+              height: 50,
               color: Colors.white,
             ),
             Text(
@@ -66,7 +67,9 @@ class SettingsScreen extends StatelessWidget {
           //   goIcon: Icons.arrow_forward_ios,
           // ),
           SettingsButtonRow(
-            onTap: () {},
+            onTap: () {
+              navigateAndBack(context, layout:  ChangePasswordScreen());
+            },
             text: LocaleKeys.settings3.tr(),
             preIcon: Icon(
               Icons.person,

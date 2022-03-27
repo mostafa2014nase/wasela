@@ -1,8 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wasela/comapny_app/app_layouts/add_new_ship/bloc/states.dart';
-import 'package:wasela/translations/localeKeys.g.dart';
+import 'package:path/path.dart';
 
 class AddNewShipCubitClass extends Cubit<AddNewShipStates> {
   AddNewShipCubitClass() : super(AddNewShipInitialState());
@@ -73,6 +74,17 @@ class AddNewShipCubitClass extends Cubit<AddNewShipStates> {
   }
   void loadingFun() {
     emit(DataSentLoadingState());
+  }
+
+  File? file;
+  String fileName = "";
+  Future selectFile() async {
+    fileName = file != null ? basename(file!.path) : 'لم يتم اختيار اى ملف';
+    final result = await FilePicker.platform.pickFiles(allowMultiple: false,type: FileType.any);
+    if (result == null) return;
+    final path = result.files.single.path;
+    file = File(path!);
+    emit(GetFileSuccessState());
   }
 
 }

@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wasela/comapny_app/app_layouts/ship/bloc/cubit_class.dart';
 import 'package:wasela/comapny_app/app_layouts/ship/bloc/states.dart';
+import 'package:wasela/comapny_app/app_layouts/ship/chats/chats_screen.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
 
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
@@ -46,7 +47,9 @@ class ShippingDetails extends StatelessWidget {
                       children: [
                         Expanded(
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              navigateAndBack(context,layout: ChatsScreen());
+                            },
                             child: CustomDesignUnActive(
                               borderColor: purpleColor,
                               text: Row(

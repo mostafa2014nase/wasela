@@ -7,7 +7,6 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:wasela/clients_app/app_layouts/main_layouts/app_layouts/calculate_charge/calculate_charge_screen.dart';
 import 'package:wasela/clients_app/app_layouts/main_layouts/app_layouts/charge/charge_screen.dart';
 import 'package:wasela/clients_app/app_layouts/main_layouts/app_layouts/home/home_screen.dart';
-import 'package:wasela/clients_app/app_layouts/main_layouts/app_layouts/my_account/user_account_screen.dart';
 import 'package:wasela/clients_app/app_layouts/main_layouts/app_layouts/our_places/our_places_screen.dart';
 import 'package:wasela/comapny_app/app_layouts/add_new_ship/add_new_ship_screen.dart';
 import 'package:wasela/comapny_app/app_layouts/add_order/add_order_screen.dart';
@@ -17,6 +16,7 @@ import 'package:wasela/comapny_app/app_layouts/offers/offers_screen.dart';
 import 'package:wasela/comapny_app/app_layouts/ship/charge_screen.dart';
 import 'package:wasela/comapny_app/app_layouts/trade_store/trade_store_screen.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
+import 'package:wasela/profile/user_account_screen.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
 
 import 'main_nav_states.dart';

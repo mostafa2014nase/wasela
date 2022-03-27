@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/services.dart';
 import 'package:wasela/clients_app/app_layouts/main_layouts/app_layouts/calculate_charge/bloc/cubit_class.dart';
 import 'package:wasela/comapny_app/app_layouts/add_new_ship/bloc/cubit_class.dart';
 import 'package:wasela/comapny_app/app_layouts/add_order/bloc/add_order_cubit_class.dart';
@@ -14,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wasela/drawer/settings/bloc/cubit_class.dart';
 import 'package:wasela/helper_methods/dio_helper/dio.dart';
+import 'package:wasela/helper_methods/modules/const%20classes.dart';
 import 'package:wasela/login/bloc/cubit_class.dart';
 import 'package:wasela/register/bloc/cubit_class.dart';
 import 'package:wasela/splach/splach_screen.dart';
@@ -34,9 +38,14 @@ Future<void> main() async {
   await SharedCashHelper.init();
   DioHelper.init();
   var onBoarding = SharedCashHelper.getValue(key: "skip");
-  var accessToken = SharedCashHelper.getValue(key: "accessToken");
+  SaveValueInKey.accessToken = SharedCashHelper.getValue(key: "accessToken");
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   //lang = SharedCashHelper.getValue(key: "lang");
   isCompany = SharedCashHelper.getValue(key: "isCompany");
+  log("${SaveValueInKey.accessToken}");
   //isArabic = SharedCashHelper.getValue(key: "isArabic");
   Widget startScreen;
   //print("language is ${lang}");
@@ -53,7 +62,7 @@ Future<void> main() async {
   }
 
   if (onBoarding == true) {
-    if (accessToken != null) {
+    if (SaveValueInKey.accessToken != null) {
       startScreen = MainNavScreen();
     } else {
       startScreen = StartScreen();

@@ -1,10 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:wasela/comapny_app/app_layouts/notifications/notifications_screen.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
@@ -23,57 +20,7 @@ class ContactUsScreen extends StatelessWidget {
       builder: (context, state) {
         var cubit = DrawerCubitClass.get(context);
         return Scaffold(
-          appBar: AppBar(
-            toolbarHeight: 140,
-            backgroundColor: purpleColor,
-            centerTitle: true,
-            foregroundColor: Colors.white,
-            elevation: 0,
-            leading: IconButton(
-              onPressed: () {
-                backToPrevious(context);
-              },
-              icon: Icon(
-                Icons.arrow_back,
-              ),
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsetsDirectional.only(end: 10.0),
-                child: IconButton(
-                    onPressed: () {
-                      navigateAndBack(context,
-                          layout: NotificationsForCompanyApp());
-                    },
-                    icon: Icon(
-                      Icons.notifications_none,
-                      size: 40,
-                    )),
-              ),
-            ],
-            title: Padding(
-              padding: const EdgeInsetsDirectional.only(start: 80),
-              // : const EdgeInsetsDirectional.only(start: 80),
-              child: Row(
-                children: [
-                  Column(
-                    children: [
-                      SvgPicture.asset(
-                        "Assets/images/settings (3).svg",
-                        width: 40,
-                        height: 40,
-                        color: Colors.white,
-                      ),
-                      Text(
-                        LocaleKeys.settings4.tr(),
-                        style: TextStyle(fontSize: 25, height: 1.5),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
+          appBar: generateAppBarForCompanyMainScreens(title: LocaleKeys.settings4.tr(), svgPath: "settings (3)", context: context, mainScreen: false,),
           backgroundColor: greyColor,
           body: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
