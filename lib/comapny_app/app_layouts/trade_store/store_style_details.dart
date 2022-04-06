@@ -35,7 +35,7 @@ class StoreStyleDetails extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: DecoratedContainerWithShadow(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20.0,horizontal: 20.0),
+                      padding: const EdgeInsets.symmetric(vertical:20.0,horizontal: 20.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [

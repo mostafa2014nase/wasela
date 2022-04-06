@@ -1,10 +1,12 @@
 import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:wasela/comapny_app/app_layouts/calculations/calculations_screen.dart';
 import 'package:wasela/drawer/settings/screens/contact_us.dart';
 import 'package:wasela/evaluate/evaluate_screen.dart';
 import 'package:wasela/helper_methods/app_bloc_provider/bloc/cubit.dart';
 import 'package:wasela/helper_methods/app_bloc_provider/bloc/states.dart';
+import 'package:wasela/helper_methods/modules/const%20classes.dart';
 import 'package:wasela/mainscreen/nav_bloc/main_nav_cubit.dart';
 import 'package:wasela/drawer/settings/settings_screen.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
@@ -13,7 +15,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:wasela/helper_methods/constants/endpoints.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'package:wasela/helper_methods/sharedpref/shared_preference.dart';
 import 'package:wasela/profile/user_account_screen.dart';
@@ -51,13 +52,15 @@ class MainNavScreen extends StatelessWidget {
                       children: [
                         InkWell(
                           onTap: () {
-                            if (isCompany == 1) {
+                            if (SaveValueInKey.userType == "client") {
+                              appCubit.getClientProfileData();
                               persistentTabController.jumpToTab(4);
                               Navigator.of(context).pop();
                             } else {
                               appCubit.getCompanyProfileData();
+                              log("${appCubit.companyModel}");
                               navigateAndBack(context,
-                                  layout: const UserAccountScreen());
+                                  layout:  UserAccountScreen());
                             }
                           },
                           child: Container(
@@ -115,7 +118,7 @@ class MainNavScreen extends StatelessWidget {
                           ),
                         ),
                         put_line(color: purpleColor),
-                        isCompany == 1
+                        SaveValueInKey.userType == "client"
                             ? Container(
                                 height: 215,
                                 color: Colors.white,
@@ -246,12 +249,15 @@ class MainNavScreen extends StatelessWidget {
                               horizontal: 10.0, vertical: 50),
                           child: InkWell(
                             onTap: () {
+                              appCubit.resetControllers();
                               SharedCashHelper.removeValue(key: "accessToken")
                                   .then((value) {
-                                if (value) {
-                                  navigateAndFinish(context,
-                                      layout: StartScreen());
-                                }
+                                    SharedCashHelper.removeValue(key: "user_type").then((value) {
+                                      if (value) {
+                                        navigateAndFinish(context,
+                                            layout: StartScreen());
+                                      }
+                                    });
                               });
                             },
                             child: Row(
@@ -280,7 +286,7 @@ class MainNavScreen extends StatelessWidget {
                 ),
               ),
             ),
-            body: isCompany == 1
+            body: SaveValueInKey.userType == "client"
                 ? WillPopScope(
                     onWillPop: () {
                       if (globalKey.currentState!.isDrawerOpen) {
@@ -304,6 +310,9 @@ class MainNavScreen extends StatelessWidget {
                       navBarStyle: NavBarStyle.style6,
                       onItemSelected: (index) {
                         cubit.changeBarItem(index);
+                        if(index == 4){
+                          AppCubitClass.get(context).getClientProfileData();
+                        }
                         print(persistentTabController.index);
                       },
                       popAllScreensOnTapOfSelectedTab: false,
@@ -311,7 +320,7 @@ class MainNavScreen extends StatelessWidget {
                       resizeToAvoidBottomInset: true,
                     ))
                 : cubit.screensForCompanyApp[cubit.indexForCompanyApp],
-            bottomNavigationBar: isCompany != 1
+            bottomNavigationBar: SaveValueInKey.userType == "company"
                 ? BottomNavigationBar(
                     key: globalKey,
                     enableFeedback: false,

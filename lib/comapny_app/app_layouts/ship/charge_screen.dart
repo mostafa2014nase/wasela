@@ -1,5 +1,8 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wasela/comapny_app/app_layouts/ship/bloc/cubit_class.dart';
@@ -17,7 +20,7 @@ class ShipScreenForCompanyApp extends StatelessWidget {
     return BlocConsumer<ShipForCompanyAppCubitClass, ShipStates>(
         listener: (context, state) {},
         builder: (context, state) {
-          //var cubit = ShipForCompanyAppCubitClass.get(context);
+          var cubit = ShipForCompanyAppCubitClass.get(context);
           return DefaultTabController(
             length: 3,
             child: DefaultTabController(
@@ -61,14 +64,22 @@ class ShipScreenForCompanyApp extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const Expanded(
+                      Expanded(
                         child: Padding(
                           padding: EdgeInsets.all(10.0),
                           child: TabBarView(
                             physics: BouncingScrollPhysics(),
                             children: [
-                              CurrentShipping(
-                                shippingIsEmpty: false,
+                              ConditionalBuilder(
+                                  condition: cubit.tempList.length > 0,
+                                builder: (context){
+                                    return CurrentShipping(
+                                        shippingIsEmpty: false,
+                                        dataList: cubit.tempList,
+                                        context: context);
+                                },
+                                fallback: (context){
+                                    return Center(child: const CircularProgressIndicator());}
                               ),
                               SentShipping(shippingIsEmpty: false),
                               EndedShipping(shippingIsEmpty: false),
@@ -88,13 +99,20 @@ class ShipScreenForCompanyApp extends StatelessWidget {
 
 class CurrentShipping extends StatelessWidget {
   final bool shippingIsEmpty;
+  final List dataList;
+  final BuildContext context;
 
-  const CurrentShipping({Key? key, required this.shippingIsEmpty})
-      : super(key: key);
+  CurrentShipping({
+    Key? key,
+    required this.shippingIsEmpty,
+    required this.dataList,
+    required this.context,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return shippingIsEmpty == false
+    var cubit = ShipForCompanyAppCubitClass.get(context);
+    return cubit.showShipmentsListLength > 0
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -206,75 +224,158 @@ class CurrentShipping extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 10, left: 10, top: 40),
                   child: ListView.separated(
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     itemBuilder: (context, index) {
                       return DecoratedContainerWithShadow(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     CustomRowForDetails(
                                       text1: LocaleKeys
                                           .walletScreenListItemDetails1
                                           .tr(),
-                                      text2: "1855",
+                                      text2: dataList[index]["name_shipment"],
+                                      rowWidth: 230,
                                     ),
                                     CustomRowForDetails(
                                       text1: LocaleKeys.shippingListItemDetails2
                                           .tr(),
                                       text2: "1855",
+                                      rowWidth: 230,
                                     ),
                                     CustomRowForDetails(
                                       text1: LocaleKeys
                                           .walletScreenListItemDetails2
                                           .tr(),
                                       text2: "1855",
+                                      rowWidth: 230,
                                     ),
                                     CustomRowForDetails(
                                       text1: LocaleKeys.shippingListItemDetails4
                                           .tr(),
                                       text2: "1855",
+                                      rowWidth: 230,
                                     ),
                                     CustomRowForDetails(
                                       text1: LocaleKeys.shippingListItemDetails5
                                           .tr(),
                                       text2: "1855",
+                                      rowWidth: 230,
                                     ),
                                     CustomRowForDetails(
                                       text1: LocaleKeys.shippingListItemDetails6
                                           .tr(),
                                       text2: "1855",
+                                      rowWidth: 230,
                                     ),
                                     CustomRowForDetails(
                                       text1: LocaleKeys.shippingListItemDetails7
                                           .tr(),
                                       text2: "1855",
+                                      rowWidth: 230,
                                     ),
                                   ],
                                 ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      navigateAndBack(context,
-                                          layout: ShippingDetails());
-                                    },
-                                    child: CustomContainerForDetails(
-                                      text1: "تفاصيل",
-                                      icon: Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: Colors.white,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0, vertical: 8.0),
+                                      child: InkWell(
+                                        onTap: () {
+                                          cubit.detailedClicked(index);
+                                        },
+                                        child: SvgPicture.asset(
+                                          "Assets/images/menu.svg",
+                                          width: 30,
+                                          height: 30,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10,
+                                    cubit.isDetailed[index]
+                                        ? Container(
+                                            child: Column(
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 5.0,
+                                                      vertical: 10.0),
+                                                  child: InkWell(
+                                                      onTap: () {
+                                                        navigateAndBack(context,
+                                                            layout:
+                                                                ShippingDetails());
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Text(
+                                                            "تفاصيل",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    purpleColor),
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 2.0,
+                                                          ),
+                                                          Icon(
+                                                            Icons.info,
+                                                            color: purpleColor,
+                                                          ),
+                                                        ],
+                                                      )),
+                                                ),
+                                                put_line(line_width: 80.0),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 5.0,
+                                                      vertical: 10.0),
+                                                  child: InkWell(
+                                                      onTap: () {
+                                                        // navigateAndBack(context,
+                                                        //     layout: ShippingDetails());
+                                                      },
+                                                      child: Row(
+                                                        children: [
+                                                          Text(
+                                                            "تعديل",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    purpleColor),
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 2.0,
+                                                          ),
+                                                          Icon(
+                                                            Icons.edit,
+                                                            color: purpleColor,
+                                                          ),
+                                                        ],
+                                                      )),
+                                                ),
+                                              ],
+                                            ),
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 10.0),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              border: Border.all(
+                                                width: 0.8,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          )
+                                        : const Text(""),
+                                  ],
                                 ),
                               ],
                             ),
@@ -329,7 +430,7 @@ class CurrentShipping extends StatelessWidget {
                         height: 20,
                       );
                     },
-                    itemCount: 10,
+                    itemCount: cubit.showShipmentsListLength,
                   ),
                 ),
               )

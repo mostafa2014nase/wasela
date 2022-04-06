@@ -1,9 +1,9 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:wasela/helper_methods/constants/endpoints.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wasela/helper_methods/modules/const%20classes.dart';
 import 'package:wasela/register/bloc/cubit_class.dart';
 import 'package:wasela/register/bloc/states.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
@@ -18,7 +18,7 @@ class CompleteRegisterData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return isCompany == 1
+    return SaveValueInKey.userType == "client"
         ? CompleteRegisterDataForClient(
             phoneController: phoneController,
           )
@@ -28,7 +28,7 @@ class CompleteRegisterData extends StatelessWidget {
 
 class CompleteRegisterDataForClient extends StatelessWidget {
   final TextEditingController phoneController;
-  var formValid = GlobalKey<FormState>();
+  var formValidClient = GlobalKey<FormState>();
 
   CompleteRegisterDataForClient({Key? key, required this.phoneController})
       : super(key: key);
@@ -38,8 +38,11 @@ class CompleteRegisterDataForClient extends StatelessWidget {
     return BlocConsumer<RegisterCubitClass, RegisterStates>(
       listener: (context, state) {
         print(state.toString());
-        if (state is RegisterClientSuccessState || state is RegisterCompanySuccessState) {
+        if (state is RegisterClientSuccessState ) {
           navigateAndFinish(context, layout: MainNavScreen());
+        }
+        else if(state is  RegisterClientErrorState){
+          showToast(context, RegisterCubitClass.get(context).errorClientMessage, ToastStates.error);
         }
       },
       builder: (context, state) {
@@ -50,7 +53,7 @@ class CompleteRegisterDataForClient extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: 50, bottom: 20),
               child: Form(
-                key: formValid,
+                key: formValidClient,
                 child: Column(
                   children: [
                     Image.asset(
@@ -266,7 +269,7 @@ class CompleteRegisterDataForClient extends StatelessWidget {
                             ),
                           ),
                           inkwellFunc: () {
-                            if (formValid.currentState!.validate()) {
+                            if (formValidClient.currentState!.validate()) {
                               cubit.registerClient(phoneController.text);
                             }
                           },
@@ -290,7 +293,7 @@ class CompleteRegisterDataForClient extends StatelessWidget {
 
 class CompleteRegisterDataForCompany extends StatelessWidget {
   final TextEditingController phoneController;
-  var formValid = GlobalKey<FormState>();
+  var formValidCompany = GlobalKey<FormState>();
 
   CompleteRegisterDataForCompany({Key? key, required this.phoneController})
       : super(key: key);
@@ -303,6 +306,9 @@ class CompleteRegisterDataForCompany extends StatelessWidget {
         if (state is RegisterCompanySuccessState) {
           navigateAndFinish(context, layout: MainNavScreen());
         }
+        else if (state is RegisterCompanyErrorState){
+          showToast(context, RegisterCubitClass.get(context).errorCompanyMessage, ToastStates.error);
+        }
       },
       builder: (context, state) {
         var cubit = RegisterCubitClass.get(context);
@@ -312,7 +318,7 @@ class CompleteRegisterDataForCompany extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: 50, bottom: 20),
               child: Form(
-                key: formValid,
+                key: formValidCompany,
                 child: Column(
                   children: [
                     Image.asset(
@@ -463,7 +469,7 @@ class CompleteRegisterDataForCompany extends StatelessWidget {
                             ),
                             child: TextFormField(
                               validator: (value) {
-                                if(value!.isEmpty == false){
+                                if (value!.isEmpty == false) {
                                   if (value.length != 11) {
                                     return "phone number is not correct";
                                   }
@@ -475,8 +481,7 @@ class CompleteRegisterDataForCompany extends StatelessWidget {
                               },
                               controller:
                                   cubit.optionalPhoneForCompanyController,
-                              keyboardType:
-                                   TextInputType.phone,
+                              keyboardType: TextInputType.phone,
                               decoration: InputDecoration(
                                 fillColor: Colors.white,
                                 hintText: LocaleKeys.phoneHint2.tr(),
@@ -551,6 +556,7 @@ class CompleteRegisterDataForCompany extends StatelessWidget {
                               ),
                             ),
                             child: TextFormField(
+                              obscureText: cubit.isPassword ? true : false,
                               validator: (value) {
                                 if (cubit.rePasswordCompanyController.text !=
                                     cubit.passwordCompanyController.text) {
@@ -590,7 +596,9 @@ class CompleteRegisterDataForCompany extends StatelessWidget {
                       height: 20,
                     ),
                     ConditionalBuilder(
-                      condition: state is! RegisterCompanyLoadingState,
+                      condition: SaveValueInKey.userType == "client"
+                          ? state is! RegisterClientLoadingState
+                          : state is! RegisterCompanyLoadingState,
                       fallback: (context) => const Center(
                         child: CircularProgressIndicator(),
                       ),
@@ -609,8 +617,12 @@ class CompleteRegisterDataForCompany extends StatelessWidget {
                             ),
                           ),
                           inkwellFunc: () {
-                            if (formValid.currentState!.validate()) {
-                              cubit.registerCompany();
+                            if (formValidCompany.currentState!.validate()) {
+                              if (SaveValueInKey.userType == "client") {
+                                cubit.registerClient(phoneController.text);
+                              } else {
+                                cubit.registerCompany();
+                              }
                             }
                             // if (formValid.currentState!.validate()) {
                             //   myShowDialogForMarketing(

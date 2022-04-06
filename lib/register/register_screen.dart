@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:wasela/helper_methods/constants/endpoints.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:wasela/helper_methods/modules/const%20classes.dart';
 import 'package:wasela/register/bloc/cubit_class.dart';
 import 'package:wasela/register/bloc/states.dart';
 import 'package:wasela/register/ensure_sent_code.dart';
@@ -57,12 +57,12 @@ class RegisterScreen extends StatelessWidget {
                                         height: 200,
                                         borderWidth: 10,
                                         borderRadius: 10,
-                                        borderColor: isCompany == 0
+                                        borderColor: SaveValueInKey.userType == "company"
                                             ? purpleColor
                                             : yellowColor,
                                         text: SvgPicture.asset(
                                           'Assets/images/Client-2.svg',
-                                          color: isCompany == 0
+                                          color: SaveValueInKey.userType == "company"
                                               ? purpleColor
                                               : yellowColor,
                                           width: 150.0,
@@ -71,7 +71,7 @@ class RegisterScreen extends StatelessWidget {
                                         containerColor: Colors.transparent,
                                       ),
                                     ),
-                                    isCompany != 0
+                                    SaveValueInKey.userType == "client"
                                         ? CircleAvatar(
                                             backgroundColor: yellowColor,
                                             radius: 15,
@@ -106,12 +106,12 @@ class RegisterScreen extends StatelessWidget {
                                         height: 200,
                                         borderWidth: 10,
                                         borderRadius: 10,
-                                        borderColor: isCompany == 1
+                                        borderColor: SaveValueInKey.userType == "client"
                                             ? purpleColor
                                             : yellowColor,
                                         text: SvgPicture.asset(
                                           'Assets/images/company.svg',
-                                          color: isCompany == 1
+                                          color: SaveValueInKey.userType == "client"
                                               ? purpleColor
                                               : yellowColor,
                                           width: 150.0,
@@ -120,7 +120,7 @@ class RegisterScreen extends StatelessWidget {
                                         containerColor: Colors.transparent,
                                       ),
                                     ),
-                                    isCompany != 1
+                                    SaveValueInKey.userType == "company"
                                         ? CircleAvatar(
                                             backgroundColor: yellowColor,
                                             radius: 15,
@@ -148,7 +148,7 @@ class RegisterScreen extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              isCompany == 0
+                              SaveValueInKey.userType == "company"
                                   ? ColumnForCompany()
                                   : ColumnForUser(),
                               const SizedBox(
@@ -280,7 +280,7 @@ class RegisterScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.phone,
                         ),
                       ],
                     ),

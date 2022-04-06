@@ -27,7 +27,7 @@ class LoginScreen extends StatelessWidget {
             }
           else if(state is ShowErrorInSnackBar){
             showToast(
-                context, "${LoginCubitClass.get(context).errorMessage}", ToastStates.success);
+                context, "${LoginCubitClass.get(context).errorMessage}", ToastStates.error);
           }
         },
         builder: (context, state) {
@@ -79,7 +79,7 @@ class LoginScreen extends StatelessWidget {
                                   }
                                   return null;
                                 },
-                                keyboardType: TextInputType.numberWithOptions(),
+                                keyboardType: TextInputType.phone,
                                 decoration: InputDecoration(
                                   fillColor: Colors.white,
                                   hintText: LocaleKeys.loginScreenHint1.tr(),
@@ -158,7 +158,7 @@ class LoginScreen extends StatelessWidget {
                                         onPressed: () {
                                           cubit.makeNotRemember();
                                         },
-                                        icon: Icon(Icons.check_box),
+                                        icon: const Icon(Icons.check_box),
                                         color: yellowColor,
                                       ),
                               ],
@@ -190,7 +190,7 @@ class LoginScreen extends StatelessWidget {
                             ),
                             ConditionalBuilder(
                               condition: state is ! LoginLoadingState,
-                              fallback: (context)=>Center(
+                              fallback: (context)=>const Center(
                                 child: CircularProgressIndicator(),
                               ),
                               builder: (context)=>ButtonCustomDesign(

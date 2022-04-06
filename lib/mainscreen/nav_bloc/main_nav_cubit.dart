@@ -31,7 +31,7 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
     CalculateChargeScreen(),
     const ChargeScreen(),
     PranchesMapAndMenue(),
-    const UserAccountScreen(),
+     UserAccountScreen(),
   ];
 
   String svgGenerate(int index) {

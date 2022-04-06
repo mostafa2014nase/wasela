@@ -25,7 +25,6 @@ import 'package:wasela/start/start_screen.dart';
 import 'mainscreen/main_nav_screen.dart';
 import 'helper_methods/app_bloc_provider/bloc/cubit.dart';
 import 'helper_methods/app_bloc_provider/bloc/states.dart';
-import 'helper_methods/constants/endpoints.dart';
 import 'helper_methods/constants/some_classes.dart';
 import 'helper_methods/sharedpref/shared_preference.dart';
 import 'onBoarding/on_boarding_screen.dart';
@@ -44,7 +43,7 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]);
   //lang = SharedCashHelper.getValue(key: "lang");
-  isCompany = SharedCashHelper.getValue(key: "isCompany");
+  SaveValueInKey.userType = SharedCashHelper.getValue(key: "user_type");
   log("${SaveValueInKey.accessToken}");
   //isArabic = SharedCashHelper.getValue(key: "isArabic");
   Widget startScreen;
@@ -57,8 +56,8 @@ Future<void> main() async {
   // }
 
   // for handling ( clients / company) model
-  if (isCompany == null) {
-    isCompany = 1;
+  if (SaveValueInKey.userType == null) {
+    SaveValueInKey.userType ="client";
   }
 
   if (onBoarding == true) {
@@ -119,11 +118,11 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(create: (context) => RegisterCubitClass()),
           BlocProvider(create: (context) => LoginCubitClass()),
           BlocProvider(create: (context) => CalculateChargingCubitClass()),
-          BlocProvider(create: (context) => AddNewShipCubitClass()),
+          BlocProvider(create: (context) => AddNewShipCubitClass()..getAllCitiesAndTheirAreas()..getServiceType()),
           BlocProvider(create: (context) => InjunctionsAppCubitClass()),
           BlocProvider(create: (context) => NotificationCubitClass()),
           BlocProvider(create: (context) => OfferCubitClass()),
-          BlocProvider(create: (context) => ShipForCompanyAppCubitClass()),
+          BlocProvider(create: (context) => ShipForCompanyAppCubitClass()..getAllShipmentsData()),
           BlocProvider(create: (context) => TradeStoreSystemCubitClass()),
           BlocProvider(create: (context) => AddOrderCubitClass()),
           BlocProvider(create: (context) => CalculationsCubitClassForCompany()),

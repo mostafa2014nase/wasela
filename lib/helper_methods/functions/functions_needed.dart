@@ -981,38 +981,36 @@ class CustomRowForDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: rowWidth,
-      child: Row(
-        children: [
-          SizedBox(
-            width: firstTextWidth,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 2.0),
-              child: Row(
-                children: [
-                  const Icon(Icons.check_circle_outline),
-                  Text(
-                    text1,
-                  ),
-                ],
-              ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: firstTextWidth,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2.0),
+            child: Row(
+              children: [
+                const Icon(Icons.check_circle_outline),
+                Text(
+                  text1,
+                ),
+              ],
             ),
           ),
-          Row(
-            children: [
-              Text(":"),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Text(
-                  text2,
-                  maxLines: 4,
-                ),
+        ),
+        Row(
+          children: [
+            const Text(":"),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2.0),
+              child: Text(
+                text2,
+                overflow: TextOverflow.ellipsis,
               ),
-            ],
-          ),
-        ],
-      ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -1664,6 +1662,7 @@ AppBar generateAppBarForCompanyMainScreens({
   required String svgPath,
   required BuildContext context,
   required bool mainScreen,
+   bool isNotification = false,
   double imageSize = 50,
   double textHeight = 1.5,
   double textSize = 25,
@@ -1694,6 +1693,8 @@ AppBar generateAppBarForCompanyMainScreens({
         ),),
     ),
     actions: [
+      isNotification ?
+      const Text(""):
       Padding(
         padding: const EdgeInsetsDirectional.only(end: 10.0),
         child: IconButton(

@@ -19,6 +19,7 @@ class NotificationsForCompanyApp extends StatelessWidget {
         return Scaffold(
           backgroundColor: greyColor,
           appBar: generateAppBarForCompanyMainScreens(
+            isNotification: true,
             mainScreen: false,
               title: "الأشعارات",
               svgPath: "noun-notification-4625948",

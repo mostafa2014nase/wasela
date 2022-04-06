@@ -20,6 +20,20 @@ class LoginErrorState extends LoginStates {
 
   LoginErrorState(this.error);
 }
+class ForgetPasswordLoadingState extends LoginStates {}
+class ForgetPasswordSuccessState extends LoginStates {}
+class ForgetPasswordErrorState extends LoginStates {
+  final String error;
+
+  ForgetPasswordErrorState(this.error);
+}
+class CheckPhoneLoadingState extends LoginStates {}
+class CheckPhoneSuccessState extends LoginStates {}
+class CheckPhoneErrorState extends LoginStates {
+  final String error;
+
+  CheckPhoneErrorState(this.error);
+}
 
 
 
