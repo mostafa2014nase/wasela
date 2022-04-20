@@ -30,12 +30,12 @@ class ChatsScreen extends StatelessWidget {
               body: Padding(
                 padding: const EdgeInsets.only(top: 10.0),
                 child: Column(
-                  children:  [
+                  children:[
                     const OurChatComponent(),
                     CompanyChatComponent(
-                      model:cubit.messages.length >0 ?cubit.messages.first: MessageModel(text: "hhdhhfv", senderId: "njdc", receiverId: "jcfj", dateTime: DateTime.now())
+                      model:cubit.messages.isNotEmpty ?cubit.messages.first: MessageModel(text: "hhdhhfv", senderId: "njdc", receiverId: "jcfj", dateTime: DateTime.now())
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(

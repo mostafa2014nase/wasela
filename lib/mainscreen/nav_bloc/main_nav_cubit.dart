@@ -10,12 +10,13 @@ import 'package:wasela/clients_app/app_layouts/main_layouts/app_layouts/home/hom
 import 'package:wasela/clients_app/app_layouts/main_layouts/app_layouts/our_places/our_places_screen.dart';
 import 'package:wasela/comapny_app/app_layouts/add_new_ship/add_new_ship_screen.dart';
 import 'package:wasela/comapny_app/app_layouts/add_order/add_order_screen.dart';
+import 'package:wasela/comapny_app/app_layouts/calculations/calculations_screen.dart';
 import 'package:wasela/comapny_app/app_layouts/home/home_screen.dart';
 import 'package:wasela/comapny_app/app_layouts/injunction/injunctions_screen.dart';
-import 'package:wasela/comapny_app/app_layouts/offers/offers_screen.dart';
 import 'package:wasela/comapny_app/app_layouts/ship/charge_screen.dart';
 import 'package:wasela/comapny_app/app_layouts/trade_store/trade_store_screen.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
+import 'package:wasela/helper_methods/functions/custome_icons.dart';
 import 'package:wasela/profile/user_account_screen.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
 
@@ -53,7 +54,6 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
 
   List<IconData> iconsList = [
     Icons.home,
-    //Icons.wallet_giftcard,
     Icons.calculate,
     Icons.wallet_giftcard_sharp,
     Icons.hotel,
@@ -110,46 +110,55 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
     AddNewShipForCompanyApp(),
     AddOrder(),
     TradeStoreSystem(),
-    OffersScreenForCompanyApp(),
+    CalculationsScreenForCompanyApp(),
   ];
-  List<String> titlesForCompanyApp = [
+  List titlesForCompanyApp = [
     LocaleKeys.bottomNavItemsName1.tr(),
   "شحناتي",
-  "التلسيمات",
+  "المرتجعات",
   "اضافة شحنة جديدة",
   "اضافة طلب",
   "نظام التخزين للتجار",
-  "العروض",
+  "الحسابات",
+  ];
+  List svgForCompanyApp = [
+  "home",
+  "wallet",
+  "noun-pick-up-4160044",
+  "noun-shipping-3484992",
+  "noun-customer-demand-3437164",
+  "noun-inventory-3377901",
+  "noun-offer-1055801",
   ];
 
-  List<BottomNavigationBarItem> navigationBarItemsForCompanyApp = [
+  List<BottomNavigationBarItem> navigationBarItemsForCompanyApp = const [
     BottomNavigationBarItem(
-        label: (LocaleKeys.bottomNavItemsName1.tr()),
-      icon: Icon(Icons.home),
+        label: ("الرئيسية"),
+      icon: Icon(CustomIcons.home,size: 30.0,),
         ),
     BottomNavigationBarItem(
         label: ("شحناتي"),
-      icon: Icon(Icons.home),
+      icon: Icon(CustomIcons.wallet,size: 30.0,),
         ),
     BottomNavigationBarItem(
-      label: "التلسيمات",
-      icon: Icon(Icons.home),
+      label: "المرتجعات",
+      icon: Icon(CustomIcons.noun_pick_up_4160044,size: 33.0,),
     ),
-    BottomNavigationBarItem(
+     BottomNavigationBarItem(
       label: "اضافة شحنة جديدة",
-      icon: Icon(Icons.home),
+      icon: Icon(CustomIcons.wallet,size: 30.0,),
     ),
     BottomNavigationBarItem(
       label: "اضافة طلب",
-      icon: Icon(Icons.home),
+      icon: Icon(CustomIcons.noun_customer_demand_3437164,size: 45.0,),
     ),
     BottomNavigationBarItem(
       label: "نظام التخزين للتجار",
-      icon: Icon(Icons.home),
+      icon: Icon(CustomIcons.noun_inventory_3377901,size: 37.0,),
     ),
     BottomNavigationBarItem(
-      label: "العروض",
-      icon: Icon(Icons.home),
+      label: "الحسابات",
+      icon: Icon(CustomIcons.noun_accounting_4679331,size: 35.0,),
     ),
   ];
 
@@ -181,17 +190,17 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
 
   List drawerSvgPicsCompany = [
     "feedbackkk",
-    "settings (3)",
-    "Contact US-2",
+    "settings(3)",
+    "Contact_US_2",
     "noun-accounting-4679331",
-    "Edit-2",
+    //"Edit-2",
   ];
   List drawerCompanyTexts = [
     LocaleKeys.evaluateDrawer.tr(),
     LocaleKeys.settingsDrawer.tr(),
     "تواصل معنا",
-    "الحسابات",
-    "تعديل بياناتي",
+    "العروض",
+    //"تعديل بياناتي",
   ];
 
   void getFirebaseToken() {

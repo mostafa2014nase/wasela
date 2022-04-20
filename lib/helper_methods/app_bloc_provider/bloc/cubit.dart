@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:wasela/helper_methods/app_bloc_provider/bloc/states.dart';
 import 'package:wasela/helper_methods/constants/end_points_urls_api.dart';
 import 'package:wasela/helper_methods/dio_helper/dio.dart';
+import 'package:wasela/helper_methods/modules/cities_and_their_areas.dart';
 import 'package:wasela/helper_methods/modules/const%20classes.dart';
 import 'package:wasela/helper_methods/modules/user_client_model.dart';
 import 'package:wasela/helper_methods/sharedpref/shared_preference.dart';
@@ -24,12 +26,15 @@ class AppCubitClass extends Cubit<AppStates> {
   TextEditingController updateNameController = TextEditingController();
   TextEditingController updateCityController = TextEditingController();
   TextEditingController updateAddressController = TextEditingController();
+  TextEditingController updateAreaController = TextEditingController();
+  String ?  networkUpdatedImage;
 
   void resetControllers() {
     updatePhoneController = TextEditingController();
     updateEmailController = TextEditingController();
     updateNameController = TextEditingController();
     updateCityController = TextEditingController();
+    updateAreaController = TextEditingController();
     updateAddressController = TextEditingController();
     emit(ResetAllControllers());
   }
@@ -59,6 +64,7 @@ class AppCubitClass extends Cubit<AppStates> {
 
   void enableUpdateCityCompanyFunc() {
     enableUpdateCityCompany = true;
+    getAllCitiesForRegister();
     emit(EnableUpdateSuccessState());
   }
 
@@ -69,26 +75,35 @@ class AppCubitClass extends Cubit<AppStates> {
     emit(EnableUpdateSuccessState());
   }
 
+  bool enableUpdatePhotoCompany = false;
+
+  void enableUpdatePhotoCompanyFunc() {
+    enableUpdatePhotoCompany = true;
+    emit(EnableUpdateSuccessState());
+  }
+
   void resetFalse() {
     enableUpdateNameCompany = false;
     enableUpdateEmailCompany = false;
     enableUpdatePhoneCompany = false;
     enableUpdateCityCompany = false;
     enableUpdateAddressCompany = false;
+    enableUpdatePhotoCompany = false;
     emit(ResetFalseSuccessState());
   }
+
   bool checkIfOneTrue() {
     if (enableUpdateNameCompany == true ||
         enableUpdatePhoneCompany == true ||
         enableUpdateCityCompany == true ||
         enableUpdateAddressCompany == true ||
-        enableUpdateEmailCompany == true) {
+        enableUpdateEmailCompany == true ||
+        enableUpdatePhotoCompany == true) {
       return true;
     } else {
       return false;
     }
   }
-
 
   CompanyModel? companyModel;
 
@@ -100,38 +115,40 @@ class AppCubitClass extends Cubit<AppStates> {
       url: PROFILE,
       authorization: "Bearer ${SaveValueInKey.accessToken}",
     ).then((value) {
-      log("Succeeeeeeeeeeeeeeeeeeeeeeeeees");
+      log("Succeeeeeeeeeeeeeeeeeeeeeeeeees compaaaaaaaany");
       companyModel = CompanyModel.fromJson(value.data);
       log("${companyModel!.name}");
-      log("${companyModel!.id}");
+      log(areaIdNow.toString());
+      log("${companyModel!.address}");
+      log("${companyModel!.phoneNumber}");
       updatePhoneController.text = companyModel!.phoneNumber!;
       updateNameController.text = companyModel!.name!;
       updateEmailController.text = companyModel!.email!;
-      updateCityController.text = companyModel!.city!;
       updateAddressController.text = companyModel!.address!;
-      //image = companyModel!.profileImage! ;
+      networkUpdatedImage = companyModel!.photo!;
       //profileImage = clientModel!.profileImage!;
       SaveValueInKey.companyId = companyModel!.id!;
       SaveValueInKey.userId = companyModel!.userId!;
+      SaveValueInKey.companyAreaId = companyModel!.areaId!;
       emit(GetProfileCompanySuccessState(companyModel!));
+      getCompanyCityAndAreaProfile();
     }).catchError((error) {
-      log("erroooooooooooooooooooooooooooor");
       log(error.toString());
-      emit(GetProfileCompanyErrorState(error));
+      emit(GetProfileCompanyErrorState(error.toString()));
     });
   }
 
-  File ? image;
-  String imageName  = "";
+  File? image;
+  String imageName = "";
 
   getImageGallery() async {
-    final imageFile = ( await ImagePicker().pickImage(source: ImageSource.gallery));
+    final imageFile = (await ImagePicker()
+        .pickImage(source: ImageSource.gallery, imageQuality: 50));
     if (imageFile != null) {
       image = File(imageFile.path);
       log(image.toString());
       // clientModel!.id = SaveValueInKey.companyId;
       // log("clientModel Id = ${clientModel!.id.toString()}");
-      await selectImage();
       emit(GetImageSuccessState());
     } else {
       log('Error In Picking The Note Image');
@@ -140,72 +157,214 @@ class AppCubitClass extends Cubit<AppStates> {
   }
 
   getImageCamera() async {
-    var imageFile = await ImagePicker().pickImage(source: ImageSource.camera);
-    image = imageFile as File;
-    imageName = image != null ? basename(image!.path) : "";
-    log(image.toString());
-    emit(GetImageSuccessState());
+    final imageFile = (await ImagePicker()
+        .pickImage(source: ImageSource.camera, imageQuality: 50));
+    if (imageFile != null) {
+      image = File(imageFile.path);
+      log(image.toString());
+      // clientModel!.id = SaveValueInKey.companyId;
+      // log("clientModel Id = ${clientModel!.id.toString()}");
+      emit(GetImageSuccessState());
+    } else {
+      log('Error In Picking The Note Image');
+    }
   }
 
-  Future<void> selectImage() async{
-    var stream = File(image!.path).readAsBytes().asStream();
-    var length = await image!.length();
-    String fileName = image!.path.split('/').last;
-    log("clientModel Id = ${SaveValueInKey.companyId.toString()}");
-    http.MultipartFile multipartFile = http.MultipartFile(
-      "photo",
-      stream,
-      length,
-      filename: fileName,
-    );
-    var uri = Uri.parse("https://wasela.innovations-eg.com/$UPDATE_PROFILE_CLIENT${SaveValueInKey.companyId}");
+  Future<void> updateCompanyProfileDataWithHttp() async {
+    if(areaIdNow != null){
+      SharedCashHelper.setValue(key: "areaId", value: areaIdNow);
+      log("areaIdNow = $areaIdNow");
+    }
+    SaveValueInKey.companyAreaId = areaIdNow;
+    log("SaveValueInKey.companyAreaId = ${SaveValueInKey.companyId}");
+    log("SaveValueInKey.companyAreaId of model = ${companyModel!.id}");
+    var uri = Uri.parse(
+        "https://wasela.innovations-eg.com/$UPDATE_PROFILE_COMPANY${companyModel!.id}");
     var request = http.MultipartRequest("POST", uri);
-    request.files.add(multipartFile);
-    var response = await request.send();
+    request.headers
+        .addAll({'Authorization': "Bearer ${SaveValueInKey.accessToken}"});
+    if (image != null) {
+      var stream = File(image!.path).readAsBytes().asStream();
+      var length = await image!.length();
+      String fileName = image!.path.split('/').last;
+      log("clientModel Id = ${SaveValueInKey.companyId.toString()}");
 
+      http.MultipartFile multipartFile = http.MultipartFile(
+        "photo",
+        stream,
+        length,
+        filename: fileName,
+      );
+      request.files.add(multipartFile);
+    }
+      request.fields["name"] = updateNameController.text;
+      request.fields["email"] = updateEmailController.text;
+      request.fields["phone"] = updatePhoneController.text;
+      request.fields["city"] = updateCityController.text;
+      request.fields["address"] = updateAddressController.text;
+      request.fields["area_id"] = SharedCashHelper.getValue(key: "areaId").toString();
+    var response = await request.send();
     // listen for response
-    response.stream.transform(utf8.decoder).listen((value){
+    response.stream.transform(utf8.decoder).listen((value) {
       log("file name = ${fileName.toString()}");
       log(response.statusCode.toString());
       // final body = json.decode(value);
-      if (response.statusCode == 200 ) {
-        log("tmaaaaaaaaaam");
-        log(value.toString());
+      if (response.statusCode == 200) {
+        log("update Success");
+        getCompanyProfileData();
+        resetFalse();
+        makeListsEmpty();
+        emit(UpdateProfileCompanySuccessState());
       }
-      // if (response.statusCode == 500 ) {
-      //   log(value.toString());
-      // }
+      if (response.statusCode == 500) {
+        log("update not Success");
+        // getCompanyProfileData();
+        // resetFalse();
+        // makeListsEmpty();
+        log("response statusCode = ${value.toString()}");
+        emit(UpdateProfileErrorState());
+      }
     });
   }
 
-  void updateCompanyProfileData() {
+  void updateCompanyProfileDataWithDio() async {
+    SaveValueInKey.companyAreaId = areaIdNow;
+    log("areaIdNow = $areaIdNow");
+    log("SaveValueInKey.companyAreaId = $SaveValueInKey.companyAreaId");
     SaveValueInKey.accessToken = SharedCashHelper.getValue(key: "accessToken");
     log("${SaveValueInKey.accessToken}");
     log("$UPDATE_PROFILE_COMPANY${companyModel!.id.toString()}");
+    log("updated area id = ${areaIdNow.toString()}");
     log("Bearer ${SaveValueInKey.accessToken}");
     emit(UpdateProfileCompanyLoadingState());
-    DioHelper.postData(
-        accessToken: "",
-        token: "",
-        url: "$UPDATE_PROFILE_COMPANY${companyModel!.id.toString()}",
-        authorization: "Bearer ${SaveValueInKey.accessToken}",
-        data: {
-          "name": updateNameController.text,
-          "email": updateEmailController.text,
-          "phone": updatePhoneController.text,
-          "city": updateCityController.text,
-          "address": updateAddressController.text,
-          //"photo": image,
-        }).then((value) {
+    try {
+      Response response = await DioHelper.postData(
+          accessToken: "",
+          token: "",
+          url: "$UPDATE_PROFILE_COMPANY${companyModel!.id.toString()}",
+          authorization: "Bearer ${SaveValueInKey.accessToken}",
+          data: {
+            "name": updateNameController.text,
+            "email": updateEmailController.text,
+            "phone": updatePhoneController.text,
+            "city": updateCityController.text,
+            "address": updateAddressController.text,
+            "area_id": SaveValueInKey.companyAreaId,
+            //"photo": image,
+            //     File(
+            //         "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png"),
+          });
       log("update Success");
+      log("update area id = ${response.data["company"]["area_id"]}");
       getCompanyProfileData();
       resetFalse();
+      makeListsEmpty();
       emit(UpdateProfileCompanySuccessState());
-    }).catchError((error) {
-      log("update erroooor");
+    } on DioError catch (error) {
+      log("update erroooor = ${error.response!.data.toString()}");
       log(error.toString());
-      emit(UpdateProfileCompanyErrorState(error));
+      emit(UpdateProfileCompanyErrorState(error.toString()));
+    }
+  }
+
+  AllCities? allCities;
+  CityModel? cityModel;
+  AreaModel? areaModel;
+  List areaIdList = [];
+  List cityIdList = [];
+  List<String> cityList = [];
+  List<String> areaList = [""];
+
+  void makeListsEmpty() {
+    areaIdList = [];
+    cityIdList = [];
+    cityList = [];
+    areaList = [""];
+    emit(MakeListsEmptySuccessState());
+  }
+
+  void getAllCitiesForRegister() {
+    SaveValueInKey.accessToken = SharedCashHelper.getValue(key: "accessToken");
+    DioHelper.getData(url: GET_CITIES_DATA_OUT, authorization: "")
+        .then((value) {
+      allCities = AllCities.fromJson(value.data);
+      log("area names List = ${allCities!.toMap().toString()}");
+      for (int index = 0; index < value.data["province"].length; index++) {
+        cityList.add(value.data["province"][index]["name"]);
+        cityIdList.add(value.data["province"][index]["id"]);
+        cityModel = CityModel(
+            itsAreas: value.data["province"][index]["areas"],
+            id: value.data["province"][index]["id"],
+            name: value.data["province"][index]["name"],
+            price: value.data["province"][index]["price"]);
+        log(cityList.toString());
+        log(value.data["province"][index]["areas"].length.toString());
+        // for (int areaIndex = 0;
+        // areaIndex < value.data["province"][index]["areas"].length;
+        // areaIndex++) {
+        //   areaIdList
+        //       .add(value.data["province"][index]["areas"][areaIndex]["id"]);
+        // }
+      }
+      log("area names List = ${areaIdList.toString()}");
+      log("city Ids List = ${cityIdList.toString()}");
+      log("city names List = ${cityList.toString()}");
+      //log("${value.data["province"].length}");
+      emit(GetCitiesDataSuccess());
     });
+  }
+
+  void getSpecificAreasForRegister(choice) {
+    log("city names list = ${cityList.toString()}");
+    log("city model list = ${allCities!.province.toString()}");
+    for (int index = 0; index < cityList.length; index++) {
+      for (int areaIndex = 0;
+          areaIndex < allCities!.province![index]["areas"].length;
+          areaIndex++) {
+        log("areaIndex = ${areaIndex.toString()}");
+        log("index of city list = ${cityList[index]}");
+        log(" city list now is  = ${cityList[index]} and choice now is ${choice.toString()}");
+        if (cityList[index] == choice.toString()) {
+          areaList.add(allCities!.province![index]["areas"][areaIndex]["name"]);
+          areaIdList.add(allCities!.province![index]["areas"][areaIndex]["id"]);
+          log("areaaaaaaaaaaa ideeeeeees = ${areaIdList.toString()}");
+          log("areaaaaaaaaaaa naaames = ${areaList.toString()}");
+          log("city name now = ${cityModel!.name.toString()}");
+        }
+      }
+    }
+    log(areaList.toString());
+    log(areaIdList.toString());
+    emit(GetCitiesDataSuccess());
+  }
+
+  dynamic selectedCity;
+  bool isCitySelected = false;
+
+  var selectedArea;
+  bool isAreaSelected = false;
+  int? areaIdNow;
+
+  void selectFromCityChoices(choice) {
+    selectedCity = choice;
+    updateCityController.text = choice.toString();
+    isCitySelected = !isCitySelected;
+    areaList = [""];
+    selectedArea = "";
+    getSpecificAreasForRegister(choice);
+    emit(SelectChoiceSuccessState());
+  }
+
+  void selectFromAreaChoices(choice) {
+    selectedArea = choice;
+    updateAreaController.text = choice.toString();
+    isAreaSelected = !isAreaSelected;
+    int localIndex = areaList.indexOf(choice.toString()) - 1;
+    log("area id index now = ${localIndex.toString()}");
+    log("area id list = ${areaIdList.toString()}");
+    areaIdNow = areaIdList[localIndex];
+    log("area id name now = ${areaIdNow.toString()}");
+    emit(SelectChoiceSuccessState());
   }
 
   ClientModel? clientModel;
@@ -227,7 +386,7 @@ class AppCubitClass extends Cubit<AppStates> {
       updateEmailController.text = clientModel!.email!;
       updateCityController.text = clientModel!.city!;
       updateAddressController.text = clientModel!.address!;
-      //profileImage = clientModel!.profileImage!;
+      //image = clientModel!.profileImage!;
       SaveValueInKey.userId = clientModel!.id!;
       emit(GetProfileClientSuccessState(clientModel!));
     }).catchError((error) {
@@ -254,7 +413,7 @@ class AppCubitClass extends Cubit<AppStates> {
           "phone": updatePhoneController.text,
           "city": updateCityController.text,
           "address": updateAddressController.text,
-          "photo": profileImage,
+          //"photo": profileImage,
         }).then((value) {
       log("update Success");
       getClientProfileData();
@@ -285,5 +444,38 @@ class AppCubitClass extends Cubit<AppStates> {
     }
   }
 
-
+  void getCompanyCityAndAreaProfile() {
+    emit(GetCompanyCityAndAreaProfileLoadingState());
+    DioHelper.getData(url: GET_CITIES_DATA_OUT, authorization: "")
+        .then((value) {
+      log("data = ${value.data["province"][0]["areas"].toString()}");
+      for (int index = 0; index < value.data["province"].length; index++) {
+        for (int areaIndex = 0;
+            areaIndex < value.data["province"][index]["areas"].length;
+            areaIndex++) {
+          if (value.data["province"][index]["areas"][areaIndex]["id"] ==
+              SaveValueInKey.companyAreaId) {
+            updateAreaController.text =
+                value.data["province"][index]["areas"][areaIndex]["name"];
+            updateCityController.text = value.data["province"][index]["name"];
+            log("city = ${updateCityController.text} and area = ${updateAreaController.text}");
+          }
+        }
+      }
+      emit(GetCompanyCityAndAreaProfileSuccessState());
+    }).catchError((error) {
+      log("error = ${error.toString()}");
+      emit(GetCompanyCityAndAreaProfileErrorState(error.toString()));
+    });
+  }
 }
+/*
+
+        for(int index = 0 ; index < value.data["province"].length ; index ++ ){
+          if(value.data["province"][index]["areas"]["id"]  == companyModel!.areaId){
+            updateAreaController.text = value.data["province"][index]["areas"]["name"];
+            updateCityController.text = value.data["province"]["name"];
+            log("city = ${updateCityController.text} and area = ${updateAreaController.text}" );
+          }
+        }
+ */

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,97 +46,121 @@ class LoginCubitClass extends Cubit<LoginStates> {
   String errorMessage = "";
   bool isError = false;
 
-  UserDataModel ? userDataModel;
+  UserDataModel? userDataModel;
+
   void login() {
     emit(LoginLoadingState());
     FirebaseMessaging.instance.getToken().then((token) async {
       SaveValueInKey.firebaseToken = token.toString();
       log(SaveValueInKey.firebaseToken.toString());
-      DioHelper.postData(
-        authorization: "",
-        accessToken: '',
-        token: SaveValueInKey.firebaseToken,
-        url: LOGIN,
-        data: {
-          "phone_number": phoneController.text,
-          "password": passwordController.text,
-        },
-      ).then((value) {
-        userDataModel = UserDataModel.fromJson(value.data);
-        log("phone number  =  ${userDataModel!.phone.toString()}");
-        if (value.data["errNum"] == null) {
-          SaveValueInKey.accessToken = value.data["access_token"];
-          SaveValueInKey.userType = value.data["user"]["user_type"];
-          SaveValueInKey.userId = value.data["user"]["user_data"]["user_id"];
-          SaveValueInKey.companyId = value.data["user"]["user_data"]["id"];
-          log(SaveValueInKey.userType.toString());
+      try {
+        Response response = await DioHelper.postData(
+          authorization: "",
+          accessToken: '',
+          token: SaveValueInKey.firebaseToken,
+          url: LOGIN,
+          data: {
+            "phone_number": phoneController.text,
+            "password": passwordController.text,
+          },
+        );
+        SaveValueInKey.accessToken = response.data["access_token"];
+        SaveValueInKey.userType = response.data["user"]["user_type"];
+        SaveValueInKey.userId = response.data["user"]["user_data"]["user_id"];
+        SaveValueInKey.companyId = response.data["user"]["id"];
+        log(SaveValueInKey.userType.toString());
+        SharedCashHelper.setValue(
+                key: "accessToken", value: SaveValueInKey.accessToken)
+            .then((value) {
+          log(SaveValueInKey.accessToken.toString());
           SharedCashHelper.setValue(
-                  key: "accessToken", value: SaveValueInKey.accessToken)
+                  key: "user_type", value: SaveValueInKey.userType)
               .then((value) {
-            log(SaveValueInKey.accessToken.toString());
-            SharedCashHelper.setValue(key: "user_type", value: SaveValueInKey.userType).then((value) {
+            SharedCashHelper.setValue(
+                    key: "companyId", value: SaveValueInKey.companyId)
+                .then((value) {
               SharedCashHelper.setValue(
-                  key: "companyId", value: SaveValueInKey.companyId).then((value) {
-                SharedCashHelper.setValue(
-                    key: "userId", value: SaveValueInKey.userId).then((value) {
-                  emit(LoginSuccessState());
-                  resetAll();
-                });
-                });
-            }).catchError((error){
-              log(error.toString());
+                      key: "userId", value: SaveValueInKey.userId)
+                  .then((value) {
+                emit(LoginSuccessState());
+                resetAll();
+              });
             });
+          }).catchError((error) {
+            log(error.toString());
           });
-        } else {
-          if (value.data["errNum"] == "0") {
+        });
+      } on DioError catch (e) {
+        log(e.response!.statusCode.toString());
+        log(e.response!.data.toString());
+        if (e.response!.statusCode == 422) {
+          if (e.response!.data["errNum"] == "0") {
             errorMessage = "لا يوجد حساب مسجل بهذا الرقم";
-          } else if (value.data["errNum"] == "1") {
+          } else if (e.response!.data["errNum"] == "1") {
             errorMessage = "كلمة السر غير صحيحة";
           }
           emit(ShowErrorInSnackBar());
+        } else {
+          emit(LoginErrorState(e.toString()));
         }
-      }).catchError((error) {
-        log(error.toString());
-        emit(LoginErrorState(error.toString()));
-      });
+      }
     });
   }
-
 
   TextEditingController phoneForgetController = TextEditingController();
   TextEditingController passwordForgetController = TextEditingController();
   TextEditingController rePasswordForgetController = TextEditingController();
-  String  forgetMsg  = "";
+  String forgetMsg = "";
 
-  void checkPhone(){
+  void checkPhone() async {
     emit(CheckPhoneLoadingState());
-    DioHelper.postData(url: CHECK_PHONE_FORGET_PASSWORD, token: "", accessToken: "", authorization: "", data: {
-      "phone_number": phoneForgetController,
-    }).then((value) {
-      log("success data = ${value.data}");
+    try {
+      var responses = await DioHelper.postData(
+          url: CHECK_PHONE_FORGET_PASSWORD,
+          token: "",
+          accessToken: "",
+          authorization: "",
+          data: {
+            "phone_number": phoneForgetController.text,
+          });
+      log(responses.data.toString());
       emit(CheckPhoneSuccessState());
-    }).catchError((error){
-      log("error data = ${error.data}");
-      emit(CheckPhoneErrorState(error));
-    });
+    }on DioError catch (error) {
+      if (error.response!.statusCode == 422) {
+        log(error.response!.data.toString());
+        if (error.response!.data["Not Found PhoneNumber"] == "") {
+          forgetMsg = "خطأ .. هذا الرقم غير مسجل فى قاعدة البيانات";
+        }
+        emit(ShowErrorInSnackBar());
+      } else {
+        log("error data = ${error.response!.statusCode}");
+        emit(CheckPhoneErrorState(error.toString()));
+      }
+      emit(CheckPhoneErrorState(error.toString()));
+    }
   }
 
-  void forgetPassword(){
+  void forgetPassword() {
     emit(ForgetPasswordLoadingState());
     log(phoneForgetController.text);
-    DioHelper.postData(url: FORGET_PASSWORD, token: "", accessToken: "", authorization: "", data: {
-      "phone_number" : phoneForgetController.text,
-      "password" : passwordForgetController.text,
-      "password_confirmation" : rePasswordForgetController.text,
-    }).then((value) {
-      if(value.data == "successfully"){
-        forgetMsg = "تم تغيير كلمة السر بنجاج , برجاء استخدام كلمة السر الجديدة عند تسجيل الدخول";
+    DioHelper.postData(
+        url: FORGET_PASSWORD,
+        token: "",
+        accessToken: "",
+        authorization: "",
+        data: {
+          "phone_number": phoneForgetController.text,
+          "password": passwordForgetController.text,
+          "password_confirmation": rePasswordForgetController.text,
+        }).then((value) {
+      if (value.data == "successfully") {
+        forgetMsg =
+            "تم تغيير كلمة السر بنجاج , برجاء استخدام كلمة السر الجديدة عند تسجيل الدخول";
         log(value.data.toString());
         emit(ForgetPasswordSuccessState());
       }
       log(value.data.toString());
-
-    }).catchError((error){
+    }).catchError((error) {
       log(error.toString());
       emit(ForgetPasswordErrorState(error));
     });

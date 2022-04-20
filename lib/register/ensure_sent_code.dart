@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:wasela/comapny_app/app_layouts/add_new_ship/bloc/cubit_class.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:wasela/register/complete_register_data.dart';
@@ -73,6 +74,7 @@ class EnsureSentCode extends StatelessWidget {
                                 layout: CompleteRegisterData(
                                   phoneController: phoneController,
                                 ));
+                            AddNewShipCubitClass.get(context).getAllCitiesAndTheirAreas();
                           },
                           containerColor: purpleColor,
                         ),

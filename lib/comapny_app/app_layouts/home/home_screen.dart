@@ -18,7 +18,7 @@ class HomeScreenForCompanyApp extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: greyColor,
+            backgroundColor: greyColor,
             appBar: generateAppBarForCompanyMainScreens(
               mainScreen: true,
               context: context,
@@ -71,17 +71,25 @@ class HomeScreenForCompanyApp extends StatelessWidget {
                                                 Text(
                                                   "cod",
                                                   style: TextStyle(
-                                                      color: Colors.white,fontWeight: FontWeight.bold),
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                                 Text(
                                                   "مبالغ قيد التحصيل",
                                                   style: TextStyle(
-                                                      color: Colors.white,fontWeight: FontWeight.bold),
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                                 Text(
                                                   "5000 جنيه",
                                                   style: TextStyle(
-                                                      color: Colors.white,fontWeight: FontWeight.bold,fontSize: 25,height: 1.5),
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 25,
+                                                      height: 1.5),
                                                 ),
                                               ],
                                             ),
@@ -95,7 +103,8 @@ class HomeScreenForCompanyApp extends StatelessWidget {
                                             radius: 45,
                                             backgroundColor: Colors.white,
                                             child: Padding(
-                                              padding: const EdgeInsets.only(top: 15.0),
+                                              padding: const EdgeInsets.only(
+                                                  top: 15.0),
                                               child: SvgPicture.asset(
                                                 "Assets/images/noun-cod-3282485.svg",
                                                 color: purpleColor,
@@ -127,17 +136,25 @@ class HomeScreenForCompanyApp extends StatelessWidget {
                                                 Text(
                                                   "Balance due",
                                                   style: TextStyle(
-                                                      color: Colors.black,fontWeight: FontWeight.bold),
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                                 Text(
                                                   "الرصيد المستحق",
                                                   style: TextStyle(
-                                                      color: Colors.black,fontWeight: FontWeight.bold),
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                                 Text(
                                                   "5000 pound",
                                                   style: TextStyle(
-                                                      color: Colors.black,fontWeight: FontWeight.bold,fontSize: 25,height: 1.5),
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 25,
+                                                      height: 1.5),
                                                 ),
                                               ],
                                             ),
@@ -184,8 +201,7 @@ class HomeScreenForCompanyApp extends StatelessWidget {
                                 ),
                                 maxY: 600,
                                 baselineY: 100,
-                                axisTitleData: FlAxisTitleData(
-                                ),
+                                axisTitleData: FlAxisTitleData(),
                                 barTouchData: BarTouchData(
                                   enabled: false,
                                 ),

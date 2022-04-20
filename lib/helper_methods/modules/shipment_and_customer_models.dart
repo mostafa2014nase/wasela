@@ -155,6 +155,7 @@ class CreateShipmentModel {
   int? areaId;
   int? serviceTypeId;
   int? representativeId;
+  String? deliveryDate;
 
   CreateShipmentModel({
     required this.name,
@@ -181,6 +182,7 @@ class CreateShipmentModel {
     required this.areaId,
     this.serviceTypeId,
     this.representativeId,
+    required this.deliveryDate,
   });
 
   CreateShipmentModel.fromJson(Map<String, dynamic> json) {
@@ -208,6 +210,7 @@ class CreateShipmentModel {
     serviceTypeId = json["service_type_id"];
     representativeId = json["representative_id"];
     companyId = json["sender_id"];
+    deliveryDate = json["delivery_date"];
   }
 
   Map<String, dynamic> toMap() {
@@ -237,6 +240,121 @@ class CreateShipmentModel {
       "service_type_id": serviceTypeId,
       "representative_id": representativeId,
       "sender_id": companyId,
+      "delivery_date": deliveryDate,
+    };
+  }
+}
+class EditShipmentModel {
+  int? customerId;
+  String? name;
+  String? address;
+  String? city;
+  String? area;
+  String? phone;
+  String? phone_2;
+  String? email;
+  String? googleLocation;
+  File? photo;
+  int? companyId;
+  int? shipmentId;
+  String? nameShipment;
+  String? description;
+  int? customerCode;
+  int? collectionAmount;
+  num? shippingPrice;
+  String? weight;
+  String? size;
+  num? count;
+  String? notes;
+  num? areaId;
+  num? serviceTypeId;
+  num? representativeId;
+  String? deliveryDate;
+
+  EditShipmentModel({
+    required this.name,
+    required this.address,
+    required this.phone,
+    required this.customerId,
+    required this.phone_2,
+    required this.email,
+     this.googleLocation,
+    required this.companyId,
+     this.photo,
+    this.city,
+    this.area,
+    this.shipmentId,
+    required this.nameShipment,
+    required this.description,
+    this.customerCode,
+    this.collectionAmount,
+    required this.shippingPrice,
+    required this.weight,
+    required this.size,
+    required this.count,
+    required this.notes,
+    required this.areaId,
+    this.serviceTypeId,
+    this.representativeId,
+    required this.deliveryDate,
+  });
+
+  EditShipmentModel.fromJson(Map<String, dynamic> json) {
+    customerId = json["client_id"];
+    name = json["client"]["name"];
+    address = json["client"]["address"];
+    phone = json["client"]["phone"];
+    phone_2 = json["client"]["phone_2"]?? "";
+    email = json["client"]["email"];
+    googleLocation = json["google_location"];
+    companyId = json["user_id"];
+    photo = json["photo"];
+    shipmentId = json["id"];
+    nameShipment = json["name_shipment"];
+    description = json["description"];
+    customerCode = json["customer_code"];
+    collectionAmount = json["collection_amount"];
+    shippingPrice = json["shipping_price"];
+    weight = json["weight"];
+    size = json["size"];
+    count = json["count"];
+    notes = json["notes"];
+    customerId = json["client_id"];
+    areaId = json["area"]["id"];
+    serviceTypeId = json["service_type_id"];
+    representativeId = json["representative_id"];
+    companyId = json["sender_id"];
+    deliveryDate = json["delivery_date"];
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "client_id": customerId,
+      "name": name,
+      "address": address,
+      "phone": phone,
+      "phone_2": phone_2,
+      "email": email,
+      "google_location": googleLocation,
+      "company_id": companyId,
+      "photo": photo,
+      "area": area,
+      "city": city,
+      "id": shipmentId,
+      "name_shipment": nameShipment,
+      "description": description,
+      "customer_code": customerCode,
+      "collection_amount": collectionAmount,
+      "shipping_price": shippingPrice,
+      "weight": weight,
+      "size": size,
+      "count": count,
+      "notes": notes,
+      "area_id": areaId,
+      "service_type_id": serviceTypeId,
+      "representative_id": representativeId,
+      "sender_id": companyId,
+      "delivery_date": deliveryDate,
     };
   }
 }

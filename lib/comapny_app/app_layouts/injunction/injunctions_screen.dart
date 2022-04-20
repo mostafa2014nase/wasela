@@ -1,4 +1,6 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:wasela/comapny_app/app_layouts/injunction/bloc/cubit_class.dart';
 import 'package:wasela/comapny_app/app_layouts/injunction/bloc/states.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
@@ -8,271 +10,642 @@ import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
 
 class InjunctionsScreenForCompanyApp extends StatelessWidget {
-  TextEditingController phoneController = TextEditingController();
+  const InjunctionsScreenForCompanyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<InjunctionsAppCubitClass, InjunctionsStates>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        //var cubit = InjunctionsAppCubitClass.get(context);
-        return Scaffold(
-          backgroundColor: greyColor,
-          appBar: generateAppBarForCompanyMainScreens(
-            mainScreen: true,
-            title: "التلسيمات",
-            svgPath: "noun-pick-up-4160044",
-            context: context,
-            imageSize: 80.0,
-
-          ),
-          resizeToAvoidBottomInset: false,
-          body: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "الأستلامات",
-                        style: TextStyle(
-                          color: purpleColor,
-                          fontSize: 18.0,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      Row(
-                        children: [
-                          put_line(
-                            line_height: 5.0,
-                            color: yellowColor,
-                            line_width: 100.0,
-                          ),
-                          Expanded(
-                            child: put_line(
-                              line_height: 5.0,
-                              color: Colors.black38,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 30.0,
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            width: 90,
-                            decoration: BoxDecoration(
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(10.0),
-                                border: Border.all(
-                                  width: 0.8,
-                                  color: purpleColor,
-                                )),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    LocaleKeys.shippingSearch1.tr(),
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                  const Spacer(),
-                                  Icon(
-                                    Icons.calendar_today,
-                                    color: purpleColor,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Container(
-                            width: 90,
-                            decoration: BoxDecoration(
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(10.0),
-                                border: Border.all(
-                                  width: 0.8,
-                                  color: purpleColor,
-                                )),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    LocaleKeys.shippingSearch2.tr(),
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                  const Spacer(),
-                                  Icon(
-                                    Icons.calendar_today,
-                                    color: purpleColor,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Expanded(
-                            child: Stack(
-                              alignment: AlignmentDirectional.centerEnd,
-                              children: [
-                                Container(
-                                  alignment: AlignmentDirectional.centerStart,
-                                  padding: EdgeInsetsDirectional.only(start: 5),
-                                  width: 200,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                      color: greyColor,
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      border: Border.all(
-                                        color: purpleColor,
-                                      )),
-                                  child: Text(
-                                    LocaleKeys.shippingSearch3.tr(),
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                ),
-                                Container(
-                                  width: 40,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                      color: purpleColor,
-                                      borderRadius:
-                                          const BorderRadiusDirectional.only(
-                                              bottomEnd: Radius.circular(10.0),
-                                              topEnd: Radius.circular(10.0)),
-                                      border: Border.all(
-                                        width: 0.8,
-                                        color: purpleColor,
-                                      )),
-                                  child: const Expanded(
-                                    child: Icon(
-                                      Icons.search,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+        listener: (context, state) {},
+        builder: (context, state) {
+          var cubit = InjunctionsAppCubitClass.get(context);
+          return DefaultTabController(
+            length: 3,
+            child: Scaffold(
+              appBar: generateAppBarForCompanyMainScreens(
+                mainScreen: true,
+                title: "المرتجعات",
+                svgPath: "noun-pick-up-4160044",
+                context: context,
+                imageSize: 80.0,
               ),
-              Expanded(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
-                  child: ListView.separated(
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return DecoratedContainerWithShadow(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Column(
-                                  children: [
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys
-                                          .walletScreenListItemDetails1
-                                          .tr(),
-                                      text2: "1855",
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys.shippingListItemDetails2
-                                          .tr(),
-                                      text2: "1855",
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys
-                                          .walletScreenListItemDetails2
-                                          .tr(),
-                                      text2: "1855",
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys.shippingListItemDetails4
-                                          .tr(),
-                                      text2: "1855",
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys.shippingListItemDetails5
-                                          .tr(),
-                                      text2: "1855",
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys.shippingListItemDetails6
-                                          .tr(),
-                                      text2: "1855",
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys.shippingListItemDetails7
-                                          .tr(),
-                                      text2: "1855",
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      // navigateAndBack(
-                                      //     context,
-                                      //     layout:
-                                      //     FollowShippingOnMapScreen());
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20.0, vertical: 5.0),
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 10.0),
-                                      child: const CustomContainerForDetails(
-                                        text1: "تفاصيل",
-                                        icon: Icon(
-                                          Icons.arrow_forward_ios,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+              primary: true,
+              resizeToAvoidBottomInset: false,
+              backgroundColor: greyColor,
+              body: SafeArea(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0,horizontal: 5.0),
+                      child: TabBar(
+                        labelStyle: lightTheme.textTheme.bodyText1!.copyWith(fontSize: 13.0,height: 1.8,fontWeight: FontWeight.bold),
+                        enableFeedback: true,
+                        physics: const BouncingScrollPhysics(),
+                        labelPadding:
+                        const EdgeInsets.symmetric(horizontal: 5.0),
+                        labelColor: Colors.white,
+                        unselectedLabelColor: purpleColor,
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        indicatorColor: purpleColor,
+                        indicator: BoxDecoration(
+                          border: Border.all(
+                            color: purpleColor,
+                          ),
+                          color: purpleColor,
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadiusDirectional.horizontal(
+                            start: Radius.circular(10.0),
+                            end: Radius.circular(10.0),
+                          ),
+                        ),
+                        indicatorWeight: 0,
+                        tabs: [
+                          Container(
+                            height: 70.0,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: purpleColor,
+                                  width: 4.0
+                              ),
+                              borderRadius: BorderRadiusDirectional.horizontal(
+                                start: Radius.circular(10.0),
+                                end: Radius.circular(10.0),
+                              ),
                             ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 5.0),
+                              child: Text(
+                                "مرتجع جزئي للشحنة",
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: 70.0,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: purpleColor,
+                                  width: 4.0
+                              ),
+                              borderRadius: BorderRadiusDirectional.horizontal(
+                                start: Radius.circular(10.0),
+                                end: Radius.circular(10.0),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 5.0,horizontal: 5.0),
+                              child: Text(
+                                "مرتجع كامل مسدد قيمة الشحن",
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: 70.0,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: purpleColor,
+                                  width: 4.0
+                              ),
+                              borderRadius: BorderRadiusDirectional.horizontal(
+                                start: Radius.circular(10.0),
+                                end: Radius.circular(10.0),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 5.0),
+                              child: Text(
+                                "مرتجع كامل بدون تستديد قيمة الشحن",
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: TabBarView(
+                          physics: const BouncingScrollPhysics(),
+                          children: [
+                            BouncePart(
+                                shippingIsEmpty: false,
+                                context: context),
+                             BounceCompleteWithShipmentPay(shippingIsEmpty: false,context: context),
+                             BounceCompleteWithOutShipmentPay(shippingIsEmpty: false,context: context),
                           ],
                         ),
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return SizedBox(
-                        height: 20,
-                      );
-                    },
-                    itemCount: 10,
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        );
-      },
+            ),
+          );
+        });
+  }
+}
+
+class BouncePart extends StatelessWidget {
+  final bool shippingIsEmpty;
+  final BuildContext context;
+
+  const BouncePart({
+    Key? key,
+    required this.shippingIsEmpty,
+    required this.context,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var cubit = InjunctionsAppCubitClass.get(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Stack(
+                alignment: AlignmentDirectional.centerEnd,
+                children: [
+                  Container(
+                    alignment: AlignmentDirectional.centerStart,
+                    padding: const EdgeInsetsDirectional.only(start: 5),
+                    height: 60,
+                    decoration: BoxDecoration(
+                        color: greyColor,
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          color: purpleColor,
+                        )),
+                    child: TextFormField(
+                      // controller: cubit.searchController,
+                      // onChanged: (word) {
+                      //   if (word.isEmpty) {
+                      //     cubit.findAllMatchShipments();
+                      //   }
+                      // },
+                      decoration: InputDecoration(
+                        hintText: LocaleKeys.shippingSearch3.tr(),
+                        border: InputBorder.none,
+                      ),
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      //cubit.findAllMatchShipments();
+                      //cubit.checkIfWordExist();
+                    },
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          color: purpleColor,
+                          borderRadius: const BorderRadiusDirectional.only(
+                              bottomEnd: Radius.circular(10.0),
+                              topEnd: Radius.circular(10.0)),
+                          border: Border.all(
+                            width: 0.8,
+                            color: purpleColor,
+                          )),
+                      child: const Icon(
+                        Icons.search,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        BlocConsumer<InjunctionsAppCubitClass, InjunctionsStates>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            return Expanded(
+              child: Padding(
+                padding:
+                const EdgeInsets.only(right: 10, left: 10, top: 40),
+                child: ListView.separated(
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return DecoratedContainerWithShadow(
+                      child: Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                            children: [
+                              CustomRowForDetails(
+                                text1: LocaleKeys
+                                    .walletScreenListItemDetails1
+                                    .tr(),
+                                text2: "5889523556",
+                                rowWidth: 230,
+                              ),
+                              CustomRowForDetails(
+                                text1: "أسم العميل",
+                                text2: "lll",
+                                rowWidth: 230,
+                              ),
+                              CustomRowForDetails(
+                                text1: "العنوان",
+                                text2:"كوكواااا",
+                                rowWidth: 230,
+                              ),
+                              CustomRowForDetails(
+                                text1: LocaleKeys
+                                    .shippingListItemDetails6
+                                    .tr(),
+                                text2: "قلبى",
+                                //"${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).year}-${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).month}-${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).day}",
+                                //"${DateTime.parse(dataList[index]["created_at"])}",
+                              ),
+                              CustomRowForDetails(
+                                text1: LocaleKeys
+                                    .shippingListItemDetails7
+                                    .tr(),
+                                text2: "1855",
+                                rowWidth: 230,
+                              ),
+                              CustomRowForDetails(
+                                text1: "سعر المنتج",
+                                text2: "1855",
+                                rowWidth: 230,
+                              ),
+                              CustomRowForDetails(
+                                text1: "مبلغ التسليم",
+                                text2: "1855",
+                                rowWidth: 230,
+                              ),
+                              CustomRowForDetails(
+                                text1: "قيمة المرتجع",
+                                text2: "1855",
+                                rowWidth: 230,
+                              ),
+                              CustomRowForDetails(
+                                text1: "تكلفة الشحن",
+                                text2: "1855",
+                                rowWidth: 230,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(
+                      height: 20,
+                    );
+                  },
+                  itemCount: 5,
+                ),
+              ),
+            );
+          },
+        )
+      ],
     );
   }
 }
+class BounceCompleteWithShipmentPay extends StatelessWidget {
+  final bool shippingIsEmpty;
+  final BuildContext context;
+
+  const BounceCompleteWithShipmentPay({
+    Key? key,
+    required this.shippingIsEmpty,
+    required this.context,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var cubit = InjunctionsAppCubitClass.get(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Stack(
+                alignment: AlignmentDirectional.centerEnd,
+                children: [
+                  Container(
+                    alignment: AlignmentDirectional.centerStart,
+                    padding: const EdgeInsetsDirectional.only(start: 5),
+                    height: 60,
+                    decoration: BoxDecoration(
+                        color: greyColor,
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          color: purpleColor,
+                        )),
+                    child: TextFormField(
+                      // controller: cubit.searchController,
+                      // onChanged: (word) {
+                      //   if (word.isEmpty) {
+                      //     cubit.findAllMatchShipments();
+                      //   }
+                      // },
+                      decoration: InputDecoration(
+                        hintText: LocaleKeys.shippingSearch3.tr(),
+                        border: InputBorder.none,
+                      ),
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      //cubit.findAllMatchShipments();
+                      //cubit.checkIfWordExist();
+                    },
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          color: purpleColor,
+                          borderRadius: const BorderRadiusDirectional.only(
+                              bottomEnd: Radius.circular(10.0),
+                              topEnd: Radius.circular(10.0)),
+                          border: Border.all(
+                            width: 0.8,
+                            color: purpleColor,
+                          )),
+                      child: const Icon(
+                        Icons.search,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        BlocConsumer<InjunctionsAppCubitClass, InjunctionsStates>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            return Expanded(
+              child: Padding(
+                padding:
+                const EdgeInsets.only(right: 10, left: 10, top: 40),
+                child: ListView.separated(
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return DecoratedContainerWithShadow(
+                      child: Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                            children: [
+                              CustomRowForDetails(
+                                text1: LocaleKeys
+                                    .walletScreenListItemDetails1
+                                    .tr(),
+                                text2: "5889523556",
+                                rowWidth: 230,
+                              ),
+                              CustomRowForDetails(
+                                text1: "أسم العميل",
+                                text2: "lll",
+                                rowWidth: 230,
+                              ),
+                              CustomRowForDetails(
+                                text1: "العنوان",
+                                text2:"كوكواااا",
+                                rowWidth: 230,
+                              ),
+                              CustomRowForDetails(
+                                text1: LocaleKeys
+                                    .shippingListItemDetails6
+                                    .tr(),
+                                text2: "قلبى",
+                                //"${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).year}-${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).month}-${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).day}",
+                                //"${DateTime.parse(dataList[index]["created_at"])}",
+                              ),
+                              CustomRowForDetails(
+                                text1: LocaleKeys
+                                    .shippingListItemDetails7
+                                    .tr(),
+                                text2: "1855",
+                                rowWidth: 230,
+                              ),
+                              CustomRowForDetails(
+                                text1: "سعر المنتج",
+                                text2: "1855",
+                                rowWidth: 230,
+                              ),
+                              CustomRowForDetails(
+                                text1: "مبلغ التسليم",
+                                text2: "1855",
+                                rowWidth: 230,
+                              ),
+                              CustomRowForDetails(
+                                text1: "قيمة المرتجع",
+                                text2: "1855",
+                                rowWidth: 230,
+                              ),
+                              CustomRowForDetails(
+                                text1: "تكلفة الشحن",
+                                text2: "1855",
+                                rowWidth: 230,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(
+                      height: 20,
+                    );
+                  },
+                  itemCount: 5,
+                ),
+              ),
+            );
+          },
+        )
+      ],
+    );
+  }
+}
+class BounceCompleteWithOutShipmentPay extends StatelessWidget {
+  final bool shippingIsEmpty;
+  final BuildContext context;
+
+  const BounceCompleteWithOutShipmentPay({
+    Key? key,
+    required this.shippingIsEmpty,
+    required this.context,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var cubit = InjunctionsAppCubitClass.get(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Stack(
+                alignment: AlignmentDirectional.centerEnd,
+                children: [
+                  Container(
+                    alignment: AlignmentDirectional.centerStart,
+                    padding: const EdgeInsetsDirectional.only(start: 5),
+                    height: 60,
+                    decoration: BoxDecoration(
+                        color: greyColor,
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          color: purpleColor,
+                        )),
+                    child: TextFormField(
+                      // controller: cubit.searchController,
+                      // onChanged: (word) {
+                      //   if (word.isEmpty) {
+                      //     cubit.findAllMatchShipments();
+                      //   }
+                      // },
+                      decoration: InputDecoration(
+                        hintText: LocaleKeys.shippingSearch3.tr(),
+                        border: InputBorder.none,
+                      ),
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      //cubit.findAllMatchShipments();
+                      //cubit.checkIfWordExist();
+                    },
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          color: purpleColor,
+                          borderRadius: const BorderRadiusDirectional.only(
+                              bottomEnd: Radius.circular(10.0),
+                              topEnd: Radius.circular(10.0)),
+                          border: Border.all(
+                            width: 0.8,
+                            color: purpleColor,
+                          )),
+                      child: const Icon(
+                        Icons.search,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        BlocConsumer<InjunctionsAppCubitClass, InjunctionsStates>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            return Expanded(
+              child: Padding(
+                padding:
+                const EdgeInsets.only(right: 10, left: 10, top: 40),
+                child: ListView.separated(
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return DecoratedContainerWithShadow(
+                      child: Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                            children: [
+                              CustomRowForDetails(
+                                text1: LocaleKeys
+                                    .walletScreenListItemDetails1
+                                    .tr(),
+                                text2: "5889523556",
+                                rowWidth: 230,
+                              ),
+                              CustomRowForDetails(
+                                text1: "أسم العميل",
+                                text2: "lll",
+                                rowWidth: 230,
+                              ),
+                              CustomRowForDetails(
+                                text1: "العنوان",
+                                text2:"كوكواااا",
+                                rowWidth: 230,
+                              ),
+                              CustomRowForDetails(
+                                text1: LocaleKeys
+                                    .shippingListItemDetails6
+                                    .tr(),
+                                text2: "قلبى",
+                                //"${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).year}-${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).month}-${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).day}",
+                                //"${DateTime.parse(dataList[index]["created_at"])}",
+                              ),
+                              CustomRowForDetails(
+                                text1: LocaleKeys
+                                    .shippingListItemDetails7
+                                    .tr(),
+                                text2: "1855",
+                                rowWidth: 230,
+                              ),
+                              CustomRowForDetails(
+                                text1: "سعر المنتج",
+                                text2: "1855",
+                                rowWidth: 230,
+                              ),
+                              CustomRowForDetails(
+                                text1: "مبلغ التسليم",
+                                text2: "1855",
+                                rowWidth: 230,
+                              ),
+                              CustomRowForDetails(
+                                text1: "قيمة المرتجع",
+                                text2: "1855",
+                                rowWidth: 230,
+                              ),
+                              CustomRowForDetails(
+                                text1: "تكلفة الشحن",
+                                text2: "1855",
+                                rowWidth: 230,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(
+                      height: 20,
+                    );
+                  },
+                  itemCount: 5,
+                ),
+              ),
+            );
+          },
+        )
+      ],
+    );
+  }
+}
+

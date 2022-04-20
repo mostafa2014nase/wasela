@@ -1,10 +1,17 @@
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'dart:developer';
+
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:wasela/comapny_app/app_layouts/add_new_ship/bloc/states.dart';
+import 'package:wasela/comapny_app/app_layouts/ship/bloc/cubit_class.dart';
+import 'package:wasela/comapny_app/app_layouts/ship/bloc/states.dart';
+import 'package:wasela/comapny_app/app_layouts/ship/charge_screen.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
-
 import 'bloc/cubit_class.dart';
 
 class AddShipFromMobileApp extends StatelessWidget {
@@ -14,7 +21,132 @@ class AddShipFromMobileApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AddNewShipCubitClass, AddNewShipStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        var cubit = AddNewShipCubitClass.get(context);
+        if (state is CreateNewShipmentOrderLoadingState) {
+          myShowDialogForMarketing(
+              context: context,
+              alertDialog: CustomAlertDialogForMarketing(
+                  bodyColor: purpleColor,
+                  imageBackColor: purpleColor,
+                  backGroundImageColor: Colors.white,
+                  mainWidgetText: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Material(
+                        child: Text(
+                          "جاري رفع بيانات الشحنة",
+                          style: lightTheme.textTheme.bodyText1?.copyWith(
+                            fontSize: 25,
+                            color: Colors.white,
+                          ),
+                        ),
+                        color: Colors.transparent,
+                      ),
+                      const SizedBox(
+                        height: 30.0,
+                      ),
+                      const CupertinoActivityIndicator(
+                        radius: 50.0,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                    ],
+                  ),
+                  topImage: SvgPicture.asset(
+                    "Assets/images/noun-excel-2788108.svg",
+                    width: 80,
+                    height: 80,
+                    color: Colors.white,
+                  ),
+                  ));
+          }
+        else if(state is ShowErrorMsgInSnackBar){
+          Navigator.pop(context);
+          showToast(context, cubit.completeShowMsg, ToastStates.warning,textColor: Colors.black);
+        }
+        else if(state is ShowErrorMsgRedInSnackBar){
+          Navigator.pop(context);
+          showToast(context, cubit.completeShowMsg, ToastStates.error,);
+        }
+        else if (state is CreateNewShipmentOrderSuccessState) {
+            Navigator.pop(context);
+            myShowDialogForMarketing(
+              context: context,
+              alertDialog: CustomAlertDialogForMarketing(
+                bodyColor: purpleColor,
+                imageBackColor: purpleColor,
+                backGroundImageColor: Colors.white,
+                mainWidgetText: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "تم رفع بيانات الشحنة بنجاح",
+                      style: lightTheme.textTheme.bodyText1?.copyWith(
+                        fontSize: 25,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    const Icon(
+                      Icons.check_circle,
+                      color: Colors.white,
+                      size: 80.0,
+                    ),
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    BlocConsumer<ShipForCompanyAppCubitClass, ShipStates>(
+                      listener: (context, state) {},
+                      builder: (context, state) {
+                        var shipCubit = ShipForCompanyAppCubitClass.get(context);
+                        return Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: () {
+                              backToPrevious(context);
+                              backToPrevious(context);
+                              shipCubit.tempList.length = 0;
+                              shipCubit.getAllShipmentsData();
+                              navigateAndFinish(context, layout: const ShipScreenForCompanyApp());
+                              cubit.resetAllData();
+                            },
+                            child: CustomDesignUnActive(
+                              text: Text(
+                                "الذهاب للشحنات",
+                                style: lightTheme.textTheme.bodyText1!.copyWith(
+                                  fontSize: 25,
+                                  color: purpleColor,
+                                ),
+                              ),
+                              borderColor: Colors.white,
+                              containerColor: Colors.white,
+                              borderRadius: 10.0,
+                              width: 200.0,
+                              height: 60.0,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                  ],
+                ),
+                topImage: SvgPicture.asset(
+                  "Assets/images/wallet.svg",
+                  width: 40,
+                  height: 40,
+                  color: Colors.white,
+              ),
+            ));
+      }
+      },
       builder: (context, state) {
         var cubit = AddNewShipCubitClass.get(context);
         return Scaffold(
@@ -229,8 +361,7 @@ class AddShipFromMobileApp extends StatelessWidget {
                                   enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: purpleColor, width: 1.5),
-                                      borderRadius:
-                                          const BorderRadius.horizontal(
+                                      borderRadius: const BorderRadius.horizontal(
                                         right: Radius.circular(10.0),
                                         left: Radius.circular(10.0),
                                       )),
@@ -253,11 +384,12 @@ class AddShipFromMobileApp extends StatelessWidget {
                                   borderColor: purpleColor,
                                   containerColor: Colors.transparent,
                                   text: DropdownButton(
+                                    menuMaxHeight: 300.0,
                                       alignment:
                                           AlignmentDirectional.bottomCenter,
                                       underline: const SizedBox(),
                                       focusColor: Colors.black,
-                                      dropdownColor: yellowColor,
+                                      dropdownColor: greyColortwoo,
                                       icon: CustomDesignUnActive(
                                         width: 40.0,
                                         borderRadius: 5.0,
@@ -273,7 +405,7 @@ class AddShipFromMobileApp extends StatelessWidget {
                                                 start: 10.0),
                                         child: Text("المدينة",
                                             style:
-                                                TextStyle(color: purpleColor)),
+                                                TextStyle(color: purpleColor,fontWeight: FontWeight.bold)),
                                       ),
                                       onTap: () {
                                         //cubit.resetAllAreas();
@@ -292,8 +424,8 @@ class AddShipFromMobileApp extends StatelessWidget {
                                                 .only(start: 10.0),
                                             child: Text(
                                               val,
-                                              style: const TextStyle(
-                                                  color: Colors.black),
+                                              style:  TextStyle(
+                                                  color: purpleColor,fontWeight: FontWeight.bold,fontSize: 18.0),
                                               //textAlign: TextAlign.right,
                                             ),
                                           ),
@@ -302,7 +434,7 @@ class AddShipFromMobileApp extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(
-                                width: 30.0,
+                                width: 5.0,
                               ),
                               Expanded(
                                 child: CustomDesignUnActive(
@@ -314,7 +446,8 @@ class AddShipFromMobileApp extends StatelessWidget {
                                           AlignmentDirectional.bottomCenter,
                                       underline: const SizedBox(),
                                       focusColor: Colors.black,
-                                      dropdownColor: yellowColor,
+                                      dropdownColor: greyColortwoo,
+                                      menuMaxHeight: 250.0,
                                       icon: CustomDesignUnActive(
                                         width: 40.0,
                                         borderRadius: 5.0,
@@ -347,8 +480,8 @@ class AddShipFromMobileApp extends StatelessWidget {
                                                 .only(start: 10.0),
                                             child: Text(
                                               val,
-                                              style: const TextStyle(
-                                                  color: Colors.black),
+                                              style:  TextStyle(
+                                                  color: purpleColor,fontWeight: FontWeight.bold,fontSize: 18.0),
                                               //textAlign: TextAlign.right,
                                             ),
                                           ),
@@ -662,6 +795,70 @@ class AddShipFromMobileApp extends StatelessWidget {
                                   }).toList()),
                             ),
                           ),
+                      InkWell(
+                          onTap: () {
+                            DatePicker.showDatePicker(context,
+                                showTitleActions: true,
+                                minTime: DateTime.now(),
+                                maxTime: DateTime(2025, 6, 7), onChanged: (date) {
+                                  log('change $date');
+                                }, onConfirm: (date) {
+                                cubit.getDate(myDate: date);
+                                }, currentTime: DateTime.now(),);
+                          },
+                          child:  Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 70.0,
+                                  width: 150.0,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: purpleColor,
+                                    borderRadius: const BorderRadiusDirectional.horizontal(
+                                      start: Radius.circular(10.0),
+                                      end: Radius.circular(10.0),
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    'تاريخ وصول الشحنة',
+                                    style: TextStyle(color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                const SizedBox(width: 10.0,),
+                                Expanded(
+                                  child: Container(
+                                    height: 70.0,
+                                    width: 150.0,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: purpleColor
+                                      ),
+                                      borderRadius: const BorderRadiusDirectional.horizontal(
+                                        start: Radius.circular(10.0),
+                                        end: Radius.circular(10.0),
+                                      ),
+                                    ),
+                                    child:cubit.stringDate == "" ?
+                                    Text(
+                                        "لم يتم تحديد تاريخ الوصول بعد",
+                                      style: TextStyle(color: textGreyTwoColor,fontSize: 15.0),
+                                      textAlign: TextAlign.center,
+                                    ):
+                                    Text(
+                                        DateFormat("y/MM/dd").format(
+                                            cubit.date!),
+                                      style: const TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 18.0),
+                                      textAlign: TextAlign.center,
+                                    )
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
                           Container(
                             decoration: const BoxDecoration(
                               color: Colors.white,
@@ -749,7 +946,7 @@ class AddShipFromMobileApp extends StatelessWidget {
                                             height: 200.0,
                                             margin: const EdgeInsets.symmetric(
                                               horizontal: 20.0,
-                                              vertical: 250.0,
+                                              vertical: 300.0,
                                             ),
                                             decoration: BoxDecoration(
                                               color: purpleColor,
@@ -767,23 +964,7 @@ class AddShipFromMobileApp extends StatelessWidget {
                                                     vertical: 15.0,
                                                   ),
                                                   child: Text(
-                                                    "أضافة شحنة جديدة تلغى إمكانية تعديل بيانات الشحنة الحالية لذا برجاء التأكد من صحة البيانات قبل الضغط على ( تأكيد )",
-                                                    style: lightTheme
-                                                        .textTheme.bodyText1!
-                                                        .copyWith(
-                                                      color: yellowColor,
-                                                      fontSize: 15.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                    horizontal: 15.0,
-                                                    vertical: 15.0,
-                                                  ),
-                                                  child: Text(
-                                                    "هل انت متأكد من إضافة شحنة جديدة ؟",
+                                                    "برجاء التأكد من صحة كافة بيانات الشحنة قبل الضغط على ( تأكيد )",
                                                     style: lightTheme
                                                         .textTheme.bodyText1!
                                                         .copyWith(
@@ -814,9 +995,9 @@ class AddShipFromMobileApp extends StatelessWidget {
                                                                     vertical:
                                                                         10.0,
                                                                     horizontal:
-                                                                        50.0),
+                                                                        20.0),
                                                             child: Text(
-                                                              "الغاء",
+                                                              "مراجعة البيانات ",
                                                               style: lightTheme
                                                                   .textTheme
                                                                   .bodyText1!
@@ -939,37 +1120,31 @@ class AddShipFromMobileApp extends StatelessWidget {
                               ),
                               Expanded(
                                 flex: 1,
-                                child: ConditionalBuilder(
-                                  condition: state is ! CreateNewShipmentOrderLoadingState,
-                                  builder: (context){
-                                    return InkWell(
-                                      onTap: () {
-                                        if(formValidCreateShipment.currentState!.validate()){
-                                          cubit.createShipments();
-                                        }
-                                      },
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                            color: purpleColor,
-                                            borderRadius:
-                                            BorderRadius.circular(10.0),
-                                            border: Border.all(
-                                              width: 0.8,
-                                              color: Colors.white,
-                                            )),
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(6.0),
-                                          child: Text(
-                                            "أتمام الشحنة",
-                                            style: TextStyle(
-                                                fontSize: 20, color: Colors.white),
-                                          ),
-                                        ),
-                                      ),
-                                    );
+                                child:InkWell(
+                                  onTap: () {
+                                    if(formValidCreateShipment.currentState!.validate()){
+                                      cubit.createShipments();
+                                    }
                                   },
-                                  fallback: (context)=>const Center(child: CircularProgressIndicator(),),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        color: purpleColor,
+                                        borderRadius:
+                                        BorderRadius.circular(10.0),
+                                        border: Border.all(
+                                          width: 0.8,
+                                          color: Colors.white,
+                                        )),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(6.0),
+                                      child: Text(
+                                        "أتمام الشحنة",
+                                        style: TextStyle(
+                                            fontSize: 20, color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],

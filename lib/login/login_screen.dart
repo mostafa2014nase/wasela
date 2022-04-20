@@ -26,8 +26,7 @@ class LoginScreen extends StatelessWidget {
               navigateAndFinish(context, layout: MainNavScreen());
             }
           else if(state is ShowErrorInSnackBar){
-            showToast(
-                context, "${LoginCubitClass.get(context).errorMessage}", ToastStates.error);
+            showToast(context, LoginCubitClass.get(context).errorMessage, ToastStates.error);
           }
         },
         builder: (context, state) {

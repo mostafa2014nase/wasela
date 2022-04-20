@@ -1,7 +1,11 @@
 import 'dart:developer';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:wasela/comapny_app/app_layouts/calculations/calculations_screen.dart';
+import 'package:wasela/comapny_app/app_layouts/offers/bloc/cubit_class.dart';
+import 'package:wasela/comapny_app/app_layouts/offers/offers_screen.dart';
+import 'package:wasela/comapny_app/app_layouts/ship/bloc/cubit_class.dart';
+import 'package:wasela/comapny_app/app_layouts/ship/bloc/states.dart';
+import 'package:wasela/comapny_app/app_layouts/trade_store/bloc/cubit_class.dart';
 import 'package:wasela/drawer/settings/screens/contact_us.dart';
 import 'package:wasela/evaluate/evaluate_screen.dart';
 import 'package:wasela/helper_methods/app_bloc_provider/bloc/cubit.dart';
@@ -18,6 +22,7 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'package:wasela/helper_methods/sharedpref/shared_preference.dart';
 import 'package:wasela/profile/user_account_screen.dart';
+import 'package:wasela/register/bloc/cubit_class.dart';
 import 'package:wasela/start/start_screen.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
 import 'nav_bloc/main_nav_states.dart';
@@ -28,6 +33,7 @@ PersistentTabController persistentTabController =
 class MainNavScreen extends StatelessWidget {
   MainNavScreen({Key? key}) : super(key: key);
   GlobalKey<ScaffoldState> globalKey = GlobalKey();
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +44,6 @@ class MainNavScreen extends StatelessWidget {
         builder: (context, state) {
           var cubit = MainNavCubitClass.get(context);
           return Scaffold(
-            key: globalKey,
             drawer: Drawer(
               backgroundColor: Colors.white,
               child: SafeArea(
@@ -46,6 +51,8 @@ class MainNavScreen extends StatelessWidget {
                   listener: (context, state) {},
                   builder: (context, state) {
                     var appCubit = AppCubitClass.get(context);
+                    var companyModel = AppCubitClass.get(context).companyModel;
+                    var clientModel = AppCubitClass.get(context).clientModel;
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.max,
@@ -57,64 +64,82 @@ class MainNavScreen extends StatelessWidget {
                               persistentTabController.jumpToTab(4);
                               Navigator.of(context).pop();
                             } else {
+                              log("area id = ${RegisterCubitClass.get(context).areaIdNow}");
+                              appCubit.getCompanyCityAndAreaProfile();
                               appCubit.getCompanyProfileData();
                               log("${appCubit.companyModel}");
                               navigateAndBack(context,
-                                  layout:  UserAccountScreen());
+                                  layout: UserAccountScreen());
                             }
                           },
-                          child: Container(
-                            padding: const EdgeInsets.only(bottom: 25, top: 25),
-                            color: Colors.white,
-                            width: double.infinity,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10.0, vertical: 20),
-                                  child: Row(
-                                    children: [
-                                      CustomDesignUnActive(
-                                        text: SvgPicture.asset(
-                                          "Assets/images/user Support.svg",
-                                          color: purpleColor,
-                                          width: 50,
-                                          height: 50,
-                                        ),
-                                        borderColor: purpleColor,
-                                        containerColor: Colors.white,
-                                        borderWidth: 1,
-                                        height: 70,
-                                        width: 70,
-                                        borderRadius: 35,
-                                      ),
-                                      const SizedBox(
-                                        width: 20,
-                                      ),
-                                      Column(
-                                        children: const [
-                                          Text(
-                                            "مصطفى نصر",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                                color: Colors.black),
+                          child: ConditionalBuilder(
+                            condition: companyModel != null,
+                            builder: (context) {
+                              return Container(
+                                padding:
+                                    const EdgeInsets.only(bottom: 25, top: 25),
+                                color: Colors.white,
+                                width: double.infinity,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10.0, vertical: 20),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 120.0,
+                                            height: 120.0,
+                                            decoration: BoxDecoration(
+                                              color: Colors.black,
+                                              borderRadius:
+                                              BorderRadius.circular(80.0),
+                                            ),
+                                            clipBehavior: Clip.antiAlias,
+                                            child: Image.network(
+                                              companyModel!.photo ?? "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
-                                          Text(
-                                            "01208834037",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                                color: Colors.black),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Column(
+                                            children: [
+                                              Text(
+                                                SaveValueInKey.userType ==
+                                                        "client"
+                                                    ? "${clientModel!.name}"
+                                                    : "${companyModel.name}",
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20,
+                                                    color: Colors.black),
+                                              ),
+                                              Text(
+                                                SaveValueInKey.userType ==
+                                                        "client"
+                                                    ? "${clientModel!.phoneNumber}"
+                                                    : "${companyModel.phoneNumber}",
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20,
+                                                    color: Colors.black),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              );
+                            },
+                            fallback: (context) {
+                              return const Center(
+                                  child: RefreshProgressIndicator());
+                            },
                           ),
                         ),
                         put_line(color: purpleColor),
@@ -131,12 +156,14 @@ class MainNavScreen extends StatelessWidget {
                                       onTap: index == 2
                                           ? () {
                                               navigateAndBack(context,
-                                                  layout: SettingsScreen());
+                                                  layout:
+                                                      const SettingsScreen());
                                             }
                                           : index == 1
                                               ? () {
                                                   navigateAndBack(context,
-                                                      layout: EvaluateScreen(
+                                                      layout:
+                                                          const EvaluateScreen(
                                                         fromDrawer: true,
                                                       ));
                                                 }
@@ -170,7 +197,7 @@ class MainNavScreen extends StatelessWidget {
                                 ),
                               )
                             : Container(
-                                height: 405,
+                                height: 320,
                                 color: Colors.white,
                                 child: ListView.separated(
                                   separatorBuilder: (context, index) =>
@@ -182,12 +209,14 @@ class MainNavScreen extends StatelessWidget {
                                           ? () {
                                               log("${cubit.drawerSvgPicsCompany.length}");
                                               navigateAndBack(context,
-                                                  layout: SettingsScreen());
+                                                  layout:
+                                                      const SettingsScreen());
                                             }
                                           : index == 0
                                               ? () {
                                                   navigateAndBack(context,
-                                                      layout: EvaluateScreen(
+                                                      layout:
+                                                          const EvaluateScreen(
                                                         fromDrawer: true,
                                                       ));
                                                 }
@@ -199,10 +228,13 @@ class MainNavScreen extends StatelessWidget {
                                                     }
                                                   : index == 3
                                                       ? () {
+                                                          OfferCubitClass.get(
+                                                                  context)
+                                                              .getAllOffers();
                                                           navigateAndBack(
                                                               context,
                                                               layout:
-                                                                  const CalculationsScreenForCompanyApp());
+                                                                  OffersScreenForCompanyApp());
                                                         }
                                                       : () {},
                                       child: Padding(
@@ -252,12 +284,13 @@ class MainNavScreen extends StatelessWidget {
                               appCubit.resetControllers();
                               SharedCashHelper.removeValue(key: "accessToken")
                                   .then((value) {
-                                    SharedCashHelper.removeValue(key: "user_type").then((value) {
-                                      if (value) {
-                                        navigateAndFinish(context,
-                                            layout: StartScreen());
-                                      }
-                                    });
+                                SharedCashHelper.removeValue(key: "user_type")
+                                    .then((value) {
+                                  if (value) {
+                                    navigateAndFinish(context,
+                                        layout: StartScreen());
+                                  }
+                                });
                               });
                             },
                             child: Row(
@@ -310,7 +343,7 @@ class MainNavScreen extends StatelessWidget {
                       navBarStyle: NavBarStyle.style6,
                       onItemSelected: (index) {
                         cubit.changeBarItem(index);
-                        if(index == 4){
+                        if (index == 4) {
                           AppCubitClass.get(context).getClientProfileData();
                         }
                         print(persistentTabController.index);
@@ -321,25 +354,51 @@ class MainNavScreen extends StatelessWidget {
                     ))
                 : cubit.screensForCompanyApp[cubit.indexForCompanyApp],
             bottomNavigationBar: SaveValueInKey.userType == "company"
-                ? BottomNavigationBar(
-                    key: globalKey,
-                    enableFeedback: false,
-                    showUnselectedLabels: true,
-                    type: BottomNavigationBarType.shifting,
-                    iconSize: 25,
-                    unselectedFontSize: 12,
-                    selectedFontSize: 15,
-                    backgroundColor: Colors.white,
-                    items: cubit.navigationBarItemsForCompanyApp,
-                    //resizeToAvoidBottomInset: true,
-                    onTap: (index) {
-                      cubit.changeBarItemForCompanyApp(index);
+                ? BlocConsumer<ShipForCompanyAppCubitClass, ShipStates>(
+                    listener: (context, state) {},
+                    builder: (context, state) {
+                      var shipCubit = ShipForCompanyAppCubitClass.get(context);
+                      return BottomNavigationBar(
+                        key: globalKey,
+                        enableFeedback: false,
+                        showUnselectedLabels: true,
+                        type: BottomNavigationBarType.fixed,
+                        backgroundColor: Colors.white,
+                        items: cubit.navigationBarItemsForCompanyApp,
+                        //resizeToAvoidBottomInset: true,
+                        onTap: (index) {
+                          if (index == 1) {
+                            shipCubit.tempList.length = 0;
+                            shipCubit.resetFromDate();
+                            shipCubit.resetToDate();
+                            shipCubit.getAllShipmentsData();
+                            cubit.changeBarItemForCompanyApp(index);
+                          }
+                          if (index == 5) {
+                            TradeStoreSystemCubitClass.get(context)
+                                .getAllStorageSystems();
+                            cubit.changeBarItemForCompanyApp(index);
+                          }
+                          cubit.changeBarItemForCompanyApp(index);
+                        },
+                        selectedItemColor: yellowColor,
+                        selectedLabelStyle: const TextStyle(
+                          fontSize: 10,
+                          height: 2,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        unselectedItemColor: Colors.black,
+                        currentIndex: cubit.indexForCompanyApp,
+                        unselectedLabelStyle: const TextStyle(
+                          fontSize: 10,
+                          height: 2,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
                     },
-                    selectedItemColor: yellowColor,
-                    unselectedItemColor: textGreyTwoColor,
-                    currentIndex: cubit.indexForCompanyApp,
                   )
                 : null,
+
             // floatingActionButtonLocation:
             //     FloatingActionButtonLocation.startDocked,
             // resizeToAvoidBottomInset: false,
@@ -373,6 +432,77 @@ class MainNavScreen extends StatelessWidget {
             //     : null,
           );
         },
+      ),
+    );
+  }
+}
+
+class CustomNavigationBarForCompany extends StatelessWidget {
+  final Function()? onTap;
+  final int count;
+  final List svgImages;
+  final List titles;
+  final bool isActive;
+
+  const CustomNavigationBarForCompany({
+    Key? key,
+    required this.onTap,
+    required this.count,
+    required this.svgImages,
+    required this.titles,
+    this.isActive = false,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 90,
+      color: greyColor,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8.0, right: 10.0, left: 10.0),
+        child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            return InkWell(
+              onTap: onTap,
+              child: SizedBox(
+                width: 45.0,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      "Assets/images/${svgImages[index]}.svg",
+                      color: isActive ? yellowColor : textGreyColor,
+                      width: index == 4
+                          ? 40.0
+                          : index == 3 || index == 5
+                              ? 35.0
+                              : 25,
+                      height: index == 4
+                          ? 40.0
+                          : index == 3 || index == 5
+                              ? 35.0
+                              : 25,
+                    ),
+                    Text(
+                      titles[index],
+                      style: TextStyle(
+                          fontSize: 13,
+                          height: 1.5,
+                          color: isActive ? yellowColor : Colors.black),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+          itemCount: count,
+          separatorBuilder: (context, index) => const SizedBox(
+            width: 10.0,
+          ),
+        ),
       ),
     );
   }

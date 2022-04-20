@@ -22,6 +22,8 @@ class RegisterCompanyErrorState extends RegisterStates {
 class RegisterClientLoadingState extends RegisterStates {}
 
 class RegisterClientSuccessState extends RegisterStates {}
+class GetCitiesDataSuccess extends RegisterStates {}
+class SelectChoiceSuccessState extends RegisterStates {}
 
 class RegisterClientErrorState extends RegisterStates {
   final String error;

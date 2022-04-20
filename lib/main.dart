@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:wasela/clients_app/app_layouts/main_layouts/app_layouts/calculate_charge/bloc/cubit_class.dart';
 import 'package:wasela/comapny_app/app_layouts/add_new_ship/bloc/cubit_class.dart';
 import 'package:wasela/comapny_app/app_layouts/add_order/bloc/add_order_cubit_class.dart';
@@ -33,6 +34,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
+  await FlutterDownloader.initialize(
+      debug: true // optional: set false to disable printing logs to console
+  );
   Firebase.initializeApp();
   await SharedCashHelper.init();
   DioHelper.init();
@@ -57,7 +62,7 @@ Future<void> main() async {
 
   // for handling ( clients / company) model
   if (SaveValueInKey.userType == null) {
-    SaveValueInKey.userType ="client";
+    SaveValueInKey.userType = "client";
   }
 
   if (onBoarding == true) {
@@ -72,7 +77,9 @@ Future<void> main() async {
   BlocOverrides.runZoned(
     () => runApp(
       EasyLocalization(
-        child: MyApp(startScreen: startScreen,),
+        child: MyApp(
+          startScreen: startScreen,
+        ),
         path: "Assets/translations",
         supportedLocales: const [
           Locale("en"),
@@ -90,7 +97,9 @@ Future<void> main() async {
 class MyApp extends StatefulWidget {
   Widget startScreen;
 
-  MyApp({required this.startScreen,});
+  MyApp({
+    required this.startScreen,
+  });
 
   // static void setLocale(BuildContext context, String myAppLanguage) {
   //   _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
@@ -113,16 +122,16 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => AppCubitClass()),
+          BlocProvider(create: (context) => AppCubitClass()..getClientProfileData()..getCompanyProfileData()),
           BlocProvider(create: (context) => DrawerCubitClass()),
-          BlocProvider(create: (context) => RegisterCubitClass()),
+          BlocProvider(create: (context) => RegisterCubitClass()..getAllCitiesForRegister()),
           BlocProvider(create: (context) => LoginCubitClass()),
           BlocProvider(create: (context) => CalculateChargingCubitClass()),
           BlocProvider(create: (context) => AddNewShipCubitClass()..getAllCitiesAndTheirAreas()..getServiceType()),
           BlocProvider(create: (context) => InjunctionsAppCubitClass()),
           BlocProvider(create: (context) => NotificationCubitClass()),
           BlocProvider(create: (context) => OfferCubitClass()),
-          BlocProvider(create: (context) => ShipForCompanyAppCubitClass()..getAllShipmentsData()),
+          BlocProvider(create: (context) => ShipForCompanyAppCubitClass()),
           BlocProvider(create: (context) => TradeStoreSystemCubitClass()),
           BlocProvider(create: (context) => AddOrderCubitClass()),
           BlocProvider(create: (context) => CalculationsCubitClassForCompany()),
@@ -149,7 +158,8 @@ class _MyAppState extends State<MyApp> {
                 GlobalWidgetsLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
               ],
-              locale:Locale("ar"), //Locale(widget.language),
+              locale: Locale("ar"),
+              //Locale(widget.language),
               home: MainSplashScreen(startScreen: widget.startScreen),
             );
           },

@@ -21,7 +21,7 @@ class CalculationsScreenForCompanyApp extends StatelessWidget {
               svgPath: "noun-accounting-4679331",
               context: context,
               imageSize: 80.0,
-              mainScreen: false,
+              mainScreen: true,
             ),
             body: SingleChildScrollView(
               child: Column(

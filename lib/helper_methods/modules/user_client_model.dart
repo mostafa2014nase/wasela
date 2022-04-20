@@ -11,7 +11,7 @@ class UserDataModel {
 
   UserDataModel.fromJson(Map<String, dynamic> json) {
     email = json["user"]["email"];
-    phone = json["user"]["user_data"]["phone"];
+    phone = json["user"]["phone_number"];
   }
 }
 
@@ -19,9 +19,9 @@ class CompanyModel {
   String? email;
   String? name;
   String? phoneNumber;
+  int? areaId;
   String? photo;
   String? image;
-  String? city;
   String? address;
   int? id;
   int? userId;
@@ -34,23 +34,22 @@ class CompanyModel {
     required this.photo,
     required this.image,
     required this.id,
-    required this.city,
     required this.address,
     required this.profileImage,
     required this.userId,
+    required this.areaId,
   });
 
   CompanyModel.fromJson(Map<String, dynamic> json) {
     email = json["email"];
     name = json["user_data"]["name"];
-    photo = json["user_data"]["photo"];
+    photo = json["user_data"]["image_path"];
     phoneNumber = json["phone_number"];
     image = json["user_data"]["image_path"];
     id = json["user_data"]["id"];
     userId = json["user_data"]["user_id"];
-    city = json["user_data"]["city"];
     address = json["user_data"]["address"];
-    profileImage = json["user_data"]["photo"];
+    areaId = json["user_data"]["area_id"];
   }
 
   Map<String, dynamic> toMap() {

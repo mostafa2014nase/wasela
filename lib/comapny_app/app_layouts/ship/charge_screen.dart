@@ -1,12 +1,14 @@
+import 'dart:developer';
+
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wasela/comapny_app/app_layouts/ship/bloc/cubit_class.dart';
 import 'package:wasela/comapny_app/app_layouts/ship/bloc/states.dart';
+import 'package:wasela/comapny_app/app_layouts/ship/edit_shipment.dart';
 import 'package:wasela/comapny_app/app_layouts/ship/ship_details.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
@@ -18,82 +20,95 @@ class ShipScreenForCompanyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ShipForCompanyAppCubitClass, ShipStates>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          var cubit = ShipForCompanyAppCubitClass.get(context);
-          return DefaultTabController(
-            length: 3,
-            child: DefaultTabController(
-              length: 3,
-              child: Scaffold(
-                appBar: generateAppBarForCompanyMainScreens(
-                  mainScreen: true,
-                  title: LocaleKeys.bottomNavItemsName4.tr(),
-                  svgPath: "wallet",
-                  context: context,
-                  textHeight: 2.0,
+        listener: (context, state) {
+      if (state is GetSpecificShipmentDataSuccessState) {
+        navigateAndBack(context, layout: EditShipmentData());
+      }
+    }, builder: (context, state) {
+      var cubit = ShipForCompanyAppCubitClass.get(context);
+      return DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: generateAppBarForCompanyMainScreens(
+            mainScreen: true,
+            title: LocaleKeys.bottomNavItemsName4.tr(),
+            svgPath: "wallet",
+            context: context,
+            textHeight: 2.0,
+          ),
+          primary: true,
+          resizeToAvoidBottomInset: false,
+          backgroundColor: greyColor,
+          body: SafeArea(
+            child: Column(
+              children: [
+                TabBar(
+                  enableFeedback: true,
+                  physics: const BouncingScrollPhysics(),
+                  labelPadding: const EdgeInsets.only(top: 25.0, bottom: 10),
+                  labelStyle: lightTheme.textTheme.bodyText1!
+                      .copyWith(fontSize: 15.0, fontWeight: FontWeight.bold),
+                  unselectedLabelColor: textGreyTwoColor,
+                  labelColor: purpleColor,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicatorColor: yellowColor,
+                  indicatorWeight: 6,
+                  tabs: [
+                    Text(
+                      LocaleKeys.shippingTabs1.tr(),
+                    ),
+                    Text(
+                      LocaleKeys.shippingTabs2.tr(),
+                    ),
+                    Text(
+                      LocaleKeys.shippingTabs3.tr(),
+                    ),
+                  ],
                 ),
-                primary: true,
-                resizeToAvoidBottomInset: false,
-                backgroundColor: greyColor,
-                body: SafeArea(
-                  child: Column(
-                    children: [
-                      TabBar(
-                        enableFeedback: true,
-                        physics: const BouncingScrollPhysics(),
-                        labelPadding:
-                            const EdgeInsets.only(top: 30.0, bottom: 10),
-                        unselectedLabelColor: textGreyTwoColor,
-                        labelColor: purpleColor,
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        indicatorColor: yellowColor,
-                        indicatorWeight: 6,
-                        // onTap: (index) {
-                        //   cubit.toggleTab(index);
-                        // },
-                        tabs: [
-                          Text(
-                            LocaleKeys.shippingTabs1.tr(),
-                          ),
-                          Text(
-                            LocaleKeys.shippingTabs2.tr(),
-                          ),
-                          Text(
-                            LocaleKeys.shippingTabs3.tr(),
-                          ),
-                        ],
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: TabBarView(
-                            physics: BouncingScrollPhysics(),
-                            children: [
-                              ConditionalBuilder(
-                                  condition: cubit.tempList.length > 0,
-                                builder: (context){
-                                    return CurrentShipping(
-                                        shippingIsEmpty: false,
-                                        dataList: cubit.tempList,
-                                        context: context);
-                                },
-                                fallback: (context){
-                                    return Center(child: const CircularProgressIndicator());}
-                              ),
-                              SentShipping(shippingIsEmpty: false),
-                              EndedShipping(shippingIsEmpty: false),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TabBarView(
+                      physics: const BouncingScrollPhysics(),
+                      children: [
+                        state is GetAllShipmentsDataSuccessState &&
+                                cubit.tempList.isEmpty
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    "Assets/images/noun-not-found-2503986.svg",
+                                    width: 350.0,
+                                    height: 350.0,
+                                    color: textGreyColor,
+                                  ),
+                                  Text(
+                                    "لا توجد شحنات حاليا",
+                                    style: TextStyle(
+                                      color: purpleColor,
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold,
+                                      height: 0.0,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : CurrentShipping(
+                                shippingIsEmpty: false,
+                                dataList: cubit.tempList,
+                                context: context),
+                        const SentShipping(shippingIsEmpty: false),
+                        const EndedShipping(shippingIsEmpty: false),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
-          );
-        });
+          ),
+        ),
+      );
+    });
   }
 }
 
@@ -102,7 +117,7 @@ class CurrentShipping extends StatelessWidget {
   final List dataList;
   final BuildContext context;
 
-  CurrentShipping({
+  const CurrentShipping({
     Key? key,
     required this.shippingIsEmpty,
     required this.dataList,
@@ -111,66 +126,132 @@ class CurrentShipping extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var cubit = ShipForCompanyAppCubitClass.get(context);
-    return cubit.showShipmentsListLength > 0
-        ? Column(
+    return BlocConsumer<ShipForCompanyAppCubitClass, ShipStates>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          var cubit = ShipForCompanyAppCubitClass.get(context);
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Row(
                 children: [
-                  Container(
-                    width: 90,
-                    decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(10.0),
-                        border: Border.all(
-                          width: 0.8,
-                          color: purpleColor,
-                        )),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Text(
-                            LocaleKeys.shippingSearch1.tr(),
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          Spacer(),
-                          Icon(
-                            Icons.calendar_today,
+                  InkWell(
+                    onTap: () {
+                      DatePicker.showDatePicker(
+                        context,
+                        showTitleActions: true,
+                        onCancel: () {
+                          cubit.resetFromDate();
+                              cubit.findAllMatchShipments();
+                        },
+                        minTime: DateTime(2020, 1, 1),
+                        maxTime: DateTime(2024, 1, 1),
+                        onChanged: (formDate) {
+                          log('change $formDate');
+                        },
+                        onConfirm: (formDate) {
+                          //cubit.stringFromDate =DateFormat("y/MM/dd").format(formDate);
+                          cubit.getFromDate(myDate: formDate);
+                          cubit.findAllMatchShipments();
+                        },
+                        currentTime: DateTime.now(),
+                      );
+                    },
+                    child: Container(
+                      width: 90,
+                      height: 55.0,
+                      decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(10.0),
+                          border: Border.all(
+                            width: 0.8,
                             color: purpleColor,
-                          ),
-                        ],
-                      ),
+                          )),
+                      child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: cubit.stringFromDate == ""
+                              ? Row(
+                                  children: [
+                                    Text(
+                                      LocaleKeys.shippingSearch1.tr(),
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                    Spacer(),
+                                    Icon(
+                                      Icons.calendar_today,
+                                      color: purpleColor,
+                                    ),
+                                  ],
+                                )
+                              : Text(
+                                  DateFormat("y/MM/dd").format(cubit.fromDate!),
+                                  style: TextStyle(
+                                      color: purpleColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14.0),
+                                  textAlign: TextAlign.center,
+                                )),
                     ),
                   ),
                   SizedBox(
                     width: 5,
                   ),
-                  Container(
-                    width: 90,
-                    decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(10.0),
-                        border: Border.all(
-                          width: 0.8,
-                          color: purpleColor,
-                        )),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Text(
-                            LocaleKeys.shippingSearch2.tr(),
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          Spacer(),
-                          Icon(
-                            Icons.calendar_today,
+                  InkWell(
+                    onTap: () {
+                      DatePicker.showDatePicker(
+                        context,
+                        showTitleActions: true,
+                        onCancel: () {
+                          cubit.resetToDate();
+                            cubit.findAllMatchShipments();
+                        },
+                        minTime: DateTime(2020, 1, 1),
+                        maxTime: DateTime(2024, 1, 1),
+                        onChanged: (toDate) {
+                          log('change $toDate');
+                        },
+                        onConfirm: (toDate) {
+                          //cubit.stringToDate =DateFormat("y/MM/dd").format(toDate);
+                          cubit.getToDate(myDate: toDate);
+                          cubit.findAllMatchShipments();
+                        },
+                        currentTime: DateTime.now(),
+                      );
+                    },
+                    child: Container(
+                      width: 90,
+                      height: 55.0,
+                      decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(10.0),
+                          border: Border.all(
+                            width: 0.8,
                             color: purpleColor,
-                          ),
-                        ],
-                      ),
+                          )),
+                      child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: cubit.stringToDate == ""
+                              ? Row(
+                                  children: [
+                                    Text(
+                                      LocaleKeys.shippingSearch2.tr(),
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                    const Spacer(),
+                                    Icon(
+                                      Icons.calendar_today,
+                                      color: purpleColor,
+                                    ),
+                                  ],
+                                )
+                              : Text(
+                                  DateFormat("y/MM/dd").format(cubit.toDate!),
+                                  style: TextStyle(
+                                      color: purpleColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14.0),
+                                  textAlign: TextAlign.center,
+                                )),
                     ),
                   ),
                   SizedBox(
@@ -182,33 +263,47 @@ class CurrentShipping extends StatelessWidget {
                       children: [
                         Container(
                           alignment: AlignmentDirectional.centerStart,
-                          padding: EdgeInsetsDirectional.only(start: 5),
-                          width: 200,
-                          height: 40,
+                          padding: const EdgeInsetsDirectional.only(start: 5),
                           decoration: BoxDecoration(
                               color: greyColor,
                               borderRadius: BorderRadius.circular(10.0),
                               border: Border.all(
                                 color: purpleColor,
                               )),
-                          child: Text(
-                            LocaleKeys.shippingSearch3.tr(),
-                            style: TextStyle(fontSize: 12),
+                          child: TextFormField(
+                            textAlignVertical: TextAlignVertical.center,
+                            controller: cubit.searchController,
+                            onChanged: (word) {
+                              if (word.isEmpty) {
+                                cubit.findAllMatchShipments();
+                              }
+                            },
+                            decoration: InputDecoration(
+                              hintText: "بحث (بوليصة - موبايل - اسم )",
+                              hintStyle: lightTheme.textTheme.bodyText1!
+                                  .copyWith(fontSize: 14.0),
+                              border: InputBorder.none,
+                            ),
+                            style: const TextStyle(fontSize: 15),
                           ),
                         ),
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                              color: purpleColor,
-                              borderRadius: BorderRadiusDirectional.only(
-                                  bottomEnd: Radius.circular(10.0),
-                                  topEnd: Radius.circular(10.0)),
-                              border: Border.all(
-                                width: 0.8,
+                        InkWell(
+                          onTap: () {
+                            cubit.findAllMatchShipments();
+                          },
+                          child: Container(
+                            width: 30,
+                            height: 55,
+                            decoration: BoxDecoration(
                                 color: purpleColor,
-                              )),
-                          child: Expanded(
+                                borderRadius:
+                                    const BorderRadiusDirectional.only(
+                                        bottomEnd: Radius.circular(10.0),
+                                        topEnd: Radius.circular(10.0)),
+                                border: Border.all(
+                                  width: 0.8,
+                                  color: purpleColor,
+                                )),
                             child: Icon(
                               Icons.search,
                               color: Colors.white,
@@ -220,242 +315,300 @@ class CurrentShipping extends StatelessWidget {
                   ),
                 ],
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 10, left: 10, top: 40),
-                  child: ListView.separated(
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return DecoratedContainerWithShadow(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys
-                                          .walletScreenListItemDetails1
-                                          .tr(),
-                                      text2: dataList[index]["name_shipment"],
-                                      rowWidth: 230,
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys.shippingListItemDetails2
-                                          .tr(),
-                                      text2: "1855",
-                                      rowWidth: 230,
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys
-                                          .walletScreenListItemDetails2
-                                          .tr(),
-                                      text2: "1855",
-                                      rowWidth: 230,
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys.shippingListItemDetails4
-                                          .tr(),
-                                      text2: "1855",
-                                      rowWidth: 230,
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys.shippingListItemDetails5
-                                          .tr(),
-                                      text2: "1855",
-                                      rowWidth: 230,
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys.shippingListItemDetails6
-                                          .tr(),
-                                      text2: "1855",
-                                      rowWidth: 230,
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys.shippingListItemDetails7
-                                          .tr(),
-                                      text2: "1855",
-                                      rowWidth: 230,
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0, vertical: 8.0),
-                                      child: InkWell(
-                                        onTap: () {
-                                          cubit.detailedClicked(index);
-                                        },
-                                        child: SvgPicture.asset(
-                                          "Assets/images/menu.svg",
-                                          width: 30,
-                                          height: 30,
-                                        ),
-                                      ),
-                                    ),
-                                    cubit.isDetailed[index]
-                                        ? Container(
-                                            child: Column(
+              ConditionalBuilder(
+                  condition: state is GetAllMatchedShipmentsDataLoadingState,
+                  builder: (context) {
+                    return const Center(child: LinearProgressIndicator());
+                  },
+                  fallback: (context) {
+                    return ConditionalBuilder(
+                        condition: state is GetAllShipmentsDataLoadingState,
+                        builder: (context) {
+                          return Column(
+                            children: const [
+                              SizedBox(height: 100.0,),
+                               Center(
+                                  child: CircularProgressIndicator()),
+                            ],
+                          );
+                        },
+                        fallback: (context) {
+                          return ConditionalBuilder(
+                            condition: state
+                                    is GetAllMatchedShipmentsDataSuccessState &&
+                                cubit.tempList.isEmpty,
+                            builder: (context) {
+                              return const Center(
+                                  child: Text("لاتوجد شحنات بهذه البيانات"));
+                            },
+                            fallback: (context) {
+                              return Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 10, left: 10, top: 40),
+                                  child: ListView.separated(
+                                    physics: const BouncingScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      return DecoratedContainerWithShadow(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 5.0,
-                                                      vertical: 10.0),
-                                                  child: InkWell(
-                                                      onTap: () {
-                                                        navigateAndBack(context,
-                                                            layout:
-                                                                ShippingDetails());
-                                                      },
-                                                      child: Row(
-                                                        children: [
-                                                          Text(
-                                                            "تفاصيل",
-                                                            style: TextStyle(
-                                                                color:
-                                                                    purpleColor),
-                                                          ),
-                                                          const SizedBox(
-                                                            width: 2.0,
-                                                          ),
-                                                          Icon(
-                                                            Icons.info,
-                                                            color: purpleColor,
-                                                          ),
-                                                        ],
-                                                      )),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    CustomRowForDetails(
+                                                      text1: LocaleKeys
+                                                          .walletScreenListItemDetails1
+                                                          .tr(),
+                                                      text2: "5889523556",
+                                                      rowWidth: 230,
+                                                    ),
+                                                    CustomRowForDetails(
+                                                      text1: "أسم المرسل اليه",
+                                                      text2: dataList[index]
+                                                          ["client"]["name"],
+                                                      rowWidth: 230,
+                                                    ),
+                                                    CustomRowForDetails(
+                                                      text1: LocaleKeys
+                                                          .walletScreenListItemDetails2
+                                                          .tr(),
+                                                      text2:
+                                                          "${dataList[index]["shipping_price"]} جنيه",
+                                                      rowWidth: 230,
+                                                    ),
+                                                    CustomRowForDetails(
+                                                      text1: LocaleKeys
+                                                          .shippingListItemDetails5
+                                                          .tr(),
+                                                      text2: "1855",
+                                                      rowWidth: 230,
+                                                    ),
+                                                    CustomRowForDetails(
+                                                      text1: LocaleKeys
+                                                          .shippingListItemDetails6
+                                                          .tr(),
+                                                      text2: DateFormat(
+                                                              "y/MM/dd")
+                                                          .format(DateTime
+                                                              .parse(dataList[
+                                                                      index][
+                                                                  "created_at"])),
+                                                      //"${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).year}-${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).month}-${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).day}",
+                                                      //"${DateTime.parse(dataList[index]["created_at"])}",
+                                                    ),
+                                                    CustomRowForDetails(
+                                                      text1: LocaleKeys
+                                                          .shippingListItemDetails7
+                                                          .tr(),
+                                                      text2: "1855",
+                                                      rowWidth: 230,
+                                                    ),
+                                                  ],
                                                 ),
-                                                put_line(line_width: 80.0),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 5.0,
-                                                      vertical: 10.0),
-                                                  child: InkWell(
-                                                      onTap: () {
-                                                        // navigateAndBack(context,
-                                                        //     layout: ShippingDetails());
-                                                      },
-                                                      child: Row(
-                                                        children: [
-                                                          Text(
-                                                            "تعديل",
-                                                            style: TextStyle(
-                                                                color:
-                                                                    purpleColor),
-                                                          ),
-                                                          const SizedBox(
-                                                            width: 2.0,
-                                                          ),
-                                                          Icon(
-                                                            Icons.edit,
-                                                            color: purpleColor,
-                                                          ),
-                                                        ],
-                                                      )),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 8.0,
+                                                          vertical: 8.0),
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          cubit.detailedClicked(
+                                                              index);
+                                                        },
+                                                        child: SvgPicture.asset(
+                                                          "Assets/images/menu.svg",
+                                                          width: 30,
+                                                          height: 30,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    cubit.isDetailed[index]
+                                                        ? Container(
+                                                            child: Column(
+                                                              children: [
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                      horizontal:
+                                                                          5.0,
+                                                                      vertical:
+                                                                          10.0),
+                                                                  child: InkWell(
+                                                                      onTap: () {
+                                                                        navigateAndBack(
+                                                                            context,
+                                                                            layout:
+                                                                                ShippingDetails(
+                                                                              index: index,
+                                                                            ));
+                                                                        cubit.resetFalse(
+                                                                            index);
+                                                                      },
+                                                                      child: Row(
+                                                                        children: [
+                                                                          Text(
+                                                                            "تفاصيل",
+                                                                            style:
+                                                                                TextStyle(color: purpleColor),
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            width:
+                                                                                2.0,
+                                                                          ),
+                                                                          Icon(
+                                                                            Icons.info,
+                                                                            color:
+                                                                                purpleColor,
+                                                                          ),
+                                                                        ],
+                                                                      )),
+                                                                ),
+                                                                put_line(
+                                                                    line_width:
+                                                                        80.0),
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                      horizontal:
+                                                                          5.0,
+                                                                      vertical:
+                                                                          10.0),
+                                                                  child: InkWell(
+                                                                      onTap: () {
+                                                                        //log(cubit.tempList[index]["id"].toString());
+                                                                        cubit.getSpecificShipmentData(
+                                                                            shipmentId:
+                                                                                cubit.tempList[index]["id"]);
+                                                                        cubit
+                                                                            .getAllCitiesAndTheirAreas();
+                                                                        cubit.getServiceType(
+                                                                            index);
+                                                                      },
+                                                                      child: Row(
+                                                                        children: [
+                                                                          Text(
+                                                                            "تعديل",
+                                                                            style:
+                                                                                TextStyle(color: purpleColor),
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            width:
+                                                                                2.0,
+                                                                          ),
+                                                                          Icon(
+                                                                            Icons.edit,
+                                                                            color:
+                                                                                purpleColor,
+                                                                          ),
+                                                                        ],
+                                                                      )),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            margin:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        10.0),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color:
+                                                                  Colors.white,
+                                                              border:
+                                                                  Border.all(
+                                                                width: 0.8,
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : const Text(""),
+                                                  ],
                                                 ),
                                               ],
                                             ),
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 10.0),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              border: Border.all(
-                                                width: 0.8,
-                                                color: Colors.black,
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 10, bottom: 40),
+                                              child: Stack(
+                                                alignment: Alignment.center,
+                                                children: [
+                                                  const SizedBox(
+                                                    child: MySeparator(
+                                                      color: Colors.red,
+                                                      height: 1.7,
+                                                    ),
+                                                    width: 300,
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      DoneCircularAvatar(
+                                                        underText: LocaleKeys
+                                                            .shippingQueSteps1
+                                                            .tr(),
+                                                      ),
+                                                      DoneCircularAvatar(
+                                                        underText: LocaleKeys
+                                                            .shippingQueSteps2
+                                                            .tr(),
+                                                      ),
+                                                      NotYetYellowContainer(
+                                                        underText: LocaleKeys
+                                                            .shippingQueSteps3
+                                                            .tr(),
+                                                      ),
+                                                      NotYetYellowContainer(
+                                                        underText: LocaleKeys
+                                                            .shippingQueSteps4
+                                                            .tr(),
+                                                      ),
+                                                      NotYetYellowContainer(
+                                                        underText: LocaleKeys
+                                                            .shippingQueSteps5
+                                                            .tr(),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                          )
-                                        : const Text(""),
-                                  ],
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) {
+                                      return const SizedBox(
+                                        height: 20,
+                                      );
+                                    },
+                                    itemCount: cubit.tempList.length,
+                                  ),
                                 ),
-                              ],
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 10, bottom: 40),
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  SizedBox(
-                                    child: MySeparator(
-                                      color: Colors.red,
-                                      height: 1.7,
-                                    ),
-                                    width: 300,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      DoneCircularAvatar(
-                                        underText:
-                                            LocaleKeys.shippingQueSteps1.tr(),
-                                      ),
-                                      DoneCircularAvatar(
-                                        underText:
-                                            LocaleKeys.shippingQueSteps2.tr(),
-                                      ),
-                                      NotYetYellowContainer(
-                                        underText:
-                                            LocaleKeys.shippingQueSteps3.tr(),
-                                      ),
-                                      NotYetYellowContainer(
-                                        underText:
-                                            LocaleKeys.shippingQueSteps4.tr(),
-                                      ),
-                                      NotYetYellowContainer(
-                                        underText:
-                                            LocaleKeys.shippingQueSteps5.tr(),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return SizedBox(
-                        height: 20,
-                      );
-                    },
-                    itemCount: cubit.showShipmentsListLength,
-                  ),
-                ),
-              )
-            ],
-          )
-        : Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset(
-                "Assets/images/noun-not-found-2503986.svg",
-                width: 350.0,
-                height: 350.0,
-                color: textGreyColor,
-              ),
-              Text(
-                "لا توجد شحنات حاليا",
-                style: TextStyle(
-                  color: purpleColor,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  height: 0.0,
-                ),
-              ),
+                              );
+                            },
+                          );
+                        });
+                  }),
             ],
           );
+        });
   }
 }
 
@@ -488,9 +641,9 @@ class SentShipping extends StatelessWidget {
                         children: [
                           Text(
                             LocaleKeys.shippingSearch1.tr(),
-                            style: TextStyle(fontSize: 12),
+                            style: const TextStyle(fontSize: 12),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Icon(
                             Icons.calendar_today,
                             color: purpleColor,
@@ -499,7 +652,7 @@ class SentShipping extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                   Container(
@@ -517,9 +670,9 @@ class SentShipping extends StatelessWidget {
                         children: [
                           Text(
                             LocaleKeys.shippingSearch2.tr(),
-                            style: TextStyle(fontSize: 12),
+                            style: const TextStyle(fontSize: 12),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Icon(
                             Icons.calendar_today,
                             color: purpleColor,
@@ -528,7 +681,7 @@ class SentShipping extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                   Expanded(
@@ -537,7 +690,7 @@ class SentShipping extends StatelessWidget {
                       children: [
                         Container(
                           alignment: AlignmentDirectional.centerStart,
-                          padding: EdgeInsetsDirectional.only(start: 5),
+                          padding: const EdgeInsetsDirectional.only(start: 5),
                           width: 200,
                           height: 40,
                           decoration: BoxDecoration(
@@ -548,7 +701,7 @@ class SentShipping extends StatelessWidget {
                               )),
                           child: Text(
                             LocaleKeys.shippingSearch3.tr(),
-                            style: TextStyle(fontSize: 12),
+                            style: const TextStyle(fontSize: 12),
                           ),
                         ),
                         Container(
@@ -556,18 +709,16 @@ class SentShipping extends StatelessWidget {
                           height: 40,
                           decoration: BoxDecoration(
                               color: purpleColor,
-                              borderRadius: BorderRadiusDirectional.only(
+                              borderRadius: const BorderRadiusDirectional.only(
                                   bottomEnd: Radius.circular(10.0),
                                   topEnd: Radius.circular(10.0)),
                               border: Border.all(
                                 width: 0.8,
                                 color: purpleColor,
                               )),
-                          child: Expanded(
-                            child: Icon(
-                              Icons.search,
-                              color: Colors.white,
-                            ),
+                          child: Icon(
+                            Icons.search,
+                            color: Colors.white,
                           ),
                         ),
                       ],
@@ -579,7 +730,7 @@ class SentShipping extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 10, left: 10, top: 40),
                   child: ListView.separated(
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     itemBuilder: (context, index) {
                       return DecoratedContainerWithShadow(
                         child: Column(
@@ -628,7 +779,7 @@ class SentShipping extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                                 Expanded(
@@ -637,14 +788,14 @@ class SentShipping extends StatelessWidget {
                                     child: CustomContainerForDetails(
                                       text1: LocaleKeys.shippingListItemButton
                                           .tr(),
-                                      icon: Icon(
+                                      icon: const Icon(
                                         Icons.arrow_forward_ios,
                                         color: Colors.white,
                                       ),
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                               ],
@@ -655,7 +806,7 @@ class SentShipping extends StatelessWidget {
                               child: Stack(
                                 alignment: Alignment.center,
                                 children: [
-                                  SizedBox(
+                                  const SizedBox(
                                     child: MySeparator(
                                       color: Colors.red,
                                       height: 1.7,
@@ -696,7 +847,7 @@ class SentShipping extends StatelessWidget {
                       );
                     },
                     separatorBuilder: (context, index) {
-                      return SizedBox(
+                      return const SizedBox(
                         height: 20,
                       );
                     },
@@ -758,9 +909,9 @@ class EndedShipping extends StatelessWidget {
                         children: [
                           Text(
                             LocaleKeys.shippingSearch1.tr(),
-                            style: TextStyle(fontSize: 12),
+                            style: const TextStyle(fontSize: 12),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Icon(
                             Icons.calendar_today,
                             color: purpleColor,
@@ -769,7 +920,7 @@ class EndedShipping extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                   Container(
@@ -787,9 +938,9 @@ class EndedShipping extends StatelessWidget {
                         children: [
                           Text(
                             LocaleKeys.shippingSearch2.tr(),
-                            style: TextStyle(fontSize: 12),
+                            style: const TextStyle(fontSize: 12),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Icon(
                             Icons.calendar_today,
                             color: purpleColor,
@@ -798,7 +949,7 @@ class EndedShipping extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                   Expanded(
@@ -807,7 +958,7 @@ class EndedShipping extends StatelessWidget {
                       children: [
                         Container(
                           alignment: AlignmentDirectional.centerStart,
-                          padding: EdgeInsetsDirectional.only(start: 5),
+                          padding: const EdgeInsetsDirectional.only(start: 5),
                           width: 200,
                           height: 40,
                           decoration: BoxDecoration(
@@ -818,7 +969,7 @@ class EndedShipping extends StatelessWidget {
                               )),
                           child: Text(
                             LocaleKeys.shippingSearch3.tr(),
-                            style: TextStyle(fontSize: 12),
+                            style: const TextStyle(fontSize: 12),
                           ),
                         ),
                         Container(
@@ -826,18 +977,16 @@ class EndedShipping extends StatelessWidget {
                           height: 40,
                           decoration: BoxDecoration(
                               color: purpleColor,
-                              borderRadius: BorderRadiusDirectional.only(
+                              borderRadius: const BorderRadiusDirectional.only(
                                   bottomEnd: Radius.circular(10.0),
                                   topEnd: Radius.circular(10.0)),
                               border: Border.all(
                                 width: 0.8,
                                 color: purpleColor,
                               )),
-                          child: Expanded(
-                            child: Icon(
-                              Icons.search,
-                              color: Colors.white,
-                            ),
+                          child: Icon(
+                            Icons.search,
+                            color: Colors.white,
                           ),
                         ),
                       ],
@@ -849,7 +998,7 @@ class EndedShipping extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 10, left: 10, top: 40),
                   child: ListView.separated(
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     itemBuilder: (context, index) {
                       return DecoratedContainerWithShadow(
                         child: Column(
@@ -898,10 +1047,10 @@ class EndedShipping extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                               ],
@@ -911,7 +1060,7 @@ class EndedShipping extends StatelessWidget {
                       );
                     },
                     separatorBuilder: (context, index) {
-                      return SizedBox(
+                      return const SizedBox(
                         height: 20,
                       );
                     },

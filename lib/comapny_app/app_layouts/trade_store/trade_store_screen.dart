@@ -1,3 +1,4 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,69 +26,85 @@ class TradeStoreSystem extends StatelessWidget {
             imageSize: 80.0,
           ),
           resizeToAvoidBottomInset: false,
-          body: Column(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10.0,
-                    vertical: 40.0,
-                  ),
-                  child: ListView.separated(
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: DecoratedContainerWithShadow(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 20.0, horizontal: 20.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(cubit.storeStyleName[index]),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    navigateAndBack(context,
-                                        layout: StoreStyleDetails(
-                                            storeStyleName:
-                                                cubit.storeStyleName[index]));
-                                  },
-                                  child: Container(
-                                    width: 180,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20.0, vertical: 5.0),
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 10.0),
-                                    child: const CustomContainerForDetails(
-                                      text1: "تفاصيل",
-                                      icon: Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: Colors.white,
+          body: ConditionalBuilder(
+              condition: state is! GetStorageSystemsLoadingState,
+              builder: (context) {
+                return Column(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0,
+                          vertical: 40.0,
+                        ),
+                        child: ListView.separated(
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: DecoratedContainerWithShadow(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 20.0, horizontal: 20.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(cubit.storeNameList[index]),
+                                      const SizedBox(
+                                        width: 20,
                                       ),
-                                    ),
+                                      InkWell(
+                                        onTap: () {
+                                          navigateAndBack(context,
+                                              layout: StoreStyleDetails(
+                                                index: index,
+                                                storeStyleName:
+                                                    cubit.storeNameList[index],
+                                                storeStyleDescribe: cubit
+                                                    .storeDescribeList[index],
+                                              ));
+                                        },
+                                        child: Container(
+                                          width: 180,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20.0, vertical: 5.0),
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 10.0),
+                                          child:
+                                              const CustomContainerForDetails(
+                                            text1: "تفاصيل",
+                                            icon: Icon(
+                                              Icons.arrow_forward_ios,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
+                              ),
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return SizedBox(
+                              height: 20,
+                            );
+                          },
+                          itemCount: cubit.storeNameList.length,
                         ),
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return SizedBox(
-                        height: 20,
-                      );
-                    },
-                    itemCount: cubit.storeStyleName.length,
-                  ),
-                ),
-              ),
-            ],
-          ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+              fallback: (context) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }),
         );
       },
     );

@@ -29,8 +29,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -58,6 +56,12 @@ dependencies:
   cloud_firestore: ^3.1.10
   file_picker: ^4.5.1
   http: ^0.13.4
+  qr_flutter: ^4.0.0
+  url_launcher: ^6.0.20
+  flutter_datetime_picker: ^1.5.1
+  flutter_downloader: ^1.7.3
+  path_provider: ^2.0.9
+  permission_handler: ^9.2.0
 
 dev_dependencies:
   flutter_test:
@@ -103,6 +107,10 @@ flutter:
     - family: hanimation
       fonts:
         - asset: Assets/Fonts/hanimation.ttf
+    - family: CustomIcons
+      fonts:
+        - asset: Assets/Fonts/CustomIcons.ttf
+
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

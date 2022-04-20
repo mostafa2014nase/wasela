@@ -8,15 +8,21 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wasela/comapny_app/app_layouts/ship/bloc/cubit_class.dart';
 import 'package:wasela/comapny_app/app_layouts/ship/bloc/states.dart';
 import 'package:wasela/comapny_app/app_layouts/ship/chats/chats_screen.dart';
+import 'package:wasela/helper_methods/app_bloc_provider/bloc/cubit.dart';
+import 'package:wasela/helper_methods/app_bloc_provider/bloc/states.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
 
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
+import 'package:wasela/helper_methods/modules/const%20classes.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
 
 import 'follow_shipping.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class ShippingDetails extends StatelessWidget {
-  const ShippingDetails({Key? key}) : super(key: key);
+  final int index;
+
+  const ShippingDetails({Key? key, required this.index}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +54,7 @@ class ShippingDetails extends StatelessWidget {
                         Expanded(
                           child: InkWell(
                             onTap: () {
-                              navigateAndBack(context,layout: ChatsScreen());
+                              navigateAndBack(context, layout: ChatsScreen());
                             },
                             child: CustomDesignUnActive(
                               borderColor: purpleColor,
@@ -71,7 +77,7 @@ class ShippingDetails extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Expanded(
@@ -95,61 +101,91 @@ class ShippingDetails extends StatelessWidget {
                                     ),
                                     mainWidgetText: Column(
                                       children: [
-                                        Text("برجاء توضيح الشكوى الخاصة بك",style: lightTheme.textTheme.bodyText1?.copyWith(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20.0,
-                                        ),),
+                                        Text(
+                                          "برجاء توضيح الشكوى الخاصة بك",
+                                          style: lightTheme.textTheme.bodyText1
+                                              ?.copyWith(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20.0,
+                                          ),
+                                        ),
                                         Material(
                                           color: Colors.transparent,
                                           child: Container(
                                             decoration: const BoxDecoration(
                                               color: Colors.white,
-                                              borderRadius: BorderRadius.horizontal(
+                                              borderRadius:
+                                                  BorderRadius.horizontal(
                                                 right: Radius.circular(10.0),
                                                 left: Radius.circular(10.0),
                                               ),
                                             ),
                                             margin: const EdgeInsets.symmetric(
-                                                vertical: 15.0, horizontal: 10.0),
+                                                vertical: 15.0,
+                                                horizontal: 10.0),
                                             child: TextFormField(
                                               textAlign: TextAlign.start,
                                               maxLines: 8,
-                                              textAlignVertical: TextAlignVertical.top,
+                                              textAlignVertical:
+                                                  TextAlignVertical.top,
                                               controller: cubit.complain,
-                                              keyboardType: const TextInputType.numberWithOptions(),
+                                              keyboardType: const TextInputType
+                                                  .numberWithOptions(),
                                               decoration: InputDecoration(
-                                                contentPadding: const EdgeInsets.only(
-                                                    left: 10.0, right: 10.0, top: 20.0),
+                                                contentPadding:
+                                                    const EdgeInsets.only(
+                                                        left: 10.0,
+                                                        right: 10.0,
+                                                        top: 20.0),
                                                 fillColor: Colors.white,
-                                                hintStyle: lightTheme.textTheme.bodyText1
-                                                    ?.copyWith(color: textGreyColor, fontSize: 20.0),
-                                                hintText: "أترك الشكوى الخاصه بك",
-                                                enabledBorder: OutlineInputBorder(
-                                                    borderSide:
-                                                    BorderSide(color: greyColortwoo, width: 1.5),
-                                                    borderRadius: const BorderRadius.horizontal(
-                                                      right: Radius.circular(10.0),
-                                                      left: Radius.circular(10.0),
-                                                    )),
+                                                hintStyle: lightTheme
+                                                    .textTheme.bodyText1
+                                                    ?.copyWith(
+                                                        color: textGreyColor,
+                                                        fontSize: 20.0),
+                                                hintText:
+                                                    "أترك الشكوى الخاصه بك",
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color:
+                                                                greyColortwoo,
+                                                            width: 1.5),
+                                                        borderRadius:
+                                                            const BorderRadius
+                                                                .horizontal(
+                                                          right:
+                                                              Radius.circular(
+                                                                  10.0),
+                                                          left: Radius.circular(
+                                                              10.0),
+                                                        )),
                                               ),
                                             ),
                                           ),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 8.0),
                                           child: Material(
-                                            borderRadius: BorderRadius.horizontal(
+                                            borderRadius:
+                                                BorderRadius.horizontal(
                                               right: Radius.circular(10.0),
                                               left: Radius.circular(10.0),
                                             ),
                                             color: Colors.white,
                                             child: InkWell(
                                               child: Padding(
-                                                padding: const EdgeInsets.symmetric(horizontal:40.0 ,vertical: 5.0),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 40.0,
+                                                        vertical: 5.0),
                                                 child: Text(
                                                   "أرسال",
-                                                  style: lightTheme.textTheme.bodyText1?.copyWith(
+                                                  style: lightTheme
+                                                      .textTheme.bodyText1
+                                                      ?.copyWith(
                                                     fontSize: 20,
                                                     color: Colors.black,
                                                   ),
@@ -161,7 +197,8 @@ class ShippingDetails extends StatelessWidget {
                                       ],
                                     ),
                                     underWidget: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 4.0,vertical: 20.0),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 4.0, vertical: 20.0),
                                       child: Material(
                                         borderRadius: BorderRadius.horizontal(
                                           right: Radius.circular(10.0),
@@ -172,11 +209,15 @@ class ShippingDetails extends StatelessWidget {
                                           child: Padding(
                                             padding: const EdgeInsets.all(10.0),
                                             child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 Text(
                                                   LocaleKeys.callCenter.tr(),
-                                                  style: lightTheme.textTheme.bodyText1?.copyWith(
+                                                  style: lightTheme
+                                                      .textTheme.bodyText1
+                                                      ?.copyWith(
                                                     fontSize: 20,
                                                     color: Colors.white,
                                                   ),
@@ -237,7 +278,7 @@ class ShippingDetails extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "دردشة",
+                                    "15",
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   SvgPicture.asset(
@@ -264,7 +305,7 @@ class ShippingDetails extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "شكاوي",
+                                    "15",
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   SvgPicture.asset(
@@ -291,7 +332,7 @@ class ShippingDetails extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "شكاوي",
+                                    "15",
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   SvgPicture.asset(
@@ -315,35 +356,47 @@ class ShippingDetails extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SvgPicture.asset(
-                          "Assets/images/noun-qr-1474708.svg",
-                          width: 150,
-                          height: 150,
+                        QrImage(
+                          data: 'اسم التاجر :  ${AppCubitClass.get(context).companyModel!.name}, موبايل التاجر : ${AppCubitClass.get(context).companyModel!.phoneNumber}, اسم المرسل اليه : "${cubit.tempList[index]["client"]["name"]}" , موبايل المرسل اليه "${cubit.tempList[index]["client"]["phone"]}"',
+                          version: QrVersions.auto,
+                          size: 140,
+                          gapless: false,
                         ),
                         const SizedBox(
                           width: 10,
                         ),
-                        Column(
-                          children: [
-                            CustomRowForDetails(
-                              text1: "أسم التاجر",
-                              text2: "سمر للملابس",
-                              firstTextWidth: 90,
-                              rowWidth: 210,
-                            ),
-                            CustomRowForDetails(
-                              text1: "كود التاجر",
-                              text2: "1250",
-                              firstTextWidth: 90,
-                              rowWidth: 210,
-                            ),
-                            CustomRowForDetails(
-                              text1: "عنوان التاجر",
-                              text2: "الهرم - 12 شارع",
-                              firstTextWidth: 90,
-                              rowWidth: 210,
-                            ),
-                          ],
+                        BlocConsumer<AppCubitClass, AppStates>(
+                          listener: (context, state) {},
+                          builder: (context, state) {
+                            //var appCubit = AppCubitClass.get(context);
+                            var companyModel = AppCubitClass.get(context).companyModel;
+                            var clientModel = AppCubitClass.get(context).clientModel;
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomRowForDetails(
+                                  text1: "اسم التاجر",
+                                  text2: SaveValueInKey.userType=="client"?
+                                  "${clientModel!.name}":"${companyModel!.name}",
+                                  firstTextWidth: 90,
+                                  rowWidth: 210,
+                                ),
+                                // CustomRowForDetails(
+                                //   text1: "كود التاجر",
+                                //   text2: "1250",
+                                //   firstTextWidth: 90,
+                                //   rowWidth: 210,
+                                // ),
+                                CustomRowForDetails(
+                                  text1: "عنوان التاجر",
+                                  text2: SaveValueInKey.userType=="client"?
+                                  "${clientModel!.address}":"${companyModel!.address}",
+                                  firstTextWidth: 90,
+                                  rowWidth: 210,
+                                ),
+                              ],
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -366,20 +419,11 @@ class ShippingDetails extends StatelessWidget {
                                     text2: "1855",
                                   ),
                                   CustomRowForDetails(
-                                    text1: LocaleKeys.shippingListItemDetails2
-                                        .tr(),
-                                    text2: "1855",
-                                  ),
-                                  CustomRowForDetails(
                                     text1: LocaleKeys
                                         .walletScreenListItemDetails2
                                         .tr(),
-                                    text2: "1855",
-                                  ),
-                                  CustomRowForDetails(
-                                    text1: LocaleKeys.shippingListItemDetails4
-                                        .tr(),
-                                    text2: "1855",
+                                    text2:
+                                        "${cubit.tempList[index]["shipping_price"]} جنيه",
                                   ),
                                   CustomRowForDetails(
                                     text1: LocaleKeys.shippingListItemDetails5
@@ -389,7 +433,9 @@ class ShippingDetails extends StatelessWidget {
                                   CustomRowForDetails(
                                     text1: LocaleKeys.shippingListItemDetails6
                                         .tr(),
-                                    text2: "1855",
+                                    text2: DateFormat("y/MM/dd").format(
+                                        DateTime.parse(cubit.tempList[index]
+                                            ["created_at"])),
                                   ),
                                   CustomRowForDetails(
                                     text1: LocaleKeys.shippingListItemDetails7
@@ -397,30 +443,43 @@ class ShippingDetails extends StatelessWidget {
                                     text2: "1855",
                                   ),
                                 ],
+                                crossAxisAlignment: CrossAxisAlignment.start,
                               ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
                                 child: InkWell(
                                   onTap: () {
                                     navigateAndBack(context,
-                                        layout: FollowShippingOnMapScreen());
+                                        layout:
+                                            const FollowShippingOnMapScreen());
                                   },
-                                  child: CustomContainerForDetails(
-                                    text1:
-                                        LocaleKeys.shippingListItemButton.tr(),
-                                    icon: Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Colors.white,
-                                    ),
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: Colors.green,
+                                        radius: 25.0,
+                                        child: SvgPicture.asset(
+                                          "Assets/images/placeholder.svg",
+                                          color: yellowColor,
+                                          width: 35,
+                                          height: 35,
+                                        ),
+                                      ),
+                                      const Text("تتبع"),
+                                    ],
                                   ),
+                                  // CustomContainerForDetails(
+                                  //   text1:
+                                  //       LocaleKeys.shippingListItemButton.tr(),
+                                  //   icon: Icon(
+                                  //     Icons.arrow_forward_ios,
+                                  //     color: Colors.white,
+                                  //   ),
+                                  // ),
                                 ),
                               ),
-                              SizedBox(
-                                width: 10,
-                              ),
                             ],
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 10, bottom: 40),
@@ -467,7 +526,7 @@ class ShippingDetails extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     width: double.infinity,
                     height: 100,
                     child: Padding(
@@ -476,22 +535,23 @@ class ShippingDetails extends StatelessWidget {
                       child: DecoratedContainerWithShadow(
                         child: CustomRowForDetails(
                           text1: "المرسل اليه",
-                          text2: "مصطفي تركي",
+                          text2: "${cubit.tempList[index]["client"]["name"]}",
                           firstTextWidth: 90,
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     width: double.infinity,
                     height: 100,
                     child: Padding(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                           right: 10.0, left: 10.0, bottom: 15.0),
                       child: DecoratedContainerWithShadow(
                         child: CustomRowForDetails(
                           text1: "العنوان",
-                          text2: "حدائق الأهرام مجاورة 18 خلف الباب الكبير",
+                          text2:
+                              "${cubit.tempList[index]["client"]["address"]}",
                           firstTextWidth: 70,
                         ),
                       ),
@@ -547,9 +607,9 @@ class ShippingDetails extends StatelessWidget {
                                       end: 10.0),
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
+                                    children: const [
                                       Text("20/11/2022"),
                                       Text("AM 10:30"),
                                     ],
@@ -608,7 +668,7 @@ class ShippingDetails extends StatelessWidget {
                                       end: 10.0),
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text("20/11/2022"),
@@ -669,7 +729,7 @@ class ShippingDetails extends StatelessWidget {
                                       end: 10.0),
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text("20/11/2022"),
@@ -730,7 +790,7 @@ class ShippingDetails extends StatelessWidget {
                                       end: 10.0),
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text("20/11/2022"),

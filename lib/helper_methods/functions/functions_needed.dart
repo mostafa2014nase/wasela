@@ -1,8 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wasela/comapny_app/app_layouts/notifications/notifications_screen.dart';
+import 'package:wasela/helper_methods/app_bloc_provider/bloc/cubit.dart';
+import 'package:wasela/helper_methods/modules/const%20classes.dart';
 import '../../mainscreen/main_nav_screen.dart';
 import '../../translations/localeKeys.g.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
@@ -1003,9 +1006,12 @@ class CustomRowForDetails extends StatelessWidget {
             const Text(":"),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 2.0),
-              child: Text(
-                text2,
-                overflow: TextOverflow.ellipsis,
+              child: SizedBox(
+                width: 113.0,
+                child: Text(
+                  text2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ),
           ],
@@ -1549,6 +1555,8 @@ void myShowDialogForMarketing(
     required CustomAlertDialogForMarketing alertDialog,
     Color barrierColor = const Color(0x80000000)}) {
   showGeneralDialog(
+    barrierDismissible: true,
+    barrierLabel: "dismissed",
     context: context,
     barrierColor: barrierColor,
     pageBuilder: (BuildContext buildContext, Animation animation,
@@ -1558,14 +1566,22 @@ void myShowDialogForMarketing(
   );
 }
 
-void showToast(BuildContext context, String message, ToastStates states) {
+void showToast(BuildContext context, String message, ToastStates states,{Color textColor = Colors.white,int seconds = 3,double radius = 30.0}) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    content: Text(message),
+    margin: const EdgeInsetsDirectional.only(top: 700,bottom: 20.0,start: 10.0,end: 10.0),
+    behavior: SnackBarBehavior.floating,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(radius),
+    ),
+    duration: Duration(
+      seconds: seconds,
+    ),
+    content: Center(child: Text(message,style: TextStyle(color: textColor),)),
     backgroundColor: chooseToastColor(states),
   ));
 }
 
-enum ToastStates { success, error }
+enum ToastStates { success, error ,warning}
 
 Color chooseToastColor(ToastStates states) {
   Color color;
@@ -1575,6 +1591,9 @@ Color chooseToastColor(ToastStates states) {
       break;
     case ToastStates.error:
       color = Colors.red;
+      break;
+      case ToastStates.warning:
+      color = Colors.yellow;
       break;
   }
   return color;
@@ -1677,6 +1696,12 @@ AppBar generateAppBarForCompanyMainScreens({
       padding: const EdgeInsets.all(10.0),
       child:mainScreen ? InkWell(
         onTap: () {
+          if(SaveValueInKey.userType == "client"){
+            AppCubitClass.get(context).getClientProfileData();
+          }
+          else{
+            AppCubitClass.get(context).getCompanyProfileData();
+          }
           Scaffold.of(context).openDrawer();
         },
         child: SvgPicture.asset(

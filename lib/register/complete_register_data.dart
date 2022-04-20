@@ -1,4 +1,8 @@
+import 'dart:developer';
+
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:wasela/comapny_app/app_layouts/add_new_ship/bloc/cubit_class.dart';
+import 'package:wasela/comapny_app/app_layouts/add_new_ship/bloc/states.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -38,11 +42,11 @@ class CompleteRegisterDataForClient extends StatelessWidget {
     return BlocConsumer<RegisterCubitClass, RegisterStates>(
       listener: (context, state) {
         print(state.toString());
-        if (state is RegisterClientSuccessState ) {
+        if (state is RegisterClientSuccessState) {
           navigateAndFinish(context, layout: MainNavScreen());
-        }
-        else if(state is  RegisterClientErrorState){
-          showToast(context, RegisterCubitClass.get(context).errorClientMessage, ToastStates.error);
+        } else if (state is RegisterClientErrorState) {
+          showToast(context, RegisterCubitClass.get(context).errorClientMessage,
+              ToastStates.error);
         }
       },
       builder: (context, state) {
@@ -302,12 +306,13 @@ class CompleteRegisterDataForCompany extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<RegisterCubitClass, RegisterStates>(
       listener: (context, state) {
-        print(state.toString());
         if (state is RegisterCompanySuccessState) {
           navigateAndFinish(context, layout: MainNavScreen());
-        }
-        else if (state is RegisterCompanyErrorState){
-          showToast(context, RegisterCubitClass.get(context).errorCompanyMessage, ToastStates.error);
+        } else if (state is RegisterCompanyErrorState) {
+          showToast(
+              context,
+              RegisterCubitClass.get(context).errorCompanyMessage,
+              ToastStates.error);
         }
       },
       builder: (context, state) {
@@ -587,6 +592,126 @@ class CompleteRegisterDataForCompany extends StatelessWidget {
                                 hintStyle: TextStyle(color: purpleColor),
                                 border: const OutlineInputBorder(),
                               ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: CustomDesignUnActive(
+                              height: 50,
+                              borderColor: purpleColor,
+                              containerColor: Colors.transparent,
+                              text: DropdownButton(
+                                  alignment: AlignmentDirectional.bottomCenter,
+                                  underline: const SizedBox(),
+                                  focusColor: Colors.black,
+                                  dropdownColor: greyColortwoo,
+                                  menuMaxHeight: 300.0,
+                                  icon: CustomDesignUnActive(
+                                    width: 40.0,
+                                    borderRadius: 5.0,
+                                    containerColor: purpleColor,
+                                    borderColor: purpleColor,
+                                    text: const Icon(Icons.arrow_drop_down,
+                                        color: Colors.white, size: 30.0),
+                                  ),
+                                  isExpanded: true,
+                                  hint: Padding(
+                                    padding: const EdgeInsetsDirectional.only(
+                                        start: 10.0),
+                                    child: Text("المدينة",
+                                        style: TextStyle(color: purpleColor)),
+                                  ),
+                                  onTap: () {
+                                    log("ana hnaaaaaaaaaa");
+                                    log(cubit.cityList.toString());
+                                  },
+                                  value: cubit.selectedCity,
+                                  onChanged: (newVal) {
+                                    log("ana hnaaaaaaaaaakkk");
+                                    cubit.selectFromCityChoices(newVal);
+                                  },
+                                  items: cubit.cityList.map((val) {
+                                    return DropdownMenuItem(
+                                      alignment:
+                                          AlignmentDirectional.centerStart,
+                                      value: val,
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsetsDirectional.only(
+                                                start: 10.0),
+                                        child: Text(
+                                          val,
+                                          style: TextStyle(
+                                              color: purpleColor , fontWeight: FontWeight.bold,fontSize: 18.0),
+                                          //textAlign: TextAlign.right,
+                                        ),
+                                      ),
+                                    );
+                                  }).toList()),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5.0,
+                          ),
+                          Expanded(
+                            child: CustomDesignUnActive(
+                              height: 50,
+                              borderColor: purpleColor,
+                              containerColor: Colors.transparent,
+                              text: DropdownButton(
+                                  alignment: AlignmentDirectional.bottomCenter,
+                                  underline: const SizedBox(),
+                                  focusColor: Colors.black,
+                                  dropdownColor: greyColortwoo,
+                                  icon: CustomDesignUnActive(
+                                    width: 40.0,
+                                    borderRadius: 5.0,
+                                    containerColor: purpleColor,
+                                    borderColor: purpleColor,
+                                    text: const Icon(Icons.arrow_drop_down,
+                                        color: Colors.white, size: 30.0),
+                                  ),
+                                  isExpanded: true,
+                                  menuMaxHeight: 250.0,
+                                  hint: Padding(
+                                    padding: const EdgeInsetsDirectional.only(
+                                        start: 10.0),
+                                    child: Text("المنطقة",
+                                        style: TextStyle(color: purpleColor)),
+                                  ),
+                                  onTap: () {},
+                                  value: cubit.selectedArea,
+                                  onChanged: (newVal) {
+                                    cubit.selectFromAreaChoices(newVal);
+                                  },
+                                  items: cubit.areaList.map((val) {
+                                    return DropdownMenuItem(
+                                      alignment:
+                                          AlignmentDirectional.centerStart,
+                                      value: val,
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsetsDirectional.only(
+                                                start: 10.0),
+                                        child: Text(
+                                          val,
+                                          style: TextStyle(
+                                              color: purpleColor , fontWeight: FontWeight.bold,fontSize: 18.0),
+                                          //textAlign: TextAlign.right,
+                                        ),
+                                      ),
+                                    );
+                                  }).toList()),
                             ),
                           ),
                         ],
