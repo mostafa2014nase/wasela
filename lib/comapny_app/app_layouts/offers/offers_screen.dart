@@ -2,6 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'bloc/cubit_class.dart';
@@ -14,7 +15,7 @@ class OffersScreenForCompanyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<OfferCubitClass, OfferStates>(
       listener: (context, state) {
-        if(state is EnrollOfferSuccessState){
+        if (state is EnrollOfferSuccessState) {
           myShowDialogForMarketing(
               context: context,
               alertDialog: CustomAlertDialogForMarketing(
@@ -50,20 +51,26 @@ class OffersScreenForCompanyApp extends StatelessWidget {
                     Material(
                       color: Colors.transparent,
                       child: InkWell(
-                        onTap: (){
+                        onTap: () {
+                          OfferCubitClass.get(context).getOffers();
                           backToPrevious(context);
                         },
-                        child:Padding(
+                        child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 20.0, vertical: 20.0),
                             child: CustomDesignUnActive(
                               width: 150,
                               height: 50,
-                              text:  Text("تم",style: TextStyle(color: purpleColor,fontSize: 17,fontWeight: FontWeight.bold),),
+                              text: Text(
+                                "تم",
+                                style: TextStyle(
+                                    color: purpleColor,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.bold),
+                              ),
                               borderColor: Colors.white,
                               containerColor: Colors.white,
-                            )
-                        ),
+                            )),
                       ),
                     ),
                   ],
@@ -90,84 +97,241 @@ class OffersScreenForCompanyApp extends StatelessWidget {
           backgroundColor: greyColor,
           appBar: generateAppBarForCompanyMainScreens(
             mainScreen: false,
-              title: "العروض",
-              svgPath: "Offers-2",
-              context: context,
-              imageSize: 80.0,
-              ),
+            title: "العروض",
+            svgPath: "Offer",
+            context: context,
+            imageSize: 80.0,
+          ),
           resizeToAvoidBottomInset: false,
           body: ConditionalBuilder(
-            condition: state is ! GetOffersSystemsLoadingState,
-            builder: (context){
-              return Column(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0,
-                        vertical: 40.0,
-                      ),
-                      child: ListView.separated(
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: DecoratedContainerWithShadow(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 20.0, horizontal: 20.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(cubit.offerNameList[index]),
-                                    const SizedBox(
-                                      width: 20,
-                                    ),
-                                    cubit.isChecked[index] ?
-                                    const CustomDesignUnActive(
-                                      width: 150,
-                                      height: 50,
-                                      text: Text("تم ارسال طلبك",style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.bold),),
-                                      borderColor: Colors.black38,
-                                      containerColor: Colors.black38,
-                                    )
-                                    :
-                                    InkWell(
-                                      onTap: () {
-                                        cubit.enrollNow(offersId: cubit.offerIdList, index: index);
-                                      },
-                                      child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 20.0, vertical: 20.0),
-                                          child: CustomDesignUnActive(
-                                            width: 150,
-                                            height: 50,
-                                            text: const Text("أشترك الأن",style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.bold),),
-                                            borderColor: purpleColor,
-                                            containerColor: purpleColor,
-                                          )
-                                      ),
-                                    ),
-                                  ],
+              condition: state is! GetOffersSystemsLoadingState,
+              builder: (context) {
+                return Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: InkWell(
+                        onTap: () {
+                          cubit.getOffers();
+                          navigateAndBack(context,
+                              layout: OffersEnrolledScreenForCompanyApp());
+                        },
+                        child: CustomDesignUnActive(
+                          borderColor: yellowColor,
+                          containerColor: yellowColor,
+                          width: 160,
+                          text: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text("الطلبات المرسلة"),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: SvgPicture.asset(
+                                    "Assets/images/noun-validation-1683882.svg",
+                                    width: 35.0,
+                                    height: 35.0,
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
-                          );
-                        },
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(
-                            height: 20,
-                          );
-                        },
-                        itemCount: cubit.offerNameList.length,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              );
-            },
-            fallback:(context){return Center(child: CircularProgressIndicator(),);}
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0,
+                          vertical: 20.0,
+                        ),
+                        child: ListView.separated(
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: DecoratedContainerWithShadow(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 20.0, horizontal: 20.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(cubit.offerNameList[index]),
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                      cubit.isChecked[index]
+                                          ? const CustomDesignUnActive(
+                                              width: 150,
+                                              height: 50,
+                                              text: Text(
+                                                "تم ارسال طلبك",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 17,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              borderColor: Colors.black38,
+                                              containerColor: Colors.black38,
+                                            )
+                                          : InkWell(
+                                              onTap: () {
+                                                cubit.enrollNow(
+                                                    offersId: cubit.offerIdList,
+                                                    index: index);
+                                              },
+                                              child: Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 20.0,
+                                                      vertical: 20.0),
+                                                  child: CustomDesignUnActive(
+                                                    width: 150,
+                                                    height: 50,
+                                                    text: const Text(
+                                                      "أشترك الأن",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 17,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    borderColor: purpleColor,
+                                                    containerColor: purpleColor,
+                                                  )),
+                                            ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return const SizedBox(
+                              height: 20,
+                            );
+                          },
+                          itemCount: cubit.offerIdList.length,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+              fallback: (context) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }),
+        );
+      },
+    );
+  }
+}
+
+class OffersEnrolledScreenForCompanyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<OfferCubitClass, OfferStates>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        var cubit = OfferCubitClass.get(context);
+        return Scaffold(
+          backgroundColor: greyColor,
+          appBar: generateAppBarForCompanyMainScreens(
+            mainScreen: false,
+            title: "العروض",
+            svgPath: "Offer",
+            context: context,
+            imageSize: 80.0,
           ),
+          resizeToAvoidBottomInset: false,
+          body: ConditionalBuilder(
+              condition: state is! GetOffersSystemsLoadingState,
+              builder: (context) {
+                return ConditionalBuilder(
+                  condition: cubit.offerEnrolledNameList.isNotEmpty,
+                  builder: (context) {
+                    return Column(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 40.0,
+                            ),
+                            child: ListView.separated(
+                              physics: const BouncingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0),
+                                  child: DecoratedContainerWithShadow(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 20.0, horizontal: 20.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(cubit
+                                              .offerEnrolledNameList[index]),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                              separatorBuilder: (context, index) {
+                                return const SizedBox(
+                                  height: 20,
+                                );
+                              },
+                              itemCount: cubit.offerEnrolledNameList.length,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                  fallback: (context) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            "Assets/images/noun-not-found-2503986.svg",
+                            width: 350.0,
+                            height: 350.0,
+                            color: textGreyColor,
+                          ),
+                          Text(
+                            "لم يتم الاشتراك فى اى عرض حتى الان",
+                            style: TextStyle(
+                              color: purpleColor,
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                              height: 0.0,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+              fallback: (context) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }),
         );
       },
     );

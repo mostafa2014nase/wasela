@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:wasela/comapny_app/app_layouts/offers/bloc/cubit_class.dart';
+import 'package:wasela/comapny_app/app_layouts/home/home_bloc/home_cubit.dart';
 import 'package:wasela/comapny_app/app_layouts/offers/offers_screen.dart';
 import 'package:wasela/comapny_app/app_layouts/ship/bloc/cubit_class.dart';
 import 'package:wasela/comapny_app/app_layouts/ship/bloc/states.dart';
@@ -94,11 +94,12 @@ class MainNavScreen extends StatelessWidget {
                                             decoration: BoxDecoration(
                                               color: Colors.black,
                                               borderRadius:
-                                              BorderRadius.circular(80.0),
+                                                  BorderRadius.circular(80.0),
                                             ),
                                             clipBehavior: Clip.antiAlias,
                                             child: Image.network(
-                                              companyModel!.photo ?? "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
+                                              companyModel!.photo ??
+                                                  "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
                                               fit: BoxFit.cover,
                                             ),
                                           ),
@@ -228,9 +229,6 @@ class MainNavScreen extends StatelessWidget {
                                                     }
                                                   : index == 3
                                                       ? () {
-                                                          OfferCubitClass.get(
-                                                                  context)
-                                                              .getAllOffers();
                                                           navigateAndBack(
                                                               context,
                                                               layout:
@@ -306,7 +304,7 @@ class MainNavScreen extends StatelessWidget {
                                 ),
                                 Text(
                                   LocaleKeys.logOutDrawer.tr(),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Colors.red, fontSize: 25),
                                 ),
                               ],
@@ -346,7 +344,6 @@ class MainNavScreen extends StatelessWidget {
                         if (index == 4) {
                           AppCubitClass.get(context).getClientProfileData();
                         }
-                        print(persistentTabController.index);
                       },
                       popAllScreensOnTapOfSelectedTab: false,
                       //hideNavigationBar: false,
@@ -360,23 +357,32 @@ class MainNavScreen extends StatelessWidget {
                       var shipCubit = ShipForCompanyAppCubitClass.get(context);
                       return BottomNavigationBar(
                         key: globalKey,
-                        enableFeedback: false,
+                        enableFeedback: true,
                         showUnselectedLabels: true,
                         type: BottomNavigationBarType.fixed,
                         backgroundColor: Colors.white,
                         items: cubit.navigationBarItemsForCompanyApp,
                         //resizeToAvoidBottomInset: true,
                         onTap: (index) {
+                          if (index == 0) {
+                            HomeCubitClassForCompany.get(context).getHomeChartData();
+                            cubit.changeBarItemForCompanyApp(index);
+                          }
                           if (index == 1) {
                             shipCubit.tempList.length = 0;
                             shipCubit.resetFromDate();
                             shipCubit.resetToDate();
                             shipCubit.getAllShipmentsData();
                             cubit.changeBarItemForCompanyApp(index);
+                          }       
+                          if (index == 2) {
+                            AppCubitClass.get(context).getShipmentsWithStatueBouncePart();
+                            AppCubitClass.get(context).getShipmentsWithStatueBounceCompletePay();
+                            AppCubitClass.get(context).getShipmentsWithStatueBounceCompleteNotPay();
+                            cubit.changeBarItemForCompanyApp(index);
                           }
                           if (index == 5) {
-                            TradeStoreSystemCubitClass.get(context)
-                                .getAllStorageSystems();
+                            TradeStoreSystemCubitClass.get(context).getAllStorageSystems();
                             cubit.changeBarItemForCompanyApp(index);
                           }
                           cubit.changeBarItemForCompanyApp(index);
@@ -384,16 +390,15 @@ class MainNavScreen extends StatelessWidget {
                         selectedItemColor: yellowColor,
                         selectedLabelStyle: const TextStyle(
                           fontSize: 10,
-                          height: 2,
                           fontWeight: FontWeight.bold,
                         ),
                         unselectedItemColor: Colors.black,
                         currentIndex: cubit.indexForCompanyApp,
                         unselectedLabelStyle: const TextStyle(
                           fontSize: 10,
-                          height: 2,
                           fontWeight: FontWeight.bold,
                         ),
+                        showSelectedLabels: true,
                       );
                     },
                   )

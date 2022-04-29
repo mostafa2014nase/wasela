@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wasela/comapny_app/app_layouts/ship/bloc/cubit_class.dart';
 import 'package:wasela/comapny_app/app_layouts/ship/bloc/states.dart';
 import 'package:wasela/comapny_app/app_layouts/ship/chats/chats_screen.dart';
@@ -14,6 +15,7 @@ import 'package:wasela/helper_methods/constants/themes.dart';
 
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'package:wasela/helper_methods/modules/const%20classes.dart';
+import 'package:wasela/helper_methods/sharedpref/shared_preference.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
 
 import 'follow_shipping.dart';
@@ -21,8 +23,10 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 class ShippingDetails extends StatelessWidget {
   final int index;
+  final bool fromEnded;
+  final List list;
 
-  const ShippingDetails({Key? key, required this.index}) : super(key: key);
+  const ShippingDetails({Key? key, required this.index,this.fromEnded = false,required this.list}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +38,7 @@ class ShippingDetails extends StatelessWidget {
             appBar: generateAppBarForCompanyMainScreens(
               mainScreen: false,
               title: "تفاصيل الشحنة",
-              svgPath: "wallet",
+              svgPath: "MyShipping",
               context: context,
               textHeight: 2.0,
             ),
@@ -271,14 +275,16 @@ class ShippingDetails extends StatelessWidget {
                       children: [
                         Expanded(
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              cubit.callPhone(phone: "01208834037");
+                            },
                             child: CustomDesignUnActive(
                               borderColor: blueColor,
                               text: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    "15",
+                                  Text(SharedCashHelper.getValue(key: "phoneCount")!= null ?
+                                  "${SharedCashHelper.getValue(key: "phoneCount")}":" ",
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   SvgPicture.asset(
@@ -298,14 +304,16 @@ class ShippingDetails extends StatelessWidget {
                         ),
                         Expanded(
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              cubit.openWatsApp(phone: "01208834037");
+                            },
                             child: CustomDesignUnActive(
                               borderColor: greenColor,
                               text: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    "15",
+                                  Text(SharedCashHelper.getValue(key: "watsAppCount")!= null ?
+                                    "${SharedCashHelper.getValue(key: "watsAppCount")}":" ",
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   SvgPicture.asset(
@@ -325,14 +333,16 @@ class ShippingDetails extends StatelessWidget {
                         ),
                         Expanded(
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              cubit.sendSms(phone: "01208834037");
+                            },
                             child: CustomDesignUnActive(
                               borderColor: orangeColor,
                               text: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    "15",
+                                  Text(SharedCashHelper.getValue(key: "smsCount")!= null ?
+                                  "${SharedCashHelper.getValue(key: "smsCount")}":" ",
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   SvgPicture.asset(
@@ -357,7 +367,7 @@ class ShippingDetails extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         QrImage(
-                          data: 'اسم التاجر :  ${AppCubitClass.get(context).companyModel!.name}, موبايل التاجر : ${AppCubitClass.get(context).companyModel!.phoneNumber}, اسم المرسل اليه : "${cubit.tempList[index]["client"]["name"]}" , موبايل المرسل اليه "${cubit.tempList[index]["client"]["phone"]}"',
+                          data: 'اسم التاجر :  ${AppCubitClass.get(context).companyModel!.name}, موبايل التاجر : ${AppCubitClass.get(context).companyModel!.phoneNumber}, اسم المرسل اليه : "${list[index]["client"]["name"]}" , موبايل المرسل اليه "${list[index]["client"]["phone"]}"',
                           version: QrVersions.auto,
                           size: 140,
                           gapless: false,
@@ -423,24 +433,24 @@ class ShippingDetails extends StatelessWidget {
                                         .walletScreenListItemDetails2
                                         .tr(),
                                     text2:
-                                        "${cubit.tempList[index]["shipping_price"]} جنيه",
+                                        "${list[index]["total_shipment"]} جنيه",
                                   ),
                                   CustomRowForDetails(
                                     text1: LocaleKeys.shippingListItemDetails5
                                         .tr(),
-                                    text2: "1855",
+                                    text2: "${list[index]["shipmentstatu"]["name"]}",
                                   ),
                                   CustomRowForDetails(
                                     text1: LocaleKeys.shippingListItemDetails6
                                         .tr(),
                                     text2: DateFormat("y/MM/dd").format(
-                                        DateTime.parse(cubit.tempList[index]
+                                        DateTime.parse(list[index]
                                             ["created_at"])),
                                   ),
                                   CustomRowForDetails(
                                     text1: LocaleKeys.shippingListItemDetails7
                                         .tr(),
-                                    text2: "1855",
+                                    text2:list[index]["delivery_date"] !=null ?  "${list[index]["delivery_date"]}":"",
                                   ),
                                 ],
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -449,9 +459,10 @@ class ShippingDetails extends StatelessWidget {
                                 padding: const EdgeInsets.all(8.0),
                                 child: InkWell(
                                   onTap: () {
+                                    //cubit.getMyCurrentLocation();
                                     navigateAndBack(context,
                                         layout:
-                                            const FollowShippingOnMapScreen());
+                                             FollowShippingOnMapScreen());
                                   },
                                   child: Column(
                                     children: [
@@ -481,6 +492,7 @@ class ShippingDetails extends StatelessWidget {
                             ],
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           ),
+                          if(!fromEnded)
                           Padding(
                             padding: const EdgeInsets.only(top: 10, bottom: 40),
                             child: Stack(
@@ -493,32 +505,7 @@ class ShippingDetails extends StatelessWidget {
                                   ),
                                   width: 300,
                                 ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    DoneCircularAvatar(
-                                      underText:
-                                          LocaleKeys.shippingQueSteps1.tr(),
-                                    ),
-                                    DoneCircularAvatar(
-                                      underText:
-                                          LocaleKeys.shippingQueSteps2.tr(),
-                                    ),
-                                    NotYetYellowContainer(
-                                      underText:
-                                          LocaleKeys.shippingQueSteps3.tr(),
-                                    ),
-                                    NotYetYellowContainer(
-                                      underText:
-                                          LocaleKeys.shippingQueSteps4.tr(),
-                                    ),
-                                    NotYetYellowContainer(
-                                      underText:
-                                          LocaleKeys.shippingQueSteps5.tr(),
-                                    ),
-                                  ],
-                                ),
+                                cubit.controlStepper(list[index]["shipmentstatu"]["id"]),
                               ],
                             ),
                           ),
@@ -535,7 +522,7 @@ class ShippingDetails extends StatelessWidget {
                       child: DecoratedContainerWithShadow(
                         child: CustomRowForDetails(
                           text1: "المرسل اليه",
-                          text2: "${cubit.tempList[index]["client"]["name"]}",
+                          text2: "${list[index]["client"]["name"]}",
                           firstTextWidth: 90,
                         ),
                       ),
@@ -551,259 +538,69 @@ class ShippingDetails extends StatelessWidget {
                         child: CustomRowForDetails(
                           text1: "العنوان",
                           text2:
-                              "${cubit.tempList[index]["client"]["address"]}",
+                              "${list[index]["client"]["address"]}",
                           firstTextWidth: 70,
                         ),
                       ),
                     ),
                   ),
-                  Column(
-                    children: [
-                      SizedBox(
-                        width: double.infinity,
-                        height: 130,
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              right: 10.0, left: 10.0, bottom: 15.0),
-                          child: DecoratedContainerWithShadow(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  SizedBox(
+                    width: double.infinity,
+                    height: 130,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          right: 10.0, left: 10.0, bottom: 15.0),
+                      child: DecoratedContainerWithShadow(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: 100,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 2.0),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.check_circle_outline),
-                                            Text(
-                                              "تسليم ناجح",
-                                            ),
-                                          ],
+                                SizedBox(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 2.0),
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.check_circle_outline),
+                                        Text(
+                                          "${list[index]["shipmentstatu"]["name"]}",
                                         ),
-                                      ),
+                                      ],
                                     ),
-                                    CustomRowForDetails(
-                                      text1: "اسم المندوب",
-                                      text2: "محمود محمد",
-                                      firstTextWidth: 100,
-                                      rowWidth: 200,
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: "رقم المندوب",
-                                      text2: "12",
-                                      firstTextWidth: 100,
-                                      rowWidth: 200,
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.only(
-                                      end: 10.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Text("20/11/2022"),
-                                      Text("AM 10:30"),
-                                    ],
                                   ),
+                                ),
+                                CustomRowForDetails(
+                                  text1: "اسم المندوب",
+                                  text2: "${list[index]["representative"]["name"]}",
+                                  firstTextWidth: 100,
+                                ),
+                                CustomRowForDetails(
+                                  text1: "رقم المندوب",
+                                  text2:list[index]["representative"]["phone"] != null ? "${list[index]["representative"]["phone"]}":"",
+                                  firstTextWidth: 100,
                                 ),
                               ],
                             ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 130,
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              right: 10.0, left: 10.0, bottom: 15.0),
-                          child: DecoratedContainerWithShadow(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: 100,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 2.0),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.check_circle_outline),
-                                            Text(
-                                              "قيد التوصيل",
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: "اسم المندوب",
-                                      text2: "محمود محمد",
-                                      firstTextWidth: 100,
-                                      rowWidth: 200,
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: "رقم المندوب",
-                                      text2: "12",
-                                      firstTextWidth: 100,
-                                      rowWidth: 200,
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.only(
-                                      end: 10.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text("20/11/2022"),
-                                      Text("AM 10:30"),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                            Padding(
+                              padding: const EdgeInsetsDirectional.only(
+                                  end: 10.0),
+                              child: Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Text("20/11/2022"),
+                                  Text("AM 10:30"),
+                                ],
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                       ),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 130,
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              right: 10.0, left: 10.0, bottom: 15.0),
-                          child: DecoratedContainerWithShadow(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: 150,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 2.0),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.check_circle_outline),
-                                            Text(
-                                              "تم الأستلام فى المخزن",
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: "اسم أمين المخزن",
-                                      text2: "محمود محمد",
-                                      firstTextWidth: 120,
-                                      rowWidth: 240,
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: "عنوان المخزن",
-                                      text2: "رمسيس",
-                                      firstTextWidth: 120,
-                                      rowWidth: 240,
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.only(
-                                      end: 10.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text("20/11/2022"),
-                                      Text("AM 10:30"),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 130,
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              right: 10.0, left: 10.0, bottom: 15.0),
-                          child: DecoratedContainerWithShadow(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: 150,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 2.0),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.check_circle_outline),
-                                            Text(
-                                              "تم الأستلام البيك أب",
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: "اسم المندوب",
-                                      text2: "محمود محمد",
-                                      firstTextWidth: 100,
-                                      rowWidth: 200,
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: "رقم المندوب",
-                                      text2: "12",
-                                      firstTextWidth: 100,
-                                      rowWidth: 200,
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.only(
-                                      end: 10.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text("20/11/2022"),
-                                      Text("AM 10:30"),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                   Container(
                     decoration: const BoxDecoration(

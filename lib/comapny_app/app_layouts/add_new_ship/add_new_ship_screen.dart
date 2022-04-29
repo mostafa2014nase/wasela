@@ -71,7 +71,8 @@ class _AddNewShipForCompanyAppState extends State<AddNewShipForCompanyApp> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AddNewShipCubitClass, AddNewShipStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+      },
       builder: (context, state) {
         var cubit = AddNewShipCubitClass.get(context);
         return Scaffold(
@@ -83,7 +84,7 @@ class _AddNewShipForCompanyAppState extends State<AddNewShipForCompanyApp> {
             mainScreen: true,
           ),
           body: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Center(
               child: Column(
                 children: [

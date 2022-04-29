@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wasela/comapny_app/app_layouts/add_new_ship/bloc/states.dart';
@@ -15,8 +16,8 @@ import 'package:wasela/helper_methods/modules/const%20classes.dart';
 import 'package:wasela/helper_methods/modules/create_shipment.dart';
 import 'package:wasela/helper_methods/modules/shipment_and_customer_models.dart';
 import 'package:wasela/helper_methods/sharedpref/shared_preference.dart';
-import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
+import 'package:wasela/login/bloc/states.dart';
 
 class AddNewShipCubitClass extends Cubit<AddNewShipStates> {
   AddNewShipCubitClass() : super(AddNewShipInitialState());
@@ -28,11 +29,10 @@ class AddNewShipCubitClass extends Cubit<AddNewShipStates> {
   TextEditingController mobile = TextEditingController();
   TextEditingController mobile2 = TextEditingController();
   TextEditingController email = TextEditingController();
-  TextEditingController cost = TextEditingController();
 
   TextEditingController customerCode = TextEditingController();
   TextEditingController shipmentName = TextEditingController();
-  TextEditingController shipmentCost = TextEditingController();
+  TextEditingController cost = TextEditingController();
   TextEditingController weight = TextEditingController();
   TextEditingController size = TextEditingController();
   TextEditingController count = TextEditingController();
@@ -50,13 +50,14 @@ class AddNewShipCubitClass extends Cubit<AddNewShipStates> {
     areaList = [""];
     selectedArea = "";
     getSpecificAreas(choice);
-    emit(SelectChoiceSuccessState());
+    emit(SelectCitySuccessState());
   }
 
   List<String> areaList = [""];
 
   var selectedArea;
   bool isAreaSelected = false;
+  int? areaIdNow;
 
   void selectFromAreaChoices(choice) {
     selectedArea = choice;
@@ -64,7 +65,7 @@ class AddNewShipCubitClass extends Cubit<AddNewShipStates> {
     int localIndex = areaList.indexOf(choice.toString()) - 1;
     areaIdNow = areaIdList[localIndex];
     log("area id name now = ${areaIdNow.toString()}");
-    emit(SelectChoiceSuccessState());
+    emit(SelectAreaSuccessState());
   }
 
   // ship data screen
@@ -76,25 +77,56 @@ class AddNewShipCubitClass extends Cubit<AddNewShipStates> {
   AreaModel? areaModel;
   List areaIdList = [];
   List cityIdList = [];
+  List costCities = [];
 
-  void getAllCitiesAndTheirAreas() {
+  // void getAllCitiesAndTheirAreas() {
+  //   SaveValueInKey.accessToken = SharedCashHelper.getValue(key: "accessToken");
+  //   DioHelper.getData(
+  //       url: GET_CITIES_DATA,
+  //       authorization: "Bearer ${SaveValueInKey.accessToken}")
+  //       .then((value) {
+  //     allCities = AllCities.fromJson(value.data);
+  //     log("area names List = ${allCities!.toMap().toString()}");
+  //     for (int index = 0; index < value.data["province"].length; index++) {
+  //       cityList.add(value.data["province"][index]["name"]);
+  //       cityIdList.add(value.data["province"][index]["id"]);
+  //       cityModel = CityModel(
+  //           itsAreas: value.data["province"][index]["areas"],
+  //           id: value.data["province"][index]["id"],
+  //           name: value.data["province"][index]["name"],
+  //           price: value.data["province"][index]["price"]);
+  //       log(cityList.toString());
+  //       log(value.data["province"][index]["areas"].length.toString());
+  //     }
+  //     log("city Ids List = ${cityIdList.toString()}");
+  //     log("city names List = ${cityList.toString()}");
+  //     //log("${value.data["province"].length}");
+  //     emit(GetCitiesDataSuccess());
+  //   });
+  // }
+
+  void getCostCitiesAndTheirAreas() {
     SaveValueInKey.accessToken = SharedCashHelper.getValue(key: "accessToken");
     DioHelper.getData(
-            url: GET_CITIES_DATA,
+            url: GET_COST_CITIES_DATA,
             authorization: "Bearer ${SaveValueInKey.accessToken}")
         .then((value) {
-      allCities = AllCities.fromJson(value.data);
-      log("area names List = ${allCities!.toMap().toString()}");
+          allCities = AllCities.fromJson(value.data);
       for (int index = 0; index < value.data["province"].length; index++) {
-        cityList.add(value.data["province"][index]["name"]);
-        cityIdList.add(value.data["province"][index]["id"]);
-        cityModel = CityModel(
-            itsAreas: value.data["province"][index]["areas"],
-            id: value.data["province"][index]["id"],
-            name: value.data["province"][index]["name"],
-            price: value.data["province"][index]["price"]);
-        log(cityList.toString());
-        log(value.data["province"][index]["areas"].length.toString());
+        if (value.data["province"][index]["areas"].length > 0) {
+          cityList.add(value.data["province"][index]["name"]);
+          cityIdList.add(value.data["province"][index]["id"]);
+          cityModel = CityModel(
+              itsAreas: value.data["province"][index]["areas"],
+              id: value.data["province"][index]["id"],
+              name: value.data["province"][index]["name"],
+              price: value.data["province"][index]["price"]);
+          costCities.add(value.data["province"][index]);
+          log(costCities.toString());
+          log(value.data["province"][index]["areas"].length.toString());
+          log("costCities length  = ${costCities.length.toString()}");
+          log("city names length  = ${cityList.length.toString()}");
+        }
       }
       log("city Ids List = ${cityIdList.toString()}");
       log("city names List = ${cityList.toString()}");
@@ -104,20 +136,21 @@ class AddNewShipCubitClass extends Cubit<AddNewShipStates> {
   }
 
   void getSpecificAreas(choice) {
-    areaIdList=[];
-    for (int index = 0; index < cityList.length; index++) {
-      for (int areaIndex = 0;
-          areaIndex < allCities!.province![index]["areas"].length;
-          areaIndex++) {
-        if (cityList[index] == choice.toString()) {
-          areaList.add(allCities!.province![index]["areas"][areaIndex]["name"]);
-          areaIdList.add(allCities!.province![index]["areas"][areaIndex]["id"]);
-          log("city name now = ${cityModel!.name.toString()}");
+    areaIdList = [];
+    for (int index = 0; index < costCities.length; index++) {
+        for (int areaIndex = 0;
+            areaIndex < costCities[index]["areas"].length;
+            areaIndex++) {
+          if (cityList[index] == choice.toString()) {
+            areaList.add(costCities[index]["areas"][areaIndex]["name"]);
+            areaIdList.add(costCities[index]["areas"][areaIndex]["id"]);
+            log("city name now = ${cityModel!.name.toString()}");
+          }
         }
-      }
+
     }
-    log("areaaaaaaaaaaa naaames = ${areaList.toString()}");
-    log("areaaaaaaaaaaa ideeeeees = ${areaIdList.toString()}");
+    log("city areaaaaaaaaaaa naaames = ${areaList.toString()}");
+    log("city areaaaaaaaaaaa ideeeeees = ${areaIdList.toString()}");
     emit(GetCitiesDataSuccess());
   }
 
@@ -133,7 +166,7 @@ class AddNewShipCubitClass extends Cubit<AddNewShipStates> {
     isServiceSelected = !isServiceSelected;
     int localIndex = serviceTypes.indexOf(choice.toString());
     serviceIdNow = serviceIds[localIndex];
-    emit(SelectChoiceSuccessState());
+    emit(SelectServiceSuccessState());
   }
 
   void getServiceType() {
@@ -151,6 +184,93 @@ class AddNewShipCubitClass extends Cubit<AddNewShipStates> {
     });
   }
 
+  List<String> additionalServiceTypes = [];
+  List additionalServiceTypesIds = [];
+  List additionalServiceTypesCosts = [];
+  int? additionalServiceTypesIdNow;
+  int? additionalServiceTypesCostNow;
+
+  dynamic selectedAdditionalServiceTypes;
+  bool isAdditionalServiceTypesSelected = false;
+
+  void selectFromAdditionalServiceTypesChoices(choice) {
+    selectedAdditionalServiceTypes = choice;
+    isAdditionalServiceTypesSelected = !isAdditionalServiceTypesSelected;
+    int localIndex = additionalServiceTypes.indexOf(choice.toString());
+    additionalServiceTypesIdNow = additionalServiceTypesIds[localIndex];
+    additionalServiceTypesCostNow = additionalServiceTypesCosts[localIndex];
+    emit(SelectAdditionalSuccessState());
+  }
+
+  void getAdditionalServiceTypes() {
+    DioHelper.getData(
+            url: GET_ADDITIONAL_SERVICE_TYPES_DATA,
+            authorization: "Bearer ${SaveValueInKey.accessToken}")
+        .then((value) {
+      for (int index = 0;
+          index < value.data["additional_service"].length;
+          index++) {
+        additionalServiceTypes
+            .add(value.data["additional_service"][index]["type"]);
+        additionalServiceTypesIds
+            .add(value.data["additional_service"][index]["id"]);
+        additionalServiceTypesCosts
+            .add(value.data["additional_service"][index]["price"]);
+      }
+      log("service type list = ${additionalServiceTypes.toString()}");
+      log("service Ids list =${additionalServiceTypesIds.toString()}");
+      emit(GetAdditionalServiceListSuccessState());
+    });
+  }
+
+  num? limitWeight;
+  num? unLimitPriceForWeightUnite;
+
+  void getLimitedWeight() {
+    emit(GetLimitedWeightLoadingState());
+    try {
+      DioHelper.getData(
+              url: GET_COMPANY_LIMITED_WIEGHT,
+              authorization: "Bearer ${SaveValueInKey.accessToken}")
+          .then((value) {
+        if (value.data["company_shipping_area_Price"].length > 0) {
+          limitWeight = value.data["company_shipping_area_Price"][0]["limit"];
+          unLimitPriceForWeightUnite =
+              value.data["company_shipping_area_Price"][0]["price"];
+        } else {
+          DioHelper.getData(
+                  url: GET_GENERAL_LIMITED_WIEGHT,
+                  authorization: "Bearer ${SaveValueInKey.accessToken}")
+              .then((valueGeneral) {
+            limitWeight = valueGeneral.data["weight"][0]["limit"];
+            unLimitPriceForWeightUnite =
+                valueGeneral.data["weight"][0]["price"];
+          });
+        }
+        log("limited ${limitWeight}");
+        log("price ${unLimitPriceForWeightUnite}");
+        emit(GetLimitedWeightSuccessState());
+      });
+    } on DioError catch (error) {
+      log(error.toString());
+      emit(GetLimitedWeightErrorState(error.toString()));
+    }
+  }
+
+  void resetDropDownListsData() {
+    selectedArea = "";
+    cityList = [];
+    areaList = [""];
+    areaIdList = [];
+    cityIdList = [];
+    serviceTypes = [];
+    serviceIds = [];
+    additionalServiceTypes = [];
+    additionalServiceTypesIds = [];
+    additionalServiceTypesCosts = [];
+    emit(ResetDropDownListsSuccessState());
+  }
+
   List listOfShipmentsOrder = [];
 
   CustomerModel? customerModel;
@@ -166,6 +286,7 @@ class AddNewShipCubitClass extends Cubit<AddNewShipStates> {
       phone: mobile.text,
       address: address.text,
       areaId: areaIdNow,
+      additionalService: additionalServiceTypesIdNow,
       email: email.text,
       phone_2: mobile2.text,
       companyId: SaveValueInKey.companyId,
@@ -175,7 +296,6 @@ class AddNewShipCubitClass extends Cubit<AddNewShipStates> {
       photo: File(fileName),
       nameShipment: shipmentName.text,
       description: description.text,
-      shippingPrice: double.tryParse(shipmentCost.text),
       weight: weight.text,
       size: size.text,
       count: count.text.contains("-")
@@ -202,7 +322,6 @@ class AddNewShipCubitClass extends Cubit<AddNewShipStates> {
     cost = TextEditingController();
     customerCode = TextEditingController();
     shipmentName = TextEditingController();
-    shipmentCost = TextEditingController();
     weight = TextEditingController();
     size = TextEditingController();
     count = TextEditingController();
@@ -212,19 +331,18 @@ class AddNewShipCubitClass extends Cubit<AddNewShipStates> {
     emit(ResetAreasSuccessState());
   }
 
-  int? areaIdNow;
   String completeShowMsg = "";
 
   void createShipments() async {
+    log(additionalServiceTypesIdNow.toString());
     emit(CreateNewShipmentOrderLoadingState());
     convertDateToString();
-    log(areaIdList.toString());
-    log("areaIdNow = ${areaIdNow.toString()}");
     createShipmentModel = CreateShipmentModel(
       deliveryDate: stringDate,
       phone: mobile.text,
       address: address.text,
       areaId: areaIdNow,
+      additionalService: additionalServiceTypesIdNow,
       email: email.text,
       phone_2: mobile2.text,
       companyId: SaveValueInKey.companyId,
@@ -267,9 +385,10 @@ class AddNewShipCubitClass extends Cubit<AddNewShipStates> {
       log(e.response!.data.toString());
       if (e.response!.statusCode == 422) {
         log("data of response kkkkkkkkkkkkkkkk");
-        if (e.response!.data["data_client.0.area_id"] != null) {
+        if (e.response!.data["errors"]["data_client.0.area_id"] != null) {
           log("area id msg not null");
-          if (e.response!.data["data_client.0.service_type_id"] != null) {
+          if (e.response!.data["errors"]["data_client.0.service_type_id"] !=
+              null) {
             log("area id nuuuuuuuull");
             completeShowMsg =
                 "برجاء اختيار المنطفة التابعة لها المرسل اليه ونوع خدمة الشحن ";
@@ -278,10 +397,12 @@ class AddNewShipCubitClass extends Cubit<AddNewShipStates> {
             completeShowMsg = "برجاء اختيار المدينة والمنطفة التابعة لها";
             emit(ShowErrorMsgInSnackBar());
           }
-        } else if (e.response!.data["data_client.0.service_type_id"] != null) {
+        } else if (e.response!.data["errors"]
+                ["data_client.0.service_type_id"] !=
+            null) {
           completeShowMsg = "برجاء اختيار نوع خدمة الشحن اولا";
           emit(ShowErrorMsgInSnackBar());
-        } else if (e.response!.data["data_client.0.phone"] != null) {
+        } else if (e.response!.data["errors"]["data_client.0.phone"] != null) {
           completeShowMsg = "رقم موبايل المرسل اليه مسجل مسبقا الرجاء المراجعة";
           emit(ShowErrorMsgRedInSnackBar());
         }
@@ -291,6 +412,21 @@ class AddNewShipCubitClass extends Cubit<AddNewShipStates> {
     }
   }
 
+  num? shippingCost;
+  num? totalCost;
+
+  void calculateShipmentsCostsDetails() {
+    if ((int.parse(weight.text) > limitWeight!)) {
+      shippingCost = ((num.parse(weight.text) - limitWeight!) *
+              unLimitPriceForWeightUnite!) +
+          (additionalServiceTypesCostNow!);
+    } else {
+      shippingCost = additionalServiceTypesCostNow!;
+    }
+    totalCost = shippingCost! + num.parse(cost.text);
+    emit(CalculateCostsSuccessState());
+  }
+
   var kindSelected;
   bool isKindSelected = false;
 
@@ -298,14 +434,16 @@ class AddNewShipCubitClass extends Cubit<AddNewShipStates> {
   String fileName = "";
 
   Future selectFile() async {
-    final result = await FilePicker.platform.pickFiles(allowMultiple: false, type: FileType.any);
-    if (result != null){
+    final result = await FilePicker.platform
+        .pickFiles(allowMultiple: false, type: FileType.any);
+    if (result != null) {
       final path = result.files.single.path;
       file = File(path!);
       fileName = file != null ? basename(file!.path) : 'لم يتم اختيار اى ملف';
       emit(GetFileSuccessState());
     }
   }
+
   void sendExcelFile() async {
     emit(SendFileLoadingState());
     var uri = Uri.parse(
@@ -336,17 +474,21 @@ class AddNewShipCubitClass extends Cubit<AddNewShipStates> {
       if (response.statusCode == 200) {
         log("send file Success");
         emit(SendFileSuccessState());
-      }
-      else{
+      } else {
         emit(SendFileErrorState());
       }
-        });
+    });
   }
 
   DateTime? date;
   String stringDate = "";
 
-  void convertDateToString(){
+  void convertDateToString() {
+    if(date == null )
+    {
+      completeShowMsg = "برجاء تحديد تاريخ الوصول";
+      emit(ShowErrorMsgInSnackBar());
+    }
     stringDate = DateFormat("y/MM/dd").format(date!);
     emit(ConvertDateToString());
   }

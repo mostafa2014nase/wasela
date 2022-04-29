@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -47,8 +48,10 @@ class LoginCubitClass extends Cubit<LoginStates> {
   bool isError = false;
 
   UserDataModel? userDataModel;
+  List  propertiesOFCompany = [];
 
   void login() {
+    //SharedCashHelper.removeValue(key: "companyKey");
     emit(LoginLoadingState());
     FirebaseMessaging.instance.getToken().then((token) async {
       SaveValueInKey.firebaseToken = token.toString();
@@ -82,8 +85,41 @@ class LoginCubitClass extends Cubit<LoginStates> {
               SharedCashHelper.setValue(
                       key: "userId", value: SaveValueInKey.userId)
                   .then((value) {
-                emit(LoginSuccessState());
-                resetAll();
+                    if(SharedCashHelper.getValue(key: "companyKey") != null){
+                      List  tempList = SharedCashHelper.getValue(key: "companyKey");
+                       propertiesOFCompany = tempList.map((item) => jsonDecode(item)).toList();
+                      for(int index = 0 ;index < propertiesOFCompany.length ;index++){
+                        if(response.data["user"]["id"] != propertiesOFCompany[index]["companyId"])
+                          {
+                            Map tempAddList = {
+                              "companyId": response.data["user"]["id"],
+                                "watsAppCount": 0,
+                                "phoneCount": 0,
+                                "smsCount": 0,
+                             };
+                            propertiesOFCompany.add(tempAddList);
+                            List <String> tempList = propertiesOFCompany.map((item) => jsonEncode(item)).toList();
+                            SharedCashHelper.setValue(key: "companyKey", value: tempList).then((value) {
+                              log("data of company = ${SharedCashHelper.getValue(key: "companyKey").toString()}");
+                            });
+                          }
+                      }
+                    }
+                    else{
+                      log(SharedCashHelper.getValue(key: "companyKey").toString());
+                      propertiesOFCompany=[{
+                        "companyId": response.data["user"]["id"],
+                        "watsAppCount": 0,
+                        "phoneCount": 0,
+                        "smsCount": 0,
+                      }];
+                       List <String> tempList = propertiesOFCompany.map((item) => jsonEncode(item)).toList();
+                      SharedCashHelper.setValue(key: "companyKey", value: tempList).then((value) {
+                        log("data of company of else = ${SharedCashHelper.getValue(key: "companyKey").toString()}");
+                      });
+                    }
+                    emit(LoginSuccessState());
+                    resetAll();
               });
             });
           }).catchError((error) {

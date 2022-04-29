@@ -123,7 +123,7 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
   ];
   List svgForCompanyApp = [
   "home",
-  "wallet",
+  "MyShipping",
   "noun-pick-up-4160044",
   "noun-shipping-3484992",
   "noun-customer-demand-3437164",
@@ -134,19 +134,19 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
   List<BottomNavigationBarItem> navigationBarItemsForCompanyApp = const [
     BottomNavigationBarItem(
         label: ("الرئيسية"),
-      icon: Icon(CustomIcons.home,size: 30.0,),
+      icon: Icon(CustomIcons.home,size: 27.0,),
         ),
     BottomNavigationBarItem(
         label: ("شحناتي"),
-      icon: Icon(CustomIcons.wallet,size: 30.0,),
+      icon: Icon(ShipIcon.myshipping,size: 32.0,),
         ),
     BottomNavigationBarItem(
       label: "المرتجعات",
-      icon: Icon(CustomIcons.noun_pick_up_4160044,size: 33.0,),
+      icon: Icon(CustomIcons.noun_pick_up_4160044,size: 32.0,),
     ),
      BottomNavigationBarItem(
       label: "اضافة شحنة جديدة",
-      icon: Icon(CustomIcons.wallet,size: 30.0,),
+      icon: Icon(CustomIcons.noun_shipping_3484992,size: 40.0,),
     ),
     BottomNavigationBarItem(
       label: "اضافة طلب",
@@ -154,11 +154,11 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
     ),
     BottomNavigationBarItem(
       label: "نظام التخزين للتجار",
-      icon: Icon(CustomIcons.noun_inventory_3377901,size: 37.0,),
+      icon: Icon(CustomIcons.noun_inventory_3377901,size: 35.0,),
     ),
     BottomNavigationBarItem(
       label: "الحسابات",
-      icon: Icon(CustomIcons.noun_accounting_4679331,size: 35.0,),
+      icon: Icon(CustomIcons.noun_accounting_4679331,size: 34.0,),
     ),
   ];
 
@@ -192,8 +192,7 @@ class MainNavCubitClass extends Cubit<MainNavStates> {
     "feedbackkk",
     "settings(3)",
     "Contact_US_2",
-    "noun-accounting-4679331",
-    //"Edit-2",
+    "Offer",
   ];
   List drawerCompanyTexts = [
     LocaleKeys.evaluateDrawer.tr(),

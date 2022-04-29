@@ -74,3 +74,28 @@ class UpdateProfileClientErrorState extends AppStates {
 
   UpdateProfileClientErrorState(this.error);
 }
+
+class GetAllShipmentsDataLoadingState extends AppStates {}
+
+
+class GetAllShipmentsDataSuccessState extends AppStates {}
+
+class GetAllShipmentsDataErrorState extends AppStates {
+  final String error;
+
+  GetAllShipmentsDataErrorState(this.error);
+}
+
+class GetAllShipmentsDataWithOutCasesLoadingState extends AppStates {}
+
+
+class GetAllShipmentsDataWithOutCasesSuccessState extends AppStates {}
+
+class GetAllShipmentsDataWithOutCasesErrorState extends AppStates {
+  final String error;
+
+  GetAllShipmentsDataWithOutCasesErrorState(this.error);
+}
+class GetShipmentsWithStatueBouncePart extends AppStates {}
+class GetShipmentsWithStatueBounceCompletePay extends AppStates {}
+class GetShipmentsWithStatueBounceCompleteNotPay extends AppStates {}

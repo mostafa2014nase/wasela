@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wasela/comapny_app/app_layouts/offers/bloc/cubit_class.dart';
 import 'package:wasela/comapny_app/app_layouts/offers/offers_screen.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
@@ -11,12 +12,18 @@ class StoreStyleDetails extends StatelessWidget {
   final String storeStyleDescribe;
   final int index;
 
-  const StoreStyleDetails({Key? key,required this.storeStyleName,required this.storeStyleDescribe,required this.index,}) : super(key: key);
+  const StoreStyleDetails({
+    Key? key,
+    required this.storeStyleName,
+    required this.storeStyleDescribe,
+    required this.index,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<TradeStoreSystemCubitClass, TradeStoreSystemStates>(
       listener: (context, state) {
-        if(state is EnrollStorageSuccessState){
+        if (state is EnrollStorageSuccessState) {
           myShowDialogForMarketing(
               context: context,
               alertDialog: CustomAlertDialogForMarketing(
@@ -53,8 +60,11 @@ class StoreStyleDetails extends StatelessWidget {
                       color: Colors.transparent,
                       child: InkWell(
                         onTap: () {
+                          TradeStoreSystemCubitClass.get(context)
+                              .getAllStorageSystems();
                           backToPrevious(context);
-                          navigateAndFinish(context, layout: OffersScreenForCompanyApp());
+                          navigateAndFinish(context,
+                              layout: OffersScreenForCompanyApp());
                         },
                         child: CustomDesignUnActive(
                           text: Text(
@@ -62,8 +72,7 @@ class StoreStyleDetails extends StatelessWidget {
                             style: lightTheme.textTheme.bodyText1?.copyWith(
                                 fontSize: 20,
                                 color: purpleColor,
-                                fontWeight: FontWeight.bold
-                            ),
+                                fontWeight: FontWeight.bold),
                           ),
                           borderColor: Colors.white,
                           containerColor: Colors.white,
@@ -100,69 +109,84 @@ class StoreStyleDetails extends StatelessWidget {
           backgroundColor: greyColor,
           appBar: generateAppBarForCompanyMainScreens(
             mainScreen: false,
-              title: "نظام التخزين للتجار",
-              svgPath: "noun-inventory-3377901",
-              context: context,
-              imageSize: 80.0,
-       ),
+            title: "نظام التخزين للتجار",
+            svgPath: "noun-inventory-3377901",
+            context: context,
+            imageSize: 80.0,
+          ),
           resizeToAvoidBottomInset: false,
           body: Column(
             children: [
               Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 40.0,),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10.0,
+                  vertical: 40.0,
+                ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: DecoratedContainerWithShadow(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical:20.0,horizontal: 20.0),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20.0, horizontal: 20.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(storeStyleName),
-                          put_line(line_height: 5.0,color: Colors.black26),
+                          put_line(line_height: 5.0, color: Colors.black26),
                           const SizedBox(
                             height: 40,
                           ),
-                           Text(storeStyleDescribe),
+                          Text(storeStyleDescribe),
                           const SizedBox(
                             height: 70,
                           ),
-                          cubit.isChecked[index] ?
-                          const CustomDesignUnActive(
-                            width: 200,
-                            height: 50,
-                            text: Text("سيتم التواصل فى أقرب وقت",style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.bold),),
-                            borderColor: Colors.black38,
-                            containerColor: Colors.black38,
-                          )
-                              :
-                          InkWell(
-                            onTap: () {
-                              cubit.enrollNow(index: index);
-                            },
-                            child: CustomDesignUnActive(
-                              width: 200,
-                              containerColor: purpleColor,
-                              borderColor: purpleColor,
-                              text: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal:10.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: const [
-                                    Text("التواصل مع ادارة التخزين",style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                    ),),
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Colors.white,
+                          cubit.isChecked[index]
+                              ? const CustomDesignUnActive(
+                                  width: 200,
+                                  height: 50,
+                                  text: Text(
+                                    "سيتم التواصل فى أقرب وقت",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  borderColor: Colors.black38,
+                                  containerColor: Colors.black38,
+                                )
+                              : InkWell(
+                                  onTap: () {
+                                    cubit.enrollNow(index: index);
+                                    OfferCubitClass.get(context).getOffers();
+                                    cubit.getAllStorageSystems();
+                                  },
+                                  child: CustomDesignUnActive(
+                                    width: 200,
+                                    containerColor: purpleColor,
+                                    borderColor: purpleColor,
+                                    text: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: const [
+                                          Text(
+                                            "التواصل مع ادارة التخزين",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 17,
+                                            ),
+                                          ),
+                                          Icon(
+                                            Icons.arrow_forward_ios,
+                                            color: Colors.white,
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
                           const SizedBox(
                             height: 70,
                           ),

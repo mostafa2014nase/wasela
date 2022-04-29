@@ -2259,7 +2259,7 @@ class UserAccountScreenUpdate extends StatelessWidget {
                                       ),
                                       ConditionalBuilder(
                                           condition: state
-                                              is! UpdateProfileClientLoadingState,
+                                              is! UpdateProfileCompanyLoadingState,
                                           builder: (context) {
                                             return ButtonCustomDesign(
                                                 width: 200.0,

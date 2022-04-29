@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:wasela/helper_methods/constants/end_points_urls_api.dart';
 import 'package:wasela/helper_methods/dio_helper/dio.dart';
 import 'package:wasela/helper_methods/modules/cities_and_their_areas.dart';
 import 'package:wasela/helper_methods/modules/const%20classes.dart';
+import 'package:wasela/helper_methods/modules/shipment_and_customer_models.dart';
 import 'package:wasela/helper_methods/modules/user_client_model.dart';
 import 'package:wasela/helper_methods/sharedpref/shared_preference.dart';
 import 'package:path/path.dart';
@@ -171,6 +173,7 @@ class AppCubitClass extends Cubit<AppStates> {
   }
 
   Future<void> updateCompanyProfileDataWithHttp() async {
+    emit(UpdateProfileCompanyLoadingState());
     if(areaIdNow != null){
       SharedCashHelper.setValue(key: "areaId", value: areaIdNow);
       log("areaIdNow = $areaIdNow");
@@ -370,7 +373,7 @@ class AppCubitClass extends Cubit<AppStates> {
   ClientModel? clientModel;
 
   void getClientProfileData() {
-    //SaveValueInKey.accessToken = SharedCashHelper.getValue(key: "accessToken");
+    SaveValueInKey.accessToken = SharedCashHelper.getValue(key: "accessToken");
     log("${SaveValueInKey.accessToken}");
     emit(GetProfileClientLoadingState());
     DioHelper.getData(
@@ -392,7 +395,7 @@ class AppCubitClass extends Cubit<AppStates> {
     }).catchError((error) {
       log("erroooooooooooooooooooooooooooor cliiiiiiiiiiient");
       log(error.toString());
-      emit(GetProfileClientErrorState(error));
+      emit(GetProfileClientErrorState(error.toString()));
     });
   }
 
@@ -468,14 +471,145 @@ class AppCubitClass extends Cubit<AppStates> {
       emit(GetCompanyCityAndAreaProfileErrorState(error.toString()));
     });
   }
-}
-/*
 
-        for(int index = 0 ; index < value.data["province"].length ; index ++ ){
-          if(value.data["province"][index]["areas"]["id"]  == companyModel!.areaId){
-            updateAreaController.text = value.data["province"][index]["areas"]["name"];
-            updateCityController.text = value.data["province"]["name"];
-            log("city = ${updateCityController.text} and area = ${updateAreaController.text}" );
+
+  /// for shipment on all app ////
+
+  ShipmentsDetailsModel? shipmentModel;
+  ShipmentsDetailsModelForAllApp? shipmentsDetailsModel;
+  AllShipmentsData? allShipmentsData;
+  List allShipmentsList = [];
+  List shipmentsWithReturnList = [];
+  List collectAll = [];
+  List rowSendIdList = [];
+  List rowSendDateList = [];
+  List rowSendReturnList = [];
+  List rowSendProductList = [];
+  List rowSendShippingList = [];
+  List rowSendStatueNameList = [];
+
+  void getAllShipmentsData() {
+    emit(GetAllShipmentsDataLoadingState());
+    SaveValueInKey.userId = SharedCashHelper.getValue(key: "userId");
+    SaveValueInKey.accessToken = SharedCashHelper.getValue(key: "accessToken");
+    shipmentsWithReturnList = [];
+     collectAll = [];
+     rowSendIdList = [];
+     rowSendDateList = [];
+     rowSendReturnList = [];
+     rowSendProductList = [];
+     rowSendShippingList = [];
+     rowSendStatueNameList = [];
+    DioHelper.getData(
+        url: ALL_SHIPMENTS_RETURN,
+        authorization: "Bearer ${SaveValueInKey.accessToken}")
+        .then((value) {
+      for (int index = 0;
+      index < value.data["shipment"].length;
+      index++) {
+        shipmentsDetailsModel = ShipmentsDetailsModelForAllApp.fromJson(value.data["shipment"][index]);
+        log("shipment index case = ${shipmentsDetailsModel!.shipmentStatueName.toString()}");
+        log("shipment index ship price = ${shipmentsDetailsModel!.shippingPrice.toString()}");
+        shipmentsWithReturnList.add(shipmentsDetailsModel!.toMap());
+        rowSendIdList.add(shipmentsDetailsModel!.shipmentId);
+        rowSendDateList.add(DateFormat("y/MM/dd").format(DateTime.parse(shipmentsDetailsModel!.updateDate!)));
+        rowSendProductList.add(shipmentsDetailsModel!.productPrice);
+        rowSendReturnList.add(shipmentsDetailsModel!.returnPrice);
+        rowSendShippingList.add(shipmentsDetailsModel!.shipmentStatueId == 9 || shipmentsDetailsModel!.shipmentStatueId == 11 ? shipmentsDetailsModel!.shippingPrice! * -1 :shipmentsDetailsModel!.shippingPrice);
+        rowSendStatueNameList.add(shipmentsDetailsModel!.shipmentStatueName);
+      }
+      log("shipments with return cases = ${shipmentsWithReturnList.toString()}");
+      collectAll.add(rowSendIdList);
+      collectAll.add(rowSendDateList);
+      collectAll.add(rowSendProductList);
+      collectAll.add(rowSendReturnList);
+      collectAll.add(rowSendShippingList);
+      collectAll.add(rowSendStatueNameList);
+      getAllShipmentsWithNoStatues();
+      emit(GetAllShipmentsDataSuccessState());
+    }).catchError((error) {
+      log(error.toString());
+      emit(GetAllShipmentsDataErrorState(error.toString()));
+    });
+  }
+
+  void getAllShipmentsWithNoStatues() {
+    emit(GetAllShipmentsDataWithOutCasesLoadingState());
+    SaveValueInKey.userId = SharedCashHelper.getValue(key: "userId");
+    SaveValueInKey.accessToken = SharedCashHelper.getValue(key: "accessToken");
+    allShipmentsList = [];
+    DioHelper.getData(
+        url: ALL_SHIPMENTS,
+        authorization: "Bearer ${SaveValueInKey.accessToken}")
+        .then((value) {
+      for (int index = 0;
+      index < value.data["shipment"]["data"].length;
+      index++) {
+        shipmentModel = ShipmentsDetailsModel.fromJson(value.data["shipment"]["data"][index]);
+        allShipmentsList.add(shipmentModel!.toMap());
+      }
+      log("allShipmentsList = ${allShipmentsList.toString()}");
+      emit(GetAllShipmentsDataWithOutCasesSuccessState());
+    }).catchError((error) {
+      log(error.toString());
+      emit(GetAllShipmentsDataWithOutCasesErrorState(error.toString()));
+    });
+  }
+
+  List bouncePartShipmentsList = [];
+  List bounceCompletePayShippingList = [];
+  List bounceCompleteNotPayShippingList = [];
+
+  void getShipmentsWithStatueBouncePart(){
+    for(int index = 0 ; index < shipmentsWithReturnList.length ; index++){
+      log("id of sp now= ${shipmentsWithReturnList[0]["id"].toString()}");
+      if(shipmentsWithReturnList[index]["shipmentstatu"]["id"] == 8 || shipmentsWithReturnList[index]["shipmentstatu"]["id"] == 9){
+        for(int allIndex = 0 ; allIndex < allShipmentsList.length; allIndex ++ )
+          {
+            log("id of sp now= ${shipmentsWithReturnList[index]["id"].toString()}");
+            log("id of all Shipments List now = ${allShipmentsList[allIndex].toString()}");
+            if(shipmentsWithReturnList[index]["id"] == allShipmentsList[allIndex]["id"]){
+              bouncePartShipmentsList.add(allShipmentsList[allIndex]);
+            }
           }
-        }
- */
+      }
+    }
+    log("bounce Part Shipments List = ${bouncePartShipmentsList.toString()}");
+    emit(GetShipmentsWithStatueBouncePart());
+  }
+  void getShipmentsWithStatueBounceCompletePay(){
+    for(int index = 0 ; index < shipmentsWithReturnList.length ; index++){
+      log("id of sp now= ${shipmentsWithReturnList[0]["id"].toString()}");
+      if(shipmentsWithReturnList[index]["shipmentstatu"]["id"] == 10){
+        for(int allIndex = 0 ; allIndex < allShipmentsList.length; allIndex ++ )
+          {
+            log("id of sp now= ${shipmentsWithReturnList[index]["id"].toString()}");
+            log("id of all Shipments List now = ${allShipmentsList[allIndex].toString()}");
+            if(shipmentsWithReturnList[index]["id"] == allShipmentsList[allIndex]["id"]){
+              bounceCompletePayShippingList.add(allShipmentsList[allIndex]);
+            }
+          }
+      }
+    }
+    log("bounce Part Shipments List = ${bouncePartShipmentsList.toString()}");
+    emit(GetShipmentsWithStatueBounceCompletePay());
+  }
+  void getShipmentsWithStatueBounceCompleteNotPay(){
+    for(int index = 0 ; index < shipmentsWithReturnList.length ; index++){
+      log("id of sp now= ${shipmentsWithReturnList[0]["id"].toString()}");
+      if(shipmentsWithReturnList[index]["shipmentstatu"]["id"] == 11){
+        for(int allIndex = 0 ; allIndex < allShipmentsList.length; allIndex ++ )
+          {
+            log("id of sp now= ${shipmentsWithReturnList[index]["id"].toString()}");
+            log("id of all Shipments List now = ${allShipmentsList[allIndex].toString()}");
+            if(shipmentsWithReturnList[index]["id"] == allShipmentsList[allIndex]["id"]){
+              bounceCompleteNotPayShippingList.add(allShipmentsList[allIndex]);
+            }
+          }
+      }
+    }
+    log("bounce Part Shipments List = ${bouncePartShipmentsList.toString()}");
+    emit(GetShipmentsWithStatueBounceCompleteNotPay());
+  }
+}
+

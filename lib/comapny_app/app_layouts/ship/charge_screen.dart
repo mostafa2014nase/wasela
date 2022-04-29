@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +14,6 @@ import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'package:wasela/translations/localeKeys.g.dart';
 
 class ShipScreenForCompanyApp extends StatelessWidget {
-  const ShipScreenForCompanyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ShipForCompanyAppCubitClass, ShipStates>(
@@ -32,7 +29,7 @@ class ShipScreenForCompanyApp extends StatelessWidget {
           appBar: generateAppBarForCompanyMainScreens(
             mainScreen: true,
             title: LocaleKeys.bottomNavItemsName4.tr(),
-            svgPath: "wallet",
+            svgPath: "MyShipping",
             context: context,
             textHeight: 2.0,
           ),
@@ -95,10 +92,53 @@ class ShipScreenForCompanyApp extends StatelessWidget {
                               )
                             : CurrentShipping(
                                 shippingIsEmpty: false,
-                                dataList: cubit.tempList,
                                 context: context),
-                        const SentShipping(shippingIsEmpty: false),
-                        const EndedShipping(shippingIsEmpty: false),
+                        state is GetAllShipmentsDataSuccessState &&
+                            cubit.sentList.isEmpty
+                            ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "Assets/images/noun-not-found-2503986.svg",
+                              width: 350.0,
+                              height: 350.0,
+                              color: textGreyColor,
+                            ),
+                            Text(
+                              "لا توجد شحنات مرسلة حتى الان",
+                              style: TextStyle(
+                                color: purpleColor,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                height: 0.0,
+                              ),
+                            ),
+                          ],
+                        )
+                            : const SentShipping(shippingIsEmpty: false),
+                        state is GetAllShipmentsDataSuccessState &&
+                            cubit.endedList.isEmpty
+                            ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "Assets/images/noun-not-found-2503986.svg",
+                              width: 350.0,
+                              height: 350.0,
+                              color: textGreyColor,
+                            ),
+                            Text(
+                              "لا توجد شحنات منتهية حتى الان",
+                              style: TextStyle(
+                                color: purpleColor,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                height: 0.0,
+                              ),
+                            ),
+                          ],
+                        )
+                            : const EndedShipping(shippingIsEmpty: false),
                       ],
                     ),
                   ),
@@ -114,13 +154,12 @@ class ShipScreenForCompanyApp extends StatelessWidget {
 
 class CurrentShipping extends StatelessWidget {
   final bool shippingIsEmpty;
-  final List dataList;
   final BuildContext context;
 
-  const CurrentShipping({
+
+   CurrentShipping({
     Key? key,
     required this.shippingIsEmpty,
-    required this.dataList,
     required this.context,
   }) : super(key: key);
 
@@ -142,7 +181,7 @@ class CurrentShipping extends StatelessWidget {
                         showTitleActions: true,
                         onCancel: () {
                           cubit.resetFromDate();
-                              cubit.findAllMatchShipments();
+                          cubit.findAllMatchShipments();
                         },
                         minTime: DateTime(2020, 1, 1),
                         maxTime: DateTime(2024, 1, 1),
@@ -203,7 +242,7 @@ class CurrentShipping extends StatelessWidget {
                         showTitleActions: true,
                         onCancel: () {
                           cubit.resetToDate();
-                            cubit.findAllMatchShipments();
+                          cubit.findAllMatchShipments();
                         },
                         minTime: DateTime(2020, 1, 1),
                         maxTime: DateTime(2024, 1, 1),
@@ -326,9 +365,10 @@ class CurrentShipping extends StatelessWidget {
                         builder: (context) {
                           return Column(
                             children: const [
-                              SizedBox(height: 100.0,),
-                               Center(
-                                  child: CircularProgressIndicator()),
+                              SizedBox(
+                                height: 100.0,
+                              ),
+                              Center(child: CircularProgressIndicator()),
                             ],
                           );
                         },
@@ -336,7 +376,7 @@ class CurrentShipping extends StatelessWidget {
                           return ConditionalBuilder(
                             condition: state
                                     is GetAllMatchedShipmentsDataSuccessState &&
-                                cubit.tempList.isEmpty,
+                                cubit.tempList.isEmpty ,
                             builder: (context) {
                               return const Center(
                                   child: Text("لاتوجد شحنات بهذه البيانات"));
@@ -374,7 +414,7 @@ class CurrentShipping extends StatelessWidget {
                                                     ),
                                                     CustomRowForDetails(
                                                       text1: "أسم المرسل اليه",
-                                                      text2: dataList[index]
+                                                      text2: cubit.tempList[index]
                                                           ["client"]["name"],
                                                       rowWidth: 230,
                                                     ),
@@ -383,14 +423,14 @@ class CurrentShipping extends StatelessWidget {
                                                           .walletScreenListItemDetails2
                                                           .tr(),
                                                       text2:
-                                                          "${dataList[index]["shipping_price"]} جنيه",
+                                                          "${cubit.tempList[index]["total_shipment"]} جنيه",
                                                       rowWidth: 230,
                                                     ),
                                                     CustomRowForDetails(
                                                       text1: LocaleKeys
                                                           .shippingListItemDetails5
                                                           .tr(),
-                                                      text2: "1855",
+                                                      text2: "${cubit.tempList[index]["shipmentstatu"]["name"]}",
                                                       rowWidth: 230,
                                                     ),
                                                     CustomRowForDetails(
@@ -400,7 +440,7 @@ class CurrentShipping extends StatelessWidget {
                                                       text2: DateFormat(
                                                               "y/MM/dd")
                                                           .format(DateTime
-                                                              .parse(dataList[
+                                                              .parse(cubit.tempList[
                                                                       index][
                                                                   "created_at"])),
                                                       //"${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).year}-${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).month}-${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).day}",
@@ -410,7 +450,13 @@ class CurrentShipping extends StatelessWidget {
                                                       text1: LocaleKeys
                                                           .shippingListItemDetails7
                                                           .tr(),
-                                                      text2: "1855",
+                                                      text2:cubit.tempList[index]["delivery_date"]!=null?
+                                                      DateFormat(
+                                                          "y/MM/dd")
+                                                          .format(DateTime
+                                                          .parse(cubit.tempList[
+                                                      index][
+                                                      "delivery_date"])):"",
                                                       rowWidth: 230,
                                                     ),
                                                   ],
@@ -454,6 +500,7 @@ class CurrentShipping extends StatelessWidget {
                                                                             layout:
                                                                                 ShippingDetails(
                                                                               index: index,
+                                                                                  list: cubit.tempList,
                                                                             ));
                                                                         cubit.resetFalse(
                                                                             index);
@@ -554,38 +601,7 @@ class CurrentShipping extends StatelessWidget {
                                                     ),
                                                     width: 300,
                                                   ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      DoneCircularAvatar(
-                                                        underText: LocaleKeys
-                                                            .shippingQueSteps1
-                                                            .tr(),
-                                                      ),
-                                                      DoneCircularAvatar(
-                                                        underText: LocaleKeys
-                                                            .shippingQueSteps2
-                                                            .tr(),
-                                                      ),
-                                                      NotYetYellowContainer(
-                                                        underText: LocaleKeys
-                                                            .shippingQueSteps3
-                                                            .tr(),
-                                                      ),
-                                                      NotYetYellowContainer(
-                                                        underText: LocaleKeys
-                                                            .shippingQueSteps4
-                                                            .tr(),
-                                                      ),
-                                                      NotYetYellowContainer(
-                                                        underText: LocaleKeys
-                                                            .shippingQueSteps5
-                                                            .tr(),
-                                                      ),
-                                                    ],
-                                                  ),
+                                                  cubit.controlStepper(cubit.tempList[index]["shipmentstatu"]["id"]),
                                                 ],
                                               ),
                                             ),
@@ -620,8 +636,11 @@ class SentShipping extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return shippingIsEmpty == false
-        ? Column(
+    return BlocConsumer<ShipForCompanyAppCubitClass, ShipStates>(
+        listener: (context, state) {},
+    builder: (context, state) {
+      var cubit = ShipForCompanyAppCubitClass.get(context);
+     return Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Row(
@@ -726,157 +745,394 @@ class SentShipping extends StatelessWidget {
                   ),
                 ],
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 10, left: 10, top: 40),
-                  child: ListView.separated(
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return DecoratedContainerWithShadow(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Row(
-                              children: [
-                                Column(
-                                  children: [
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys
-                                          .walletScreenListItemDetails1
-                                          .tr(),
-                                      text2: "1855",
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys.shippingListItemDetails2
-                                          .tr(),
-                                      text2: "1855",
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys
-                                          .walletScreenListItemDetails2
-                                          .tr(),
-                                      text2: "1855",
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys.shippingListItemDetails4
-                                          .tr(),
-                                      text2: "1855",
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys.shippingListItemDetails5
-                                          .tr(),
-                                      text2: "1855",
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys.shippingListItemDetails6
-                                          .tr(),
-                                      text2: "1855",
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys.shippingListItemDetails7
-                                          .tr(),
-                                      text2: "1855",
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: () {},
-                                    child: CustomContainerForDetails(
-                                      text1: LocaleKeys.shippingListItemButton
-                                          .tr(),
-                                      icon: const Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                              ],
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 10, bottom: 40),
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  const SizedBox(
-                                    child: MySeparator(
-                                      color: Colors.red,
-                                      height: 1.7,
-                                    ),
-                                    width: 300,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      DoneCircularAvatar(
-                                        underText:
-                                            LocaleKeys.shippingQueSteps1.tr(),
-                                      ),
-                                      DoneCircularAvatar(
-                                        underText:
-                                            LocaleKeys.shippingQueSteps2.tr(),
-                                      ),
-                                      NotYetYellowContainer(
-                                        underText:
-                                            LocaleKeys.shippingQueSteps3.tr(),
-                                      ),
-                                      NotYetYellowContainer(
-                                        underText:
-                                            LocaleKeys.shippingQueSteps4.tr(),
-                                      ),
-                                      NotYetYellowContainer(
-                                        underText:
-                                            LocaleKeys.shippingQueSteps5.tr(),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+              ConditionalBuilder(
+                  condition: state is GetAllMatchedShipmentsDataLoadingState,
+                  builder: (context) {
+                    return const Center(child: LinearProgressIndicator());
+                  },
+                  fallback: (context) {
+                    return ConditionalBuilder(
+                        condition: state is GetAllShipmentsDataLoadingState,
+                        builder: (context) {
+                          return Column(
+                            children: const [
+                              SizedBox(
+                                height: 100.0,
                               ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(
-                        height: 20,
-                      );
-                    },
-                    itemCount: 10,
-                  ),
-                ),
-              )
+                              Center(child: CircularProgressIndicator()),
+                            ],
+                          );
+                        },
+                        fallback: (context) {
+                          return ConditionalBuilder(
+                            condition: state
+                            is GetAllMatchedShipmentsDataSuccessState &&
+                                cubit.sentList.isEmpty,
+                            builder: (context) {
+                              return const Center(
+                                  child: Text("لاتوجد شحنات بهذه البيانات"));
+                            },
+                            fallback: (context) {
+                              return Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 10, left: 10, top: 40),
+                                  child: ListView.separated(
+                                    physics: const BouncingScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      return DecoratedContainerWithShadow(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment
+                                                  .spaceBetween,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                                  children: [
+                                                    CustomRowForDetails(
+                                                      text1: LocaleKeys
+                                                          .walletScreenListItemDetails1
+                                                          .tr(),
+                                                      text2: "5889523556",
+                                                      rowWidth: 230,
+                                                    ),
+                                                    CustomRowForDetails(
+                                                      text1: "أسم المرسل اليه",
+                                                      text2: cubit.sentList[index]
+                                                      ["client"]["name"],
+                                                      rowWidth: 230,
+                                                    ),
+                                                    CustomRowForDetails(
+                                                      text1: LocaleKeys
+                                                          .walletScreenListItemDetails2
+                                                          .tr(),
+                                                      text2:
+                                                      "${cubit.sentList[index]["total_shipment"]} جنيه",
+                                                      rowWidth: 230,
+                                                    ),
+                                                    CustomRowForDetails(
+                                                      text1: LocaleKeys
+                                                          .shippingListItemDetails5
+                                                          .tr(),
+                                                      text2: "${cubit.sentList[index]["shipmentstatu"]["name"]}",
+                                                      rowWidth: 230,
+                                                    ),
+                                                    CustomRowForDetails(
+                                                      text1: LocaleKeys
+                                                          .shippingListItemDetails6
+                                                          .tr(),
+                                                      text2: DateFormat(
+                                                          "y/MM/dd")
+                                                          .format(DateTime
+                                                          .parse(cubit.sentList[
+                                                      index][
+                                                      "created_at"])),
+                                                      //"${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).year}-${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).month}-${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).day}",
+                                                      //"${DateTime.parse(dataList[index]["created_at"])}",
+                                                    ),
+                                                    CustomRowForDetails(
+                                                      text1: LocaleKeys
+                                                          .shippingListItemDetails7
+                                                          .tr(),
+                                                      text2:cubit.sentList[index]["delivery_date"]!=null?
+                                                      DateFormat(
+                                                          "y/MM/dd")
+                                                          .format(DateTime
+                                                          .parse(cubit.sentList[
+                                                      index][
+                                                      "delivery_date"])):"",
+                                                      rowWidth: 230,
+                                                    ),
+                                                  ],
+                                                ),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 8.0,
+                                                          vertical: 8.0),
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          cubit.detailedClickedSent(
+                                                              index);
+                                                        },
+                                                        child: SvgPicture.asset(
+                                                          "Assets/images/menu.svg",
+                                                          width: 30,
+                                                          height: 30,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    cubit.isDetailedSent[index]
+                                                        ? Container(
+                                                      child: Padding(
+                                                        padding: const EdgeInsets
+                                                            .symmetric(
+                                                            horizontal:
+                                                            5.0,
+                                                            vertical:
+                                                            10.0),
+                                                        child: InkWell(
+                                                            onTap: () {
+                                                              navigateAndBack(
+                                                                  context,
+                                                                  layout:
+                                                                  ShippingDetails(
+                                                                    index: index,
+                                                                    list: cubit.sentList,
+                                                                  ));
+                                                              cubit.resetFalse(
+                                                                  index);
+                                                            },
+                                                            child: Row(
+                                                              children: [
+                                                                Text(
+                                                                  "تفاصيل",
+                                                                  style:
+                                                                  TextStyle(color: purpleColor),
+                                                                ),
+                                                                const SizedBox(
+                                                                  width:
+                                                                  2.0,
+                                                                ),
+                                                                Icon(
+                                                                  Icons.info,
+                                                                  color:
+                                                                  purpleColor,
+                                                                ),
+                                                              ],
+                                                            )),
+                                                      ),
+                                                      margin:
+                                                      const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal:
+                                                          10.0),
+                                                      decoration:
+                                                      BoxDecoration(
+                                                        color:
+                                                        Colors.white,
+                                                        border:
+                                                        Border.all(
+                                                          width: 0.8,
+                                                          color: Colors
+                                                              .black,
+                                                        ),
+                                                      ),
+                                                    )
+                                                        : const Text(""),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 10, bottom: 40),
+                                              child: Stack(
+                                                alignment: Alignment.center,
+                                                children: [
+                                                  const SizedBox(
+                                                    child: MySeparator(
+                                                      color: Colors.red,
+                                                      height: 1.7,
+                                                    ),
+                                                    width: 300,
+                                                  ),
+                                                  cubit.controlStepper(cubit.sentList[index]["shipmentstatu"]["id"]),
+                                                  // Row(
+                                                  //   mainAxisAlignment:
+                                                  //       MainAxisAlignment
+                                                  //           .spaceBetween,
+                                                  //   children: [
+                                                  //     DoneCircularAvatar(
+                                                  //       underText: LocaleKeys
+                                                  //           .shippingQueSteps1
+                                                  //           .tr(),
+                                                  //     ),
+                                                  //     DoneCircularAvatar(
+                                                  //       underText: LocaleKeys
+                                                  //           .shippingQueSteps2
+                                                  //           .tr(),
+                                                  //     ),
+                                                  //     NotYetYellowContainer(
+                                                  //       underText: LocaleKeys
+                                                  //           .shippingQueSteps3
+                                                  //           .tr(),
+                                                  //     ),
+                                                  //     NotYetYellowContainer(
+                                                  //       underText: LocaleKeys
+                                                  //           .shippingQueSteps4
+                                                  //           .tr(),
+                                                  //     ),
+                                                  //     NotYetYellowContainer(
+                                                  //       underText: LocaleKeys
+                                                  //           .shippingQueSteps5
+                                                  //           .tr(),
+                                                  //     ),
+                                                  //   ],
+                                                  // ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) {
+                                      return const SizedBox(
+                                        height: 20,
+                                      );
+                                    },
+                                    itemCount: cubit.sentList.length,
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        });
+                  }),
+              // Expanded(
+              //   child: Padding(
+              //     padding: const EdgeInsets.only(right: 10, left: 10, top: 40),
+              //     child: ListView.separated(
+              //       physics: const BouncingScrollPhysics(),
+              //       itemBuilder: (context, index) {
+              //         return DecoratedContainerWithShadow(
+              //           child: Column(
+              //             crossAxisAlignment: CrossAxisAlignment.center,
+              //             children: [
+              //               Row(
+              //                 children: [
+              //                   Column(
+              //                     children: [
+              //                       CustomRowForDetails(
+              //                         text1: LocaleKeys
+              //                             .walletScreenListItemDetails1
+              //                             .tr(),
+              //                         text2: "1855",
+              //                       ),
+              //                       CustomRowForDetails(
+              //                         text1: LocaleKeys.shippingListItemDetails2
+              //                             .tr(),
+              //                         text2: "1855",
+              //                       ),
+              //                       CustomRowForDetails(
+              //                         text1: LocaleKeys
+              //                             .walletScreenListItemDetails2
+              //                             .tr(),
+              //                         text2: "1855",
+              //                       ),
+              //                       CustomRowForDetails(
+              //                         text1: LocaleKeys.shippingListItemDetails4
+              //                             .tr(),
+              //                         text2: "1855",
+              //                       ),
+              //                       CustomRowForDetails(
+              //                         text1: LocaleKeys.shippingListItemDetails5
+              //                             .tr(),
+              //                         text2: "1855",
+              //                       ),
+              //                       CustomRowForDetails(
+              //                         text1: LocaleKeys.shippingListItemDetails6
+              //                             .tr(),
+              //                         text2: "1855",
+              //                       ),
+              //                       CustomRowForDetails(
+              //                         text1: LocaleKeys.shippingListItemDetails7
+              //                             .tr(),
+              //                         text2: "1855",
+              //                       ),
+              //                     ],
+              //                   ),
+              //                 ],
+              //               ),
+              //               Padding(
+              //                 padding:
+              //                     const EdgeInsets.only(top: 10, bottom: 40),
+              //                 child: Stack(
+              //                   alignment: Alignment.center,
+              //                   children: [
+              //                     const SizedBox(
+              //                       child: MySeparator(
+              //                         color: Colors.red,
+              //                         height: 1.7,
+              //                       ),
+              //                       width: 300,
+              //                     ),
+              //                     Row(
+              //                       mainAxisAlignment:
+              //                           MainAxisAlignment.spaceBetween,
+              //                       children: [
+              //                         DoneCircularAvatar(
+              //                           underText:
+              //                               LocaleKeys.shippingQueSteps1.tr(),
+              //                         ),
+              //                         DoneCircularAvatar(
+              //                           underText:
+              //                               LocaleKeys.shippingQueSteps2.tr(),
+              //                         ),
+              //                         NotYetYellowContainer(
+              //                           underText:
+              //                               LocaleKeys.shippingQueSteps3.tr(),
+              //                         ),
+              //                         NotYetYellowContainer(
+              //                           underText:
+              //                               LocaleKeys.shippingQueSteps4.tr(),
+              //                         ),
+              //                         NotYetYellowContainer(
+              //                           underText:
+              //                               LocaleKeys.shippingQueSteps5.tr(),
+              //                         ),
+              //                       ],
+              //                     ),
+              //                   ],
+              //                 ),
+              //               ),
+              //             ],
+              //           ),
+              //         );
+              //       },
+              //       separatorBuilder: (context, index) {
+              //         return const SizedBox(
+              //           height: 20,
+              //         );
+              //       },
+              //       itemCount: 10,
+              //     ),
+              //   ),
+              // )
             ],
-          )
-        : Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset(
-                "Assets/images/noun-not-found-2503986.svg",
-                width: 350.0,
-                height: 350.0,
-                color: textGreyColor,
-              ),
-              Text(
-                "لا توجد شحنات حاليا",
-                style: TextStyle(
-                  color: purpleColor,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  height: 0.0,
-                ),
-              ),
-            ],
-          );
+          );});
+        // : Column(
+        //     mainAxisAlignment: MainAxisAlignment.center,
+        //     children: [
+        //       SvgPicture.asset(
+        //         "Assets/images/noun-not-found-2503986.svg",
+        //         width: 350.0,
+        //         height: 350.0,
+        //         color: textGreyColor,
+        //       ),
+        //       Text(
+        //         "لا توجد شحنات حاليا",
+        //         style: TextStyle(
+        //           color: purpleColor,
+        //           fontSize: 30,
+        //           fontWeight: FontWeight.bold,
+        //           height: 0.0,
+        //         ),
+        //       ),
+        //     ],
+        //   );
   }
 }
 
@@ -888,8 +1144,11 @@ class EndedShipping extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return shippingIsEmpty == false
-        ? Column(
+    return BlocConsumer<ShipForCompanyAppCubitClass, ShipStates>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          var cubit = ShipForCompanyAppCubitClass.get(context);
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Row(
@@ -994,101 +1253,374 @@ class EndedShipping extends StatelessWidget {
                   ),
                 ],
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 10, left: 10, top: 40),
-                  child: ListView.separated(
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return DecoratedContainerWithShadow(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Row(
-                              children: [
-                                Column(
-                                  children: [
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys
-                                          .walletScreenListItemDetails1
-                                          .tr(),
-                                      text2: "1855",
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys.shippingListItemDetails2
-                                          .tr(),
-                                      text2: "1855",
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys
-                                          .walletScreenListItemDetails2
-                                          .tr(),
-                                      text2: "1855",
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys.shippingListItemDetails4
-                                          .tr(),
-                                      text2: "1855",
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys.shippingListItemDetails5
-                                          .tr(),
-                                      text2: "1855",
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys.shippingListItemDetails6
-                                          .tr(),
-                                      text2: "1855",
-                                    ),
-                                    CustomRowForDetails(
-                                      text1: LocaleKeys.shippingListItemDetails7
-                                          .tr(),
-                                      text2: "1855",
-                                    ),
-                                  ],
+              ConditionalBuilder(
+                  condition: state is GetAllMatchedShipmentsDataLoadingState,
+                  builder: (context) {
+                    return const Center(child: LinearProgressIndicator());
+                  },
+                  fallback: (context) {
+                    return ConditionalBuilder(
+                        condition: state is GetAllShipmentsDataLoadingState,
+                        builder: (context) {
+                          return Column(
+                            children: const [
+                              SizedBox(
+                                height: 100.0,
+                              ),
+                              Center(child: CircularProgressIndicator()),
+                            ],
+                          );
+                        },
+                        fallback: (context) {
+                          return ConditionalBuilder(
+                            condition: state
+                            is GetAllMatchedShipmentsDataSuccessState &&
+                                cubit.endedList.isEmpty,
+                            builder: (context) {
+                              return const Center(
+                                  child: Text("لاتوجد شحنات بهذه البيانات"));
+                            },
+                            fallback: (context) {
+                              return Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 10, left: 10, top: 40),
+                                  child: ListView.separated(
+                                    physics: const BouncingScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      return DecoratedContainerWithShadow(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment
+                                                  .spaceBetween,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                                  children: [
+                                                    CustomRowForDetails(
+                                                      text1: LocaleKeys
+                                                          .walletScreenListItemDetails1
+                                                          .tr(),
+                                                      text2: "5889523556",
+                                                      rowWidth: 230,
+                                                    ),
+                                                    CustomRowForDetails(
+                                                      text1: "أسم المرسل اليه",
+                                                      text2: cubit.endedList[index]
+                                                      ["client"]["name"],
+                                                      rowWidth: 230,
+                                                    ),
+                                                    CustomRowForDetails(
+                                                      text1: LocaleKeys
+                                                          .walletScreenListItemDetails2
+                                                          .tr(),
+                                                      text2:
+                                                      "${cubit.endedList[index]["total_shipment"]} جنيه",
+                                                      rowWidth: 230,
+                                                    ),
+                                                    CustomRowForDetails(
+                                                      text1: LocaleKeys
+                                                          .shippingListItemDetails5
+                                                          .tr(),
+                                                      text2: "${cubit.endedList[index]["shipmentstatu"]["name"]}",
+                                                      rowWidth: 230,
+                                                    ),
+                                                    CustomRowForDetails(
+                                                      text1: LocaleKeys
+                                                          .shippingListItemDetails6
+                                                          .tr(),
+                                                      text2: DateFormat(
+                                                          "y/MM/dd")
+                                                          .format(DateTime
+                                                          .parse(cubit.endedList[
+                                                      index][
+                                                      "created_at"])),
+                                                      //"${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).year}-${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).month}-${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).day}",
+                                                      //"${DateTime.parse(dataList[index]["created_at"])}",
+                                                    ),
+                                                    CustomRowForDetails(
+                                                      text1: LocaleKeys
+                                                          .shippingListItemDetails7
+                                                          .tr(),
+                                                      text2:cubit.endedList[index]["delivery_date"]!=null?
+                                                      DateFormat(
+                                                          "y/MM/dd")
+                                                          .format(DateTime
+                                                          .parse(cubit.endedList[
+                                                      index][
+                                                      "delivery_date"])):"",
+                                                      rowWidth: 230,
+                                                    ),
+                                                  ],
+                                                ),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 8.0,
+                                                          vertical: 8.0),
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          cubit.detailedClickedEnded(
+                                                              index);
+                                                        },
+                                                        child: SvgPicture.asset(
+                                                          "Assets/images/menu.svg",
+                                                          width: 30,
+                                                          height: 30,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    cubit.isDetailedEnded[index]
+                                                        ? Container(
+                                                      child: Padding(
+                                                        padding: const EdgeInsets
+                                                            .symmetric(
+                                                            horizontal:
+                                                            5.0,
+                                                            vertical:
+                                                            10.0),
+                                                        child: InkWell(
+                                                            onTap: () {
+                                                              navigateAndBack(
+                                                                  context,
+                                                                  layout:
+                                                                  ShippingDetails(
+                                                                    index: index,
+                                                                    list: cubit.endedList,
+                                                                    fromEnded: true,
+                                                                  ));
+                                                              cubit.resetFalse(
+                                                                  index);
+                                                            },
+                                                            child: Row(
+                                                              children: [
+                                                                Text(
+                                                                  "تفاصيل",
+                                                                  style:
+                                                                  TextStyle(color: purpleColor),
+                                                                ),
+                                                                const SizedBox(
+                                                                  width:
+                                                                  2.0,
+                                                                ),
+                                                                Icon(
+                                                                  Icons.info,
+                                                                  color:
+                                                                  purpleColor,
+                                                                ),
+                                                              ],
+                                                            )),
+                                                      ),
+                                                      margin:
+                                                      const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal:
+                                                          10.0),
+                                                      decoration:
+                                                      BoxDecoration(
+                                                        color:
+                                                        Colors.white,
+                                                        border:
+                                                        Border.all(
+                                                          width: 0.8,
+                                                          color: Colors
+                                                              .black,
+                                                        ),
+                                                      ),
+                                                    )
+                                                        : const Text(""),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            // Padding(
+                                            //   padding: const EdgeInsets.only(
+                                            //       top: 10, bottom: 40),
+                                            //   child: Stack(
+                                            //     alignment: Alignment.center,
+                                            //     children: [
+                                            //       const SizedBox(
+                                            //         child: MySeparator(
+                                            //           color: Colors.red,
+                                            //           height: 1.7,
+                                            //         ),
+                                            //         width: 300,
+                                            //       ),
+                                            //       cubit.controlStepper(cubit.sentList[index]["shipmentstatu"]["id"]),
+                                            //       // Row(
+                                            //       //   mainAxisAlignment:
+                                            //       //       MainAxisAlignment
+                                            //       //           .spaceBetween,
+                                            //       //   children: [
+                                            //       //     DoneCircularAvatar(
+                                            //       //       underText: LocaleKeys
+                                            //       //           .shippingQueSteps1
+                                            //       //           .tr(),
+                                            //       //     ),
+                                            //       //     DoneCircularAvatar(
+                                            //       //       underText: LocaleKeys
+                                            //       //           .shippingQueSteps2
+                                            //       //           .tr(),
+                                            //       //     ),
+                                            //       //     NotYetYellowContainer(
+                                            //       //       underText: LocaleKeys
+                                            //       //           .shippingQueSteps3
+                                            //       //           .tr(),
+                                            //       //     ),
+                                            //       //     NotYetYellowContainer(
+                                            //       //       underText: LocaleKeys
+                                            //       //           .shippingQueSteps4
+                                            //       //           .tr(),
+                                            //       //     ),
+                                            //       //     NotYetYellowContainer(
+                                            //       //       underText: LocaleKeys
+                                            //       //           .shippingQueSteps5
+                                            //       //           .tr(),
+                                            //       //     ),
+                                            //       //   ],
+                                            //       // ),
+                                            //     ],
+                                            //   ),
+                                            // ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) {
+                                      return const SizedBox(
+                                        height: 20,
+                                      );
+                                    },
+                                    itemCount: cubit.endedList.length,
+                                  ),
                                 ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(
-                        height: 20,
-                      );
-                    },
-                    itemCount: 10,
-                  ),
-                ),
-              )
+                              );
+                            },
+                          );
+                        });
+                  }),
+              // Expanded(
+              //   child: Padding(
+              //     padding: const EdgeInsets.only(right: 10, left: 10, top: 40),
+              //     child: ListView.separated(
+              //       physics: const BouncingScrollPhysics(),
+              //       itemBuilder: (context, index) {
+              //         return DecoratedContainerWithShadow(
+              //           child: Column(
+              //             crossAxisAlignment: CrossAxisAlignment.center,
+              //             children: [
+              //               Row(
+              //                 children: [
+              //                   Column(
+              //                     children: [
+              //                       CustomRowForDetails(
+              //                         text1: LocaleKeys
+              //                             .walletScreenListItemDetails1
+              //                             .tr(),
+              //                         text2: "1855",
+              //                       ),
+              //                       CustomRowForDetails(
+              //                         text1: LocaleKeys.shippingListItemDetails2
+              //                             .tr(),
+              //                         text2: "1855",
+              //                       ),
+              //                       CustomRowForDetails(
+              //                         text1: LocaleKeys
+              //                             .walletScreenListItemDetails2
+              //                             .tr(),
+              //                         text2: "1855",
+              //                       ),
+              //                       CustomRowForDetails(
+              //                         text1: LocaleKeys.shippingListItemDetails4
+              //                             .tr(),
+              //                         text2: "1855",
+              //                       ),
+              //                       CustomRowForDetails(
+              //                         text1: LocaleKeys.shippingListItemDetails5
+              //                             .tr(),
+              //                         text2: "1855",
+              //                       ),
+              //                       CustomRowForDetails(
+              //                         text1: LocaleKeys.shippingListItemDetails6
+              //                             .tr(),
+              //                         text2: "1855",
+              //                       ),
+              //                       CustomRowForDetails(
+              //                         text1: LocaleKeys.shippingListItemDetails7
+              //                             .tr(),
+              //                         text2: "1855",
+              //                       ),
+              //                     ],
+              //                   ),
+              //                 ],
+              //               ),
+              //               Padding(
+              //                 padding:
+              //                     const EdgeInsets.only(top: 10, bottom: 40),
+              //                 child: Stack(
+              //                   alignment: Alignment.center,
+              //                   children: [
+              //                     const SizedBox(
+              //                       child: MySeparator(
+              //                         color: Colors.red,
+              //                         height: 1.7,
+              //                       ),
+              //                       width: 300,
+              //                     ),
+              //                     Row(
+              //                       mainAxisAlignment:
+              //                           MainAxisAlignment.spaceBetween,
+              //                       children: [
+              //                         DoneCircularAvatar(
+              //                           underText:
+              //                               LocaleKeys.shippingQueSteps1.tr(),
+              //                         ),
+              //                         DoneCircularAvatar(
+              //                           underText:
+              //                               LocaleKeys.shippingQueSteps2.tr(),
+              //                         ),
+              //                         NotYetYellowContainer(
+              //                           underText:
+              //                               LocaleKeys.shippingQueSteps3.tr(),
+              //                         ),
+              //                         NotYetYellowContainer(
+              //                           underText:
+              //                               LocaleKeys.shippingQueSteps4.tr(),
+              //                         ),
+              //                         NotYetYellowContainer(
+              //                           underText:
+              //                               LocaleKeys.shippingQueSteps5.tr(),
+              //                         ),
+              //                       ],
+              //                     ),
+              //                   ],
+              //                 ),
+              //               ),
+              //             ],
+              //           ),
+              //         );
+              //       },
+              //       separatorBuilder: (context, index) {
+              //         return const SizedBox(
+              //           height: 20,
+              //         );
+              //       },
+              //       itemCount: 10,
+              //     ),
+              //   ),
+              // )
             ],
-          )
-        : Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset(
-                "Assets/images/noun-not-found-2503986.svg",
-                width: 350.0,
-                height: 350.0,
-                color: textGreyColor,
-              ),
-              Text(
-                "لا توجد شحنات حاليا",
-                style: TextStyle(
-                  color: purpleColor,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  height: 0.0,
-                ),
-              ),
-            ],
-          );
+          );});
   }
 }

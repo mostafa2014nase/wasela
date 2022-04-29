@@ -15,7 +15,6 @@ class OfferCubitClass extends Cubit<OfferStates> {
 
   List offerNameList = [];
   List offerIdList = [];
-  List offerList = [];
   List<bool> isChecked = [];
   OfferModel ? offerModel;
 
@@ -37,6 +36,68 @@ class OfferCubitClass extends Cubit<OfferStates> {
       });
     }
     on DioError catch(error){
+      log(error.toString());
+      emit(GetOffersSystemsErrorState(error.toString()));
+    }
+  }
+
+
+  List offerEnrolledNameList = [];
+  List offerEnrolledIdList = [];
+
+  void getOffers() {
+    offerNameList = [];
+    offerIdList = [];
+    offerEnrolledNameList = [];
+    offerEnrolledIdList = [];
+    emit(GetOffersSystemsLoadingState());
+    try {
+      DioHelper.getData(
+          url: OFFERS,
+          authorization: "Bearer ${SaveValueInKey.accessToken}")
+          .then((value) {
+        DioHelper.getData(
+            url: OFFERS_ENROLLED,
+            authorization: "Bearer ${SaveValueInKey.accessToken}").then((valueEnrolled) {
+          if(valueEnrolled.data["offers"].length > 0){
+            for(int index = 0 ; index < value.data["offer"].length ;index ++){
+              offerModel = OfferModel.fromJson(value.data["offer"][index]);
+              offerNameList.add(offerModel!.title);
+              offerIdList.add(offerModel!.id);
+              isChecked.add(false);
+            }
+            for (int enrolledIndex = 0;
+            enrolledIndex < valueEnrolled.data["offers"].length;
+            enrolledIndex++) {
+              offerEnrolledNameList.add(valueEnrolled.data["offers"][enrolledIndex]["title"]);
+              offerEnrolledIdList.add(valueEnrolled.data["offers"][enrolledIndex]["id"]);
+              for(int index = 0 ; index < offerIdList.length;index++){
+                log("list of storage system id looping = ${offerIdList.toString()}");
+                if(offerIdList[index]==offerEnrolledIdList[enrolledIndex]){
+                  log(" id of data now is ${valueEnrolled.data["offers"][enrolledIndex]["id"]}");
+                  log("offers id value now is ${offerIdList[index]}");
+                  offerIdList.removeAt(index);
+                  offerNameList.removeAt(index);
+                  isChecked[index] = true;
+                  log("list of offers id in condition = ${offerIdList.toString()}");
+                }
+              }
+            }
+          }
+          else{
+            for(int index = 0 ; index < value.data["offer"].length ;index ++){
+              offerModel = OfferModel.fromJson(value.data["offer"][index]);
+              offerNameList.add(offerModel!.title);
+              offerIdList.add(offerModel!.id);
+              isChecked.add(false);
+            }
+          }
+          log("list of offers system = ${offerNameList.toString()}");
+          log("list of offers system ids last = ${offerIdList.toString()}");
+          emit(GetOffersSystemsSuccessState());
+        });
+      });
+    } on DioError catch (error) {
       log(error.toString());
       emit(GetOffersSystemsErrorState(error.toString()));
     }

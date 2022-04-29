@@ -19,28 +19,72 @@ class TradeStoreSystemCubitClass extends Cubit<TradeStoreSystemStates> {
   List storeDescribeList = [];
   StorageModel? storageModel;
 
+  List storeEnrolledNameList = [];
+  List storeEnrolledIdList = [];
+  List storeEnrolledDescribeList = [];
+
   void getAllStorageSystems() {
     storeNameList = [];
     storeIdList = [];
+    storeDescribeList = [];
+     storeEnrolledNameList = [];
+     storeEnrolledIdList = [];
+     storeEnrolledDescribeList = [];
     emit(GetStorageSystemsLoadingState());
     try {
       DioHelper.getData(
               url: STORAGE_SYSTEMS,
               authorization: "Bearer ${SaveValueInKey.accessToken}")
           .then((value) {
-        log(value.data.toString());
-        for (int index = 0;
+        DioHelper.getData(
+            url: STORAGE_SYSTEMS_ENROLLED,
+            authorization: "Bearer ${SaveValueInKey.accessToken}").then((valueEnrolled) {
+          if(valueEnrolled.data["storage_system"].length > 0){
+            for(int index = 0 ; index < value.data["storage_system"].length;index++){
+              storageModel =
+                  StorageModel.fromJson(value.data["storage_system"][index]);
+              storeNameList.add(storageModel!.title);
+              storeIdList.add(storageModel!.id);
+              storeDescribeList.add(storageModel!.description);
+              isChecked.add(false);
+            }
+            log("list of storage system ids All = ${storeIdList.toString()}");
+            for (int enrolledIndex = 0;
+            enrolledIndex < valueEnrolled.data["storage_system"].length;
+            enrolledIndex++) {
+              storeEnrolledNameList.add(valueEnrolled.data["storage_system"][enrolledIndex]["title"]);
+              storeEnrolledIdList.add(valueEnrolled.data["storage_system"][enrolledIndex]["id"]);
+              storeEnrolledDescribeList.add(valueEnrolled.data["storage_system"][enrolledIndex]["description"]);
+              for(int index = 0 ; index < storeIdList.length;index++){
+                log("list of storage system id looping = ${storeIdList.toString()}");
+                if(storeIdList[index] == valueEnrolled.data["storage_system"][enrolledIndex]["id"]){
+                  log(" id of data now is ${valueEnrolled.data["storage_system"][enrolledIndex]["id"]}");
+                  log("store id value now is ${storeIdList[index]}");
+                  storeIdList.removeAt(index);
+                  storeNameList.removeAt(index);
+                  storeDescribeList.removeAt(index);
+                  isChecked[index] = true;
+                  log("list of storage system id in condition = ${storeIdList.toString()}");
+                }
+              }
+            }
+          }
+          else{
+            for (int index = 0;
             index < value.data["storage_system"].length;
             index++) {
-          storageModel =
-              StorageModel.fromJson(value.data["storage_system"][index]);
-          storeNameList.add(storageModel!.title);
-          storeIdList.add(storageModel!.id);
-          storeDescribeList.add(storageModel!.description);
-          isChecked.add(false);
-        }
-        log(storeNameList.toString());
-        emit(GetStorageSystemsSuccessState());
+              storageModel =
+                  StorageModel.fromJson(value.data["storage_system"][index]);
+              storeNameList.add(storageModel!.title);
+              storeIdList.add(storageModel!.id);
+              storeDescribeList.add(storageModel!.description);
+              isChecked.add(false);
+            }
+          }
+          log("list of storage system = ${storeNameList.toString()}");
+          log("list of storage system ids last = ${storeIdList.toString()}");
+          emit(GetStorageSystemsSuccessState());
+        });
       });
     } on DioError catch (error) {
       log(error.toString());

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wasela/comapny_app/app_layouts/add_order/bloc/add_order_cubit_class.dart';
 import 'package:wasela/comapny_app/app_layouts/add_order/bloc/states.dart';
+import 'package:wasela/helper_methods/app_bloc_provider/bloc/cubit.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
 
@@ -461,438 +462,40 @@ class PugetChoiceScreen extends StatelessWidget {
 class ReBackChoiceScreen extends StatelessWidget {
   final AddOrderCubitClass cubit;
 
-  const ReBackChoiceScreen({Key? key, required this.cubit}) : super(key: key);
+
+   ReBackChoiceScreen({Key? key, required this.cubit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var appCubit = AppCubitClass.get(context);
     return Column(
       children: [
+        SizedBox(height: 20.0,),
         Container(
-          margin: const EdgeInsets.symmetric(vertical: 10.0,),
-          child: Table(
-            columnWidths: const {
-              0: FlexColumnWidth(.3),
-              1: FlexColumnWidth(.7),
-              2: FlexColumnWidth(.7),
-              3: FlexColumnWidth(.7),
-              4: FlexColumnWidth(.7),
-              5: FlexColumnWidth(.8),
-              6: FlexColumnWidth(.8),
-            },
-            border: TableBorder.all(
-              color: purpleColor
-            ),
-            children:  [
-              TableRow(
-                decoration: BoxDecoration(
-                  color: yellowColor,
-                ),
-                  children: [
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "م",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "رقم الشحنة",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "تاريخ المرتجع",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "قيمة المرتجع",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "تكايف الشحن",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "حالة المرتجع",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12.0,
-                          height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "مكان وجود المرتجع",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-              ]),
-              TableRow(
-                  children: [
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12.0,
-                          height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-              ]),
-              TableRow(
-                  children: [
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12.0,
-                          height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-              ]),
-              TableRow(
-                  children: [
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12.0,
-                          height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-                SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                            height: 1.0,
-                            color: purpleColor
-                        ),
-                      ),
-                    )),
-              ]),
-            ],
-          ),
-        ),
+          color: yellowColor,
+          height: 50.0,
+            child: rowWidget([ "رقم الشحنة","تاريخ المرتجع","قيمة المنتج","قيمة المرتجع","تكاليف الشحن","حالة المرتجع"])),
+        put_line(),
+    Container(
+      height: 250.0,
+       margin: const EdgeInsets.symmetric(vertical: 10.0,),
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (context,index){
+          return SizedBox(
+              height: 50,
+              width: 60,
+              child: columnWidget(appCubit.collectAll[index]));
+        },
+        separatorBuilder:(context,index){
+          return put_line(line_width: 1.0,line_height: 50.0);
+        },
+        itemCount: appCubit.collectAll.length,
+      ),
+    ),
+        put_line(),
+        const SizedBox(height: 20.0,),
         Container(
           decoration: const BoxDecoration(
             color: Colors.white,
@@ -949,6 +552,59 @@ class ReBackChoiceScreen extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+  Widget columnWidget(dynamic apiListData){
+    return ListView.separated(
+      physics: const NeverScrollableScrollPhysics(),
+      itemBuilder: (context,index){
+      return SizedBox(
+          height: 50.0,
+          child: Center(
+            child: Text(
+              "${apiListData[index]}",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12.0,
+                  height: 1.0,
+                  color: purpleColor
+              ),
+            ),
+          ));
+    },
+      separatorBuilder:(context,index){
+        return put_line(line_height: 1.0);
+
+      } ,
+      itemCount: apiListData.length,
+    );
+  }
+  Widget rowWidget(dynamic apiListData){
+    return ListView.separated(
+      scrollDirection: Axis.horizontal,
+      physics: const NeverScrollableScrollPhysics(),
+      itemBuilder: (context,index){
+      return SizedBox(
+          width: 60,
+          child: Center(
+            child: Text(
+              "${apiListData[index]}",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12.0,
+                  height: 1.0,
+                  color: purpleColor
+              ),
+            ),
+          ));
+    },
+      separatorBuilder:(context,index){
+        return put_line(line_width: 1.0,line_height: 50.0);
+
+      } ,
+      itemCount: apiListData.length,
     );
   }
 }

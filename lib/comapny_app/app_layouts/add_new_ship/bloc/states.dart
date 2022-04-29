@@ -2,9 +2,14 @@ abstract class AddNewShipStates {}
 
 class AddNewShipInitialState extends AddNewShipStates {}
 
-class SelectChoiceSuccessState extends AddNewShipStates {}
+class SelectCitySuccessState extends AddNewShipStates {}
+class SelectAreaSuccessState extends AddNewShipStates {}
+class SelectServiceSuccessState extends AddNewShipStates {}
+class SelectAdditionalSuccessState extends AddNewShipStates {}
+class ResetDropDownListsSuccessState extends AddNewShipStates {}
 
 class ResetAreasSuccessState extends AddNewShipStates {}
+class GetAdditionalServiceListSuccessState extends AddNewShipStates {}
 
 class ShowErrorMsgInSnackBar extends AddNewShipStates {}
 
@@ -26,6 +31,7 @@ class GetServiceListSuccessState extends AddNewShipStates {}
 class CollectShipmentsOrderSuccessState extends AddNewShipStates {}
 
 class CreateNewShipmentOrderSuccessState extends AddNewShipStates {}
+class CalculateCostsSuccessState extends AddNewShipStates {}
 
 class CreateNewShipmentOrderLoadingState extends AddNewShipStates {}
 
@@ -33,4 +39,13 @@ class CreateNewShipmentOrderErrorState extends AddNewShipStates {
   final String error;
 
   CreateNewShipmentOrderErrorState(this.error);
+}
+class GetLimitedWeightLoadingState extends AddNewShipStates {}
+
+class GetLimitedWeightSuccessState extends AddNewShipStates {}
+
+class GetLimitedWeightErrorState extends AddNewShipStates {
+  final String error;
+
+  GetLimitedWeightErrorState(this.error);
 }

@@ -7,6 +7,10 @@ class PerformToggleTabsSuccessState extends ShipStates {}
 class ShowDetailsMenu extends ShipStates {}
 
 class HideDetailsMenu extends ShipStates {}
+class GetAllMessages extends ShipStates {}
+class ResetMsgController extends ShipStates {}
+class ControllerISEmpty extends ShipStates {}
+class ControllerISNotEmpty extends ShipStates {}
 
 class SendMessageSuccessState extends ShipStates {}
 
@@ -21,10 +25,17 @@ class SendMessageErrorState extends ShipStates {
 }
 
 class GetAllShipmentsDataLoadingState extends ShipStates {}
+class GetCompanyProperties extends ShipStates {}
 
 class OpenWhatsAppSuccessState extends ShipStates {}
 
 class OpenWhatsAppErrorState extends ShipStates {}
+class CallPhoneSuccessState extends ShipStates {}
+
+class CallPhoneErrorState extends ShipStates {}
+class SendSmsSuccessState extends ShipStates {}
+
+class SendSmsErrorState extends ShipStates {}
 
 class GetFromDateAndShowIt extends ShipStates {}
 
@@ -54,6 +65,7 @@ class GetAllMatchedShipmentsDataErrorState extends ShipStates {
 }
 
 class GetDateAndShowIt extends ShipStates {}
+class GetCurrentLocation extends ShipStates {}
 
 class GetFileSuccessState extends ShipStates {}
 
@@ -105,3 +117,15 @@ class ShowErrorEditMsgRedInSnackBar extends ShipStates {}
 
 class GetServiceTypeSuccessState extends ShipStates {}
 class NoSuchData extends ShipStates {}
+
+class RefreshAllShipments extends ShipStates {}
+
+class GetAllShipmentsDataWithStatusLoadingState extends ShipStates {}
+
+class GetAllShipmentsDataWithStatusSuccessState extends ShipStates {}
+
+class GetAllShipmentsDataWithStatusErrorState extends ShipStates {
+  final String error;
+
+  GetAllShipmentsDataWithStatusErrorState(this.error);
+}

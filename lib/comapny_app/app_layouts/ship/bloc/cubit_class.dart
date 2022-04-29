@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,15 +7,20 @@ import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:wasela/comapny_app/app_layouts/ship/bloc/states.dart';
 import 'package:wasela/helper_methods/constants/end_points_urls_api.dart';
 import 'package:wasela/helper_methods/dio_helper/dio.dart';
+import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'package:wasela/helper_methods/modules/cities_and_their_areas.dart';
 import 'package:wasela/helper_methods/modules/const%20classes.dart';
 import 'package:wasela/helper_methods/modules/massege_model.dart';
 import 'package:wasela/helper_methods/modules/shipment_and_customer_models.dart';
 import 'package:wasela/helper_methods/sharedpref/shared_preference.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:wasela/translations/localeKeys.g.dart';
 
 class ShipForCompanyAppCubitClass extends Cubit<ShipStates> {
   ShipForCompanyAppCubitClass() : super(ShipInitState());
@@ -28,6 +35,19 @@ class ShipForCompanyAppCubitClass extends Cubit<ShipStates> {
     isDetailed[index] = !isDetailed[index];
     emit(ShowDetailsMenu());
   }
+  List<bool> isDetailedSent = [];
+
+  void detailedClickedSent(int index) {
+    isDetailedSent[index] = !isDetailedSent[index];
+    emit(ShowDetailsMenu());
+  }
+  List<bool> isDetailedEnded = [];
+
+  void detailedClickedEnded(int index) {
+    isDetailedEnded[index] = !isDetailedEnded[index];
+    emit(ShowDetailsMenu());
+  }
+
 
   void resetFalse(int index) {
     isDetailed[index] = false;
@@ -46,6 +66,8 @@ class ShipForCompanyAppCubitClass extends Cubit<ShipStates> {
   ShipmentsDetailsModel? shipmentsDetailsModel;
   AllShipmentsData? allShipmentsData;
   List tempList = [];
+  List sentList = [];
+  List endedList = [];
 
   void getAllShipmentsData() {
     emit(GetAllShipmentsDataLoadingState());
@@ -53,34 +75,292 @@ class ShipForCompanyAppCubitClass extends Cubit<ShipStates> {
     SaveValueInKey.accessToken = SharedCashHelper.getValue(key: "accessToken");
     log(SaveValueInKey.userId.toString());
     log(SaveValueInKey.accessToken.toString());
-    log("$ALL_SHIPMENTS${SaveValueInKey.userId}");
     tempList = [];
+    sentList = [];
+    endedList = [];
     DioHelper.getData(
-            url: ALL_SHIPMENTS,
-            authorization: "Bearer ${SaveValueInKey.accessToken}")
+        url: ALL_SHIPMENTS,
+        authorization: "Bearer ${SaveValueInKey.accessToken}")
         .then((value) {
       showShipmentsListLength = value.data["shipment"]["data"].length;
       log("shipments data length = ${showShipmentsListLength.toString()}");
       for (int index = 0;
-          index < value.data["shipment"]["data"].length;
-          index++) {
+      index < value.data["shipment"]["data"].length;
+      index++) {
         shipmentsDetailsModel = ShipmentsDetailsModel.fromJson(
             value.data["shipment"]["data"][index]);
-        log(shipmentsDetailsModel!.clientName.toString());
-        //allShipmentsData?.dataList!.add(shipmentsDetailsModel!.toMap());
-        tempList.add(shipmentsDetailsModel!.toMap());
-        isDetailed.add(false);
+        log(value.data["shipment"]["data"][index].toString());
+        if( shipmentsDetailsModel!.shipmentStatueId! > 1 &&  shipmentsDetailsModel!.shipmentStatueId!  < 7)
+          {
+            sentList.add(shipmentsDetailsModel!.toMap());
+            isDetailedSent.add(false);
+          }
+        else if(shipmentsDetailsModel!.shipmentStatueId! == 1){
+          tempList.add(shipmentsDetailsModel!.toMap());
+          isDetailed.add(false);
+        }
+        else{
+          endedList.add(shipmentsDetailsModel!.toMap());
+          isDetailedEnded.add(false);
+        }
       }
       allShipmentsData = AllShipmentsData(dataList: tempList);
       //allShipmentsData = AllShipmentsData.fromJson(value.data);
       //allShipmentsData!.map((data) => AllShipmentsData.fromJson(data)).toList();
       //shipmentsDetailsModel = ShipmentsDetailsModel.fromJson(value.data["shipment"]["data"][0]);
       log(allShipmentsData!.dataList.toString());
+      log("current = ${tempList.toString()}");
+      log("sent = ${sentList.toString()}");
+      log("ended = ${endedList.toString()}");
       emit(GetAllShipmentsDataSuccessState());
     }).catchError((error) {
       log(error.toString());
       emit(GetAllShipmentsDataErrorState(error.toString()));
     });
+  }
+
+  List statusNameList = [];
+  List statusIdList = [];
+
+  // void getAllShipmentsDataWithStatus(num id) {
+  //    statusNameList = [];
+  //    statusIdList = [];
+  //   emit(GetAllShipmentsDataWithStatusLoadingState());
+  //   SaveValueInKey.userId = SharedCashHelper.getValue(key: "userId");
+  //   SaveValueInKey.accessToken = SharedCashHelper.getValue(key: "accessToken");
+  //   DioHelper.getData(
+  //       url: ALL_SHIPMENTS_RETURN,
+  //       authorization: "Bearer ${SaveValueInKey.accessToken}")
+  //       .then((value) {
+  //     for (int index = 0;
+  //     index < value.data["shipment"].length;
+  //     index++) {
+  //       if( id == value.data["shipment"][index]["id"]){
+  //         log("id sent = $id");
+  //         log("id compare = ${value.data["shipment"][index]["id"]}");
+  //         log("name of it's statue = ${value.data["shipment"][index]["shipmentstatu"]["name"]}");
+  //         statusNameList.add(value.data["shipment"][index]["shipmentstatu"]["name"]);
+  //         statusIdList.add(value.data["shipment"][index]["shipmentstatu"]["id"]);
+  //       }
+  //     }
+  //     log("status Name List = ${statusNameList.toString()}");
+  //     log("status id List = ${statusIdList.toString()}");
+  //
+  //     emit(GetAllShipmentsDataWithStatusSuccessState());
+  //   }).catchError((error) {
+  //     log(error.toString());
+  //     emit(GetAllShipmentsDataWithStatusErrorState(error.toString()));
+  //   });
+  // }
+
+  Widget controlStepper(num status){
+      if(status == 1 ){
+        return Row(
+          mainAxisAlignment:
+          MainAxisAlignment
+              .spaceBetween,
+          children: [
+            DoneCircularAvatar(
+              underText: LocaleKeys
+                  .shippingQueSteps1
+                  .tr(),
+            ),
+            NotYetYellowContainer(
+              underText: LocaleKeys
+                  .shippingQueSteps3
+                  .tr(),
+            ),
+            NotYetYellowContainer(
+              underText: LocaleKeys
+                  .shippingQueSteps3
+                  .tr(),
+            ),
+            NotYetYellowContainer(
+              underText: LocaleKeys
+                  .shippingQueSteps4
+                  .tr(),
+            ),
+            NotYetYellowContainer(
+              underText: LocaleKeys
+                  .shippingQueSteps5
+                  .tr(),
+            ),
+          ],
+        );
+      }
+      if(status == 2 ||  status == 3){
+        return Row(
+          mainAxisAlignment:
+          MainAxisAlignment
+              .spaceBetween,
+          children: [
+            DoneCircularAvatar(
+              underText: LocaleKeys
+                  .shippingQueSteps1
+                  .tr(),
+            ),
+            DoneCircularAvatar(
+              underText: LocaleKeys
+                  .shippingQueSteps1
+                  .tr(),
+            ),
+            NotYetYellowContainer(
+              underText: LocaleKeys
+                  .shippingQueSteps3
+                  .tr(),
+            ),
+            NotYetYellowContainer(
+              underText: LocaleKeys
+                  .shippingQueSteps4
+                  .tr(),
+            ),
+            NotYetYellowContainer(
+              underText: LocaleKeys
+                  .shippingQueSteps5
+                  .tr(),
+            ),
+          ],
+        );
+      }
+      if(status == 4 ){
+        return Row(
+          mainAxisAlignment:
+          MainAxisAlignment
+              .spaceBetween,
+          children: [
+            DoneCircularAvatar(
+              underText: LocaleKeys
+                  .shippingQueSteps1
+                  .tr(),
+            ),
+            DoneCircularAvatar(
+              underText: LocaleKeys
+                  .shippingQueSteps1
+                  .tr(),
+            ),
+            DoneCircularAvatar(
+              underText: LocaleKeys
+                  .shippingQueSteps1
+                  .tr(),
+            ),
+            NotYetYellowContainer(
+              underText: LocaleKeys
+                  .shippingQueSteps4
+                  .tr(),
+            ),
+            NotYetYellowContainer(
+              underText: LocaleKeys
+                  .shippingQueSteps5
+                  .tr(),
+            ),
+          ],
+        );
+      }
+      if(status == 5 ||  status == 6){
+        return Row(
+          mainAxisAlignment:
+          MainAxisAlignment
+              .spaceBetween,
+          children: [
+            DoneCircularAvatar(
+              underText: LocaleKeys
+                  .shippingQueSteps1
+                  .tr(),
+            ),
+            DoneCircularAvatar(
+              underText: LocaleKeys
+                  .shippingQueSteps1
+                  .tr(),
+            ),
+            DoneCircularAvatar(
+              underText: LocaleKeys
+                  .shippingQueSteps1
+                  .tr(),
+            ),
+            DoneCircularAvatar(
+              underText: LocaleKeys
+                  .shippingQueSteps1
+                  .tr(),
+            ),
+            NotYetYellowContainer(
+              underText: LocaleKeys
+                  .shippingQueSteps5
+                  .tr(),
+            ),
+          ],
+        );
+      }
+      if(status == 7 ){
+        return Row(
+          mainAxisAlignment:
+          MainAxisAlignment
+              .spaceBetween,
+          children: [
+            DoneCircularAvatar(
+              underText: LocaleKeys
+                  .shippingQueSteps1
+                  .tr(),
+            ),
+            DoneCircularAvatar(
+              underText: LocaleKeys
+                  .shippingQueSteps1
+                  .tr(),
+            ),
+            DoneCircularAvatar(
+              underText: LocaleKeys
+                  .shippingQueSteps1
+                  .tr(),
+            ),
+            DoneCircularAvatar(
+              underText: LocaleKeys
+                  .shippingQueSteps1
+                  .tr(),
+            ),
+            DoneCircularAvatar(
+              underText: LocaleKeys
+                  .shippingQueSteps1
+                  .tr(),
+            ),
+          ],
+        );
+      }
+      else {
+        return Row(
+          mainAxisAlignment:
+          MainAxisAlignment
+              .spaceBetween,
+          children: [
+            DoneCircularAvatar(
+              underText: LocaleKeys
+                  .shippingQueSteps1
+                  .tr(),
+            ),
+            NotYetYellowContainer(
+              underText: LocaleKeys
+                  .shippingQueSteps3
+                  .tr(),
+            ),
+            NotYetYellowContainer(
+              underText: LocaleKeys
+                  .shippingQueSteps3
+                  .tr(),
+            ),
+            NotYetYellowContainer(
+              underText: LocaleKeys
+                  .shippingQueSteps4
+                  .tr(),
+            ),
+            NotYetYellowContainer(
+              underText: LocaleKeys
+                  .shippingQueSteps5
+                  .tr(),
+            ),
+          ],
+        );
+      }
+
+
+
   }
 
   void getUserToken() {
@@ -89,14 +369,14 @@ class ShipForCompanyAppCubitClass extends Cubit<ShipStates> {
     });
   }
 
+  TextEditingController messageController = TextEditingController();
   void sendMessage({
     required String sender,
     required String receiver,
-    required String text,
-    required DateTime date,
+    required Timestamp date,
   }) {
     MessageModel model = MessageModel(
-      text: text,
+      text: messageController.text,
       dateTime: date,
       receiverId: receiver,
       senderId: sender,
@@ -129,6 +409,26 @@ class ShipForCompanyAppCubitClass extends Cubit<ShipStates> {
     });
   }
 
+  bool messageControllerIsEmpty = true;
+  void checkControllerIsEmpty(){
+    if(messageController.text.isEmpty)
+      {
+        messageControllerIsEmpty= true;
+        emit(ControllerISEmpty());
+      }
+    else
+      {
+        messageControllerIsEmpty= false;
+        emit(ControllerISNotEmpty());
+
+      }
+  }
+  void resetWrittenMsg(){
+    messageController = TextEditingController();
+    checkControllerIsEmpty();
+    emit(ResetMsgController());
+  }
+
   List<MessageModel> messages = [];
 
   void getAllMessages({
@@ -141,12 +441,15 @@ class ShipForCompanyAppCubitClass extends Cubit<ShipStates> {
         .collection("chats")
         .doc(receiver)
         .collection("messages")
+        .orderBy("dateTime")
         .snapshots()
         .listen((event) {
       messages = [];
-      event.docs.forEach((element) {
+      for (var element in event.docs) {
+        log(element.data().toString());
         messages.add(MessageModel.fromJson(element.data()));
-      });
+      }
+      emit(GetAllMessages());
     });
   }
 
@@ -157,25 +460,32 @@ class ShipForCompanyAppCubitClass extends Cubit<ShipStates> {
     SaveValueInKey.userId = SharedCashHelper.getValue(key: "userId");
     SaveValueInKey.accessToken = SharedCashHelper.getValue(key: "accessToken");
     DioHelper.getData(
-            url: ALL_SHIPMENTS,
-            authorization: "Bearer ${SaveValueInKey.accessToken}")
+        url: ALL_SHIPMENTS,
+        authorization: "Bearer ${SaveValueInKey.accessToken}")
         .then((value) {
       showShipmentsListLength = value.data["shipment"]["data"].length;
       log("shipments data length = ${showShipmentsListLength.toString()}");
       tempList = [];
       for (int index = 0;
-          index < value.data["shipment"]["data"].length;
-          index++) {
+      index < value.data["shipment"]["data"].length;
+      index++) {
         log(value.data["shipment"]["data"][index]["client"]["name"]);
         if ((value.data["shipment"]["data"][index]["client"]["name"]
             .toString()
-            .contains(keyName) || value.data["shipment"]["data"][index]["client"]["phone"]
-            .toString()
-            .contains(keyName)) && (DateTime.parse(value.data["shipment"]["data"][index]["created_at"]).isBefore(toDate!) || DateTime.parse(value.data["shipment"]["data"][index]["created_at"]).day == toDate!.day) &&
-            ( DateTime.parse(value.data["shipment"]["data"][index]["created_at"]
+            .contains(keyName) ||
+            value.data["shipment"]["data"][index]["client"]["phone"]
+                .toString()
+                .contains(keyName)) &&
+            (DateTime.parse(value.data["shipment"]["data"][index]["created_at"])
+                .isBefore(toDate!) || DateTime
+                .parse(value.data["shipment"]["data"][index]["created_at"])
+                .day == toDate!.day) &&
+            (DateTime.parse(value.data["shipment"]["data"][index]["created_at"]
             )
-                .isAfter(fromDate!)) || DateTime.parse(value.data["shipment"]["data"][index]["created_at"]
-        ).day == fromDate!.day) {
+                .isAfter(fromDate!)) || DateTime
+            .parse(value.data["shipment"]["data"][index]["created_at"]
+        )
+            .day == fromDate!.day) {
           shipmentsDetailsModel = ShipmentsDetailsModel.fromJson(
               value.data["shipment"]["data"][index]);
           tempList.add(shipmentsDetailsModel!.toMap());
@@ -206,7 +516,8 @@ class ShipForCompanyAppCubitClass extends Cubit<ShipStates> {
   TextEditingController searchController = TextEditingController();
 
   void findAllMatchShipments() {
-    if (searchController.text.isNotEmpty || stringFromDate != "" || stringToDate != "") {
+    if (searchController.text.isNotEmpty || stringFromDate != "" ||
+        stringToDate != "") {
       tempList = [];
       getAllMatchedShipmentsData(searchController.text);
     } else {
@@ -231,22 +542,138 @@ class ShipForCompanyAppCubitClass extends Cubit<ShipStates> {
     }
   }
 
-  void openWatsApp({required String phone}) async {
-    String url() {
-      if (Platform.isIOS) {
-        return "whatsapp://wa.me/$phone/";
-      } else {
-        return "whatsapp://send?phone=$phone";
+  List propertiesOFCompany = [];
+
+  int ? companyId;
+  int clickedWatsAppCount = 0;
+  int clickedPhoneCount = 0;
+  int clickedSmsCount = 0;
+
+
+  void openWatsApp({required String phone,}) async {
+    companyId = SharedCashHelper.getValue(key: "companyId");
+    log(companyId.toString());
+    List temp = SharedCashHelper.getValue(key: "companyKey");
+    propertiesOFCompany = temp.map((item) => jsonDecode(item)).toList();
+    log(temp.toString());
+    log(propertiesOFCompany.toString());
+    for (int index = 0; index < propertiesOFCompany.length; index++) {
+      log(companyId.toString());
+      if (companyId == propertiesOFCompany[index]["companyId"]) {
+        log(companyId.toString());
+        propertiesOFCompany[index]["watsAppCount"]++;
+        clickedWatsAppCount = propertiesOFCompany[index]["watsAppCount"];
+        log(propertiesOFCompany[index]["watsAppCount"].toString());
+        // clickedPhoneCount = propertiesOFCompany[index]["phoneCount"];
+        // clickedSmsCount = propertiesOFCompany[index]["smsCount"];
       }
     }
+    temp = propertiesOFCompany.map((item) => jsonEncode(item)).toList();
+    SharedCashHelper.setValue(key: "companyKey", value: temp).then((
+        value) {
+      log("properties OF Company = ${SharedCashHelper.getValue(
+          key: "companyKey").toString()}");
+      SharedCashHelper.setValue(key: "watsAppCount", value: clickedWatsAppCount).then((value) async{
+        log(phone);
+        log(Platform.isIOS.toString());
+        String url() {
+          if (Platform.isIOS) {
+            return "whatsapp://wa.me/+2$phone";
+          } else {
+            return "whatsapp://send?phone=+2$phone";
+          }
+        }
+        bool result = await canLaunch(url());
+        if (result) {
+          await launch(url());
+          emit(OpenWhatsAppSuccessState());
+        } else {
+          watsAppErrorMsg = "whatsApp is not downloaded";
+          emit(OpenWhatsAppErrorState());
+        }
+      });
 
-    if (await canLaunch(url())) {
-      launch(url());
-      emit(OpenWhatsAppSuccessState());
-    } else {
-      watsAppErrorMsg = "whatsApp is not downloaded";
-      emit(OpenWhatsAppErrorState());
+    });
+  }
+
+  void callPhone({required String phone}) async {
+    companyId = SharedCashHelper.getValue(key: "companyId");
+    log(companyId.toString());
+    List temp = SharedCashHelper.getValue(key: "companyKey");
+    propertiesOFCompany = temp.map((item) => jsonDecode(item)).toList();
+    log(temp.toString());
+    log(propertiesOFCompany.toString());
+    for (int index = 0; index < propertiesOFCompany.length; index++) {
+      log(companyId.toString());
+      if (companyId == propertiesOFCompany[index]["companyId"]) {
+        log(companyId.toString());
+        propertiesOFCompany[index]["phoneCount"]++;
+        clickedPhoneCount = propertiesOFCompany[index]["phoneCount"];
+        log(propertiesOFCompany[index]["phoneCount"].toString());
+        // clickedPhoneCount = propertiesOFCompany[index]["phoneCount"];
+        // clickedSmsCount = propertiesOFCompany[index]["smsCount"];
+      }
     }
+    temp = propertiesOFCompany.map((item) => jsonEncode(item)).toList();
+    SharedCashHelper.setValue(key: "companyKey", value: temp).then((
+        value) async {
+      log("properties OF Company = ${SharedCashHelper.getValue(
+          key: "companyKey").toString()}");
+      SharedCashHelper.setValue(key: "phoneCount", value: clickedPhoneCount).then((value) async{
+        log(phone);
+        log(Platform.isIOS.toString());
+        String url = "tel:${phone}";
+        bool result = await canLaunch(url);
+        if (result) {
+          await launch(url);
+          emit(CallPhoneSuccessState());
+        } else {
+          watsAppErrorMsg = "whatsApp is not downloaded";
+          emit(CallPhoneErrorState());
+        }
+      });
+
+    });
+  }
+
+  void sendSms({required String phone}) async {
+    companyId = SharedCashHelper.getValue(key: "companyId");
+    log(companyId.toString());
+    List temp = SharedCashHelper.getValue(key: "companyKey");
+    propertiesOFCompany = temp.map((item) => jsonDecode(item)).toList();
+    log(temp.toString());
+    log(propertiesOFCompany.toString());
+    for (int index = 0; index < propertiesOFCompany.length; index++) {
+      log(companyId.toString());
+      if (companyId == propertiesOFCompany[index]["companyId"]) {
+        log(companyId.toString());
+        propertiesOFCompany[index]["smsCount"]++;
+        clickedSmsCount = propertiesOFCompany[index]["smsCount"];
+        log(propertiesOFCompany[index]["smsCount"].toString());
+        // clickedPhoneCount = propertiesOFCompany[index]["phoneCount"];
+        // clickedSmsCount = propertiesOFCompany[index]["smsCount"];
+      }
+    }
+    temp = propertiesOFCompany.map((item) => jsonEncode(item)).toList();
+    SharedCashHelper.setValue(key: "companyKey", value: temp).then((
+        value) async {
+      log("properties OF Company = ${SharedCashHelper.getValue(
+          key: "companyKey").toString()}");
+      SharedCashHelper.setValue(key: "smsCount", value: clickedSmsCount).then((value) async{
+        log(phone);
+        log(Platform.isIOS.toString());
+        String url = "sms:${phone}";
+        bool result = await canLaunch(url);
+        if (result) {
+          await launch(url);
+          emit(SendSmsSuccessState());
+        } else {
+          watsAppErrorMsg = "whatsApp is not downloaded";
+          emit(SendSmsErrorState());
+        }
+      });
+
+    });
   }
 
   DateTime? fromDate;
@@ -281,6 +708,7 @@ class ShipForCompanyAppCubitClass extends Cubit<ShipStates> {
     stringFromDate = DateFormat("y/MM/dd").format(fromDate!);
     emit(ConvertDateToString());
   }
+
   void convertToDateToString() {
     stringToDate = DateFormat("y/MM/dd").format(toDate!);
     emit(ConvertDateToString());
@@ -318,7 +746,6 @@ class ShipForCompanyAppCubitClass extends Cubit<ShipStates> {
         data: {},
       );
       editShipmentModel = EditShipmentModel.fromJson(response.data["shipment"]);
-
       log(editShipmentModel!.shippingPrice.toString());
       log(editShipmentModel!.name.toString());
       log(editShipmentModel!.shipmentId.toString());
@@ -330,19 +757,21 @@ class ShipForCompanyAppCubitClass extends Cubit<ShipStates> {
       SaveValueInKey.customerServiceTypeId = editShipmentModel!.serviceTypeId;
       log("shipment will be sent = ${SaveValueInKey.shipmentId}");
       log("customerServiceTypeId = ${SaveValueInKey.customerServiceTypeId}");
-       receiverName.text = editShipmentModel!.name!;
-       address.text = editShipmentModel!.address!;
-       mobile.text = editShipmentModel!.phone!;
-       mobile2.text = editShipmentModel!.phone_2!;
-       email.text = editShipmentModel!.email!;
-       cost.text = "${editShipmentModel!.shippingPrice!}";
-       customerCode.text =editShipmentModel!.customerCode == null? " ":"${editShipmentModel!.customerCode}";
-       shipmentName.text = editShipmentModel!.nameShipment!;
-       weight.text = editShipmentModel!.weight!;
-       size.text = editShipmentModel!.size!;
-       count.text = "${editShipmentModel!.count!}";
-       description.text = editShipmentModel!.description ?? "";
-       mainNotes.text = editShipmentModel!.notes ?? "";
+      receiverName.text = editShipmentModel!.name!;
+      address.text = editShipmentModel!.address!;
+      mobile.text = editShipmentModel!.phone!;
+      mobile2.text = editShipmentModel!.phone_2!;
+      email.text = editShipmentModel!.email!;
+      cost.text = "${editShipmentModel!.shippingPrice!}";
+      customerCode.text =
+      editShipmentModel!.customerCode == null ? " " : "${editShipmentModel!
+          .customerCode}";
+      shipmentName.text = editShipmentModel!.nameShipment!;
+      weight.text = "${editShipmentModel!.weight!}";
+      size.text = editShipmentModel!.size!;
+      count.text = "${editShipmentModel!.count!}";
+      description.text = editShipmentModel!.description ?? "";
+      mainNotes.text = editShipmentModel!.notes ?? "";
       getCustomerCityAndArea();
       getCustomerServiceType();
       emit(GetSpecificShipmentDataSuccessState());
@@ -373,7 +802,9 @@ class ShipForCompanyAppCubitClass extends Cubit<ShipStates> {
       nameShipment: shipmentName.text,
       description: description.text,
       shippingPrice: double.tryParse(cost.text),
-      weight: weight.text,
+      weight: weight.text.contains("-")
+          ? int.tryParse(weight.text)! * (-1)
+          : int.tryParse(weight.text),
       size: size.text,
       count: count.text.contains("-")
           ? int.tryParse(count.text)! * (-1)
@@ -464,8 +895,8 @@ class ShipForCompanyAppCubitClass extends Cubit<ShipStates> {
   void getAllCitiesAndTheirAreas() {
     SaveValueInKey.accessToken = SharedCashHelper.getValue(key: "accessToken");
     DioHelper.getData(
-            url: GET_CITIES_DATA,
-            authorization: "Bearer ${SaveValueInKey.accessToken}")
+        url: GET_CITIES_DATA,
+        authorization: "Bearer ${SaveValueInKey.accessToken}")
         .then((value) {
       allCities = AllCities.fromJson(value.data);
       log("area names List = ${allCities!.toMap().toString()}");
@@ -491,8 +922,8 @@ class ShipForCompanyAppCubitClass extends Cubit<ShipStates> {
     areaIdList = [];
     for (int index = 0; index < cityList.length; index++) {
       for (int areaIndex = 0;
-          areaIndex < allCities!.province![index]["areas"].length;
-          areaIndex++) {
+      areaIndex < allCities!.province![index]["areas"].length;
+      areaIndex++) {
         if (cityList[index] == choice.toString()) {
           areaList.add(allCities!.province![index]["areas"][areaIndex]["name"]);
           areaIdList.add(allCities!.province![index]["areas"][areaIndex]["id"]);
@@ -504,8 +935,10 @@ class ShipForCompanyAppCubitClass extends Cubit<ShipStates> {
     log("areaaaaaaaaaaa ideeeeees = ${areaIdList.toString()}");
     emit(GetCitiesDataSuccess());
   }
-  String  cityHint = "";
-  String areaHint= "";
+
+  String cityHint = "";
+  String areaHint = "";
+
   void getCustomerCityAndArea() {
     emit(GetCustomerCityAndAreaLoadingState());
     DioHelper.getData(url: GET_CITIES_DATA_OUT, authorization: "")
@@ -530,7 +963,9 @@ class ShipForCompanyAppCubitClass extends Cubit<ShipStates> {
       emit(GetCustomerCityAndAreaErrorState(error.toString()));
     });
   }
-  String  serviceHint= "";
+
+  String serviceHint = "";
+
   void getCustomerServiceType() {
     emit(GetCustomerCityAndAreaLoadingState());
     DioHelper.getData(
@@ -538,27 +973,27 @@ class ShipForCompanyAppCubitClass extends Cubit<ShipStates> {
         authorization: "Bearer ${SaveValueInKey.accessToken}")
         .then((value) {
       for (int index = 0; index < value.data["service_type"].length; index++) {
-        if(value.data["service_type"][index]["id"]==SaveValueInKey.customerServiceTypeId)
-          {
-            serviceHint = value.data["service_type"][index]["type"];
-            log("service type =${value.data["service_type"][index]["type"]}");
-          }
+        if (value.data["service_type"][index]["id"] ==
+            SaveValueInKey.customerServiceTypeId) {
+          serviceHint = value.data["service_type"][index]["type"];
+          log("service type =${value.data["service_type"][index]["type"]}");
+        }
       }
       log("service type =${serviceHint.toString()}");
       emit(GetServiceTypeSuccessState());
     });
   }
 
-  void resetDropDownData(){
+  void resetDropDownData() {
     cityList = [];
     areaList = [""];
-     areaIdList = [];
-     cityIdList = [];
+    areaIdList = [];
+    cityIdList = [];
     serviceTypes = [];
     serviceIds = [];
-    serviceHint= "";
+    serviceHint = "";
     cityHint = "";
-    areaHint= "";
+    areaHint = "";
     emit(ResetDropDownData());
   }
 
@@ -579,8 +1014,8 @@ class ShipForCompanyAppCubitClass extends Cubit<ShipStates> {
 
   void getServiceType(int falseIndex) {
     DioHelper.getData(
-            url: GET_SERVICE_TYPES_DATA,
-            authorization: "Bearer ${SaveValueInKey.accessToken}")
+        url: GET_SERVICE_TYPES_DATA,
+        authorization: "Bearer ${SaveValueInKey.accessToken}")
         .then((value) {
       for (int index = 0; index < value.data["service_type"].length; index++) {
         serviceTypes.add(value.data["service_type"][index]["type"]);
@@ -619,7 +1054,6 @@ class ShipForCompanyAppCubitClass extends Cubit<ShipStates> {
   String completeShowMsg = "";
 
 
-
   DateTime? deliveryDate;
   String stringDeliveryDate = "";
 
@@ -633,4 +1067,24 @@ class ShipForCompanyAppCubitClass extends Cubit<ShipStates> {
     convertDeliveryDateToString();
     emit(GetDateAndShowIt());
   }
+
+  ///////////////////// for detect location /////////////////////////
+
+  ///////////////////// for refresh /////////////////////////
+  RefreshController refreshController =
+  RefreshController(initialRefresh: false);
+  void refresh() async{
+  // monitor network fetch
+  await Future.delayed(const Duration(milliseconds: 1000));
+  getAllShipmentsData();
+  refreshController.refreshCompleted();
+  emit(RefreshAllShipments());
+}
+
+  void onLoading() async{
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    refreshController.loadComplete();
+  }
+
 }

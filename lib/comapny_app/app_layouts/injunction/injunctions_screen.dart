@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wasela/comapny_app/app_layouts/injunction/bloc/cubit_class.dart';
 import 'package:wasela/comapny_app/app_layouts/injunction/bloc/states.dart';
+import 'package:wasela/helper_methods/app_bloc_provider/bloc/cubit.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -160,6 +161,7 @@ class BouncePart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = InjunctionsAppCubitClass.get(context);
+    var appCubit = AppCubitClass.get(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -250,47 +252,35 @@ class BouncePart extends StatelessWidget {
                               ),
                               CustomRowForDetails(
                                 text1: "أسم العميل",
-                                text2: "lll",
+                                text2: "${appCubit.bouncePartShipmentsList[index]["client"]["name"]}",
                                 rowWidth: 230,
                               ),
                               CustomRowForDetails(
                                 text1: "العنوان",
-                                text2:"كوكواااا",
+                                text2:"${appCubit.bouncePartShipmentsList[index]["client"]["address"]}",
                                 rowWidth: 230,
                               ),
                               CustomRowForDetails(
                                 text1: LocaleKeys
                                     .shippingListItemDetails6
                                     .tr(),
-                                text2: "قلبى",
+                                text2: "${appCubit.bouncePartShipmentsList[index]["created_at"]}",
                                 //"${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).year}-${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).month}-${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).day}",
                                 //"${DateTime.parse(dataList[index]["created_at"])}",
                               ),
                               CustomRowForDetails(
-                                text1: LocaleKeys
-                                    .shippingListItemDetails7
-                                    .tr(),
-                                text2: "1855",
-                                rowWidth: 230,
-                              ),
-                              CustomRowForDetails(
                                 text1: "سعر المنتج",
-                                text2: "1855",
-                                rowWidth: 230,
-                              ),
-                              CustomRowForDetails(
-                                text1: "مبلغ التسليم",
-                                text2: "1855",
+                                text2: "${appCubit.bouncePartShipmentsList[index]["product_price"]}",
                                 rowWidth: 230,
                               ),
                               CustomRowForDetails(
                                 text1: "قيمة المرتجع",
-                                text2: "1855",
+                                text2: "${appCubit.bouncePartShipmentsList[index]["return_price"]}",
                                 rowWidth: 230,
                               ),
                               CustomRowForDetails(
                                 text1: "تكلفة الشحن",
-                                text2: "1855",
+                                text2: "${appCubit.bouncePartShipmentsList[index]["shipping_price"]}",
                                 rowWidth: 230,
                               ),
                             ],
@@ -304,7 +294,7 @@ class BouncePart extends StatelessWidget {
                       height: 20,
                     );
                   },
-                  itemCount: 5,
+                  itemCount: appCubit.bouncePartShipmentsList.length,
                 ),
               ),
             );
@@ -314,6 +304,7 @@ class BouncePart extends StatelessWidget {
     );
   }
 }
+
 class BounceCompleteWithShipmentPay extends StatelessWidget {
   final bool shippingIsEmpty;
   final BuildContext context;
@@ -327,6 +318,7 @@ class BounceCompleteWithShipmentPay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = InjunctionsAppCubitClass.get(context);
+    var appCubit = AppCubitClass.get(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -417,47 +409,35 @@ class BounceCompleteWithShipmentPay extends StatelessWidget {
                               ),
                               CustomRowForDetails(
                                 text1: "أسم العميل",
-                                text2: "lll",
+                                text2: "${appCubit.bounceCompletePayShippingList[index]["client"]["name"]}",
                                 rowWidth: 230,
                               ),
                               CustomRowForDetails(
                                 text1: "العنوان",
-                                text2:"كوكواااا",
+                                text2:"${appCubit.bounceCompletePayShippingList[index]["client"]["address"]}",
                                 rowWidth: 230,
                               ),
                               CustomRowForDetails(
                                 text1: LocaleKeys
                                     .shippingListItemDetails6
                                     .tr(),
-                                text2: "قلبى",
+                                text2: "${appCubit.bounceCompletePayShippingList[index]["created_at"]}",
                                 //"${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).year}-${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).month}-${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).day}",
                                 //"${DateTime.parse(dataList[index]["created_at"])}",
                               ),
                               CustomRowForDetails(
-                                text1: LocaleKeys
-                                    .shippingListItemDetails7
-                                    .tr(),
-                                text2: "1855",
-                                rowWidth: 230,
-                              ),
-                              CustomRowForDetails(
                                 text1: "سعر المنتج",
-                                text2: "1855",
-                                rowWidth: 230,
-                              ),
-                              CustomRowForDetails(
-                                text1: "مبلغ التسليم",
-                                text2: "1855",
+                                text2: "${appCubit.bounceCompletePayShippingList[index]["product_price"]}",
                                 rowWidth: 230,
                               ),
                               CustomRowForDetails(
                                 text1: "قيمة المرتجع",
-                                text2: "1855",
+                                text2: "${appCubit.bounceCompletePayShippingList[index]["return_price"]}",
                                 rowWidth: 230,
                               ),
                               CustomRowForDetails(
                                 text1: "تكلفة الشحن",
-                                text2: "1855",
+                                text2: "${appCubit.bounceCompletePayShippingList[index]["shipping_price"]}",
                                 rowWidth: 230,
                               ),
                             ],
@@ -471,7 +451,7 @@ class BounceCompleteWithShipmentPay extends StatelessWidget {
                       height: 20,
                     );
                   },
-                  itemCount: 5,
+                  itemCount: appCubit.bounceCompletePayShippingList.length,
                 ),
               ),
             );
@@ -481,6 +461,7 @@ class BounceCompleteWithShipmentPay extends StatelessWidget {
     );
   }
 }
+
 class BounceCompleteWithOutShipmentPay extends StatelessWidget {
   final bool shippingIsEmpty;
   final BuildContext context;
@@ -494,6 +475,7 @@ class BounceCompleteWithOutShipmentPay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = InjunctionsAppCubitClass.get(context);
+    var appCubit = AppCubitClass.get(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -584,47 +566,35 @@ class BounceCompleteWithOutShipmentPay extends StatelessWidget {
                               ),
                               CustomRowForDetails(
                                 text1: "أسم العميل",
-                                text2: "lll",
+                                text2: "${appCubit.bounceCompleteNotPayShippingList[index]["client"]["name"]}",
                                 rowWidth: 230,
                               ),
                               CustomRowForDetails(
                                 text1: "العنوان",
-                                text2:"كوكواااا",
+                                text2:"${appCubit.bounceCompleteNotPayShippingList[index]["client"]["address"]}",
                                 rowWidth: 230,
                               ),
                               CustomRowForDetails(
                                 text1: LocaleKeys
                                     .shippingListItemDetails6
                                     .tr(),
-                                text2: "قلبى",
+                                text2: "${appCubit.bounceCompleteNotPayShippingList[index]["created_at"]}",
                                 //"${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).year}-${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).month}-${DateFormat("yyyy-MM-dd").parse(dataList[index]["created_at"]).day}",
                                 //"${DateTime.parse(dataList[index]["created_at"])}",
                               ),
                               CustomRowForDetails(
-                                text1: LocaleKeys
-                                    .shippingListItemDetails7
-                                    .tr(),
-                                text2: "1855",
-                                rowWidth: 230,
-                              ),
-                              CustomRowForDetails(
                                 text1: "سعر المنتج",
-                                text2: "1855",
-                                rowWidth: 230,
-                              ),
-                              CustomRowForDetails(
-                                text1: "مبلغ التسليم",
-                                text2: "1855",
+                                text2: "${appCubit.bounceCompleteNotPayShippingList[index]["product_price"]}",
                                 rowWidth: 230,
                               ),
                               CustomRowForDetails(
                                 text1: "قيمة المرتجع",
-                                text2: "1855",
+                                text2: "${appCubit.bounceCompleteNotPayShippingList[index]["return_price"]}",
                                 rowWidth: 230,
                               ),
                               CustomRowForDetails(
                                 text1: "تكلفة الشحن",
-                                text2: "1855",
+                                text2: "${appCubit.bounceCompleteNotPayShippingList[index]["shipping_price"]}",
                                 rowWidth: 230,
                               ),
                             ],
@@ -638,7 +608,7 @@ class BounceCompleteWithOutShipmentPay extends StatelessWidget {
                       height: 20,
                     );
                   },
-                  itemCount: 5,
+                  itemCount: appCubit.bounceCompleteNotPayShippingList.length,
                 ),
               ),
             );

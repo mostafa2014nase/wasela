@@ -105,3 +105,11 @@ class CustomIcons {
   static const IconData verified_list_of_exercises_of_a_gymnast_on_a_clipboard = IconData(0xe876, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData verify = IconData(0xe877, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
+class ShipIcon {
+  ShipIcon._();
+
+  static const _kFontFam = 'ShipIcon';
+  static const String? _kFontPkg = null;
+
+  static const IconData myshipping = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+}

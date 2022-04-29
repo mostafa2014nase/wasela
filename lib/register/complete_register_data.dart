@@ -1,8 +1,5 @@
 import 'dart:developer';
-
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:wasela/comapny_app/app_layouts/add_new_ship/bloc/cubit_class.dart';
-import 'package:wasela/comapny_app/app_layouts/add_new_ship/bloc/states.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';

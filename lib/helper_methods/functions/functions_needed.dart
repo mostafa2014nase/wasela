@@ -1676,6 +1676,12 @@ AppBar generateAppBar({
     ],
   );
 }
+
+class Back {
+   void backToPrevious(context){
+    Navigator.pop(context);
+  }
+}
 AppBar generateAppBarForCompanyMainScreens({
   required String title,
   required String svgPath,

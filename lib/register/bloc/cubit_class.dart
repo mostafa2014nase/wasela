@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,11 @@ class RegisterCubitClass extends Cubit<RegisterStates> {
   TextEditingController emailCompanyController = TextEditingController();
   TextEditingController passwordCompanyController = TextEditingController();
   TextEditingController rePasswordCompanyController = TextEditingController();
+
+  //ensure code
+  int makeIntAndTimer (value){
+    return int.parse(value.toString());
+  }
 
   void resetAll() {
     // client clear
@@ -71,7 +77,7 @@ class RegisterCubitClass extends Cubit<RegisterStates> {
   }
 
   String errorCompanyMessage = "";
-
+  List  propertiesOFCompany = [];
   void registerCompany() async {
     emit(RegisterCompanyLoadingState());
     try {
@@ -99,11 +105,27 @@ class RegisterCubitClass extends Cubit<RegisterStates> {
         SharedCashHelper.setValue(
                 key: "user_type", value: SaveValueInKey.userType)
             .then((value) {
-          SharedCashHelper.setValue(
-              key: "areaId", value: areaIdNow).then((value){
-            log(SaveValueInKey.accessToken.toString());
-            log(SaveValueInKey.userType.toString());
-            emit(RegisterCompanySuccessState());
+          SharedCashHelper.setValue(key: "areaId", value: areaIdNow)
+              .then((value) {
+            if(SharedCashHelper.getValue(key: "companyKey") != null){
+              List  tempList = SharedCashHelper.getValue(key: "companyKey");
+              propertiesOFCompany = tempList.map((item) => jsonDecode(item)).toList();
+            }
+
+                Map tempAddList = {
+                  "companyId": response.data["user"]["id"],
+                  "watsAppCount": 0,
+                  "phoneCount": 0,
+                  "smsCount": 0,
+                };
+                propertiesOFCompany.add(tempAddList);
+                List <String> tempList = propertiesOFCompany.map((item) => jsonEncode(item)).toList();
+                SharedCashHelper.setValue(key: "companyKey", value: tempList).then((value) {
+                  log("data of company = ${SharedCashHelper.getValue(key: "companyKey").toString()}");
+                  log(SaveValueInKey.accessToken.toString());
+                  log(SaveValueInKey.userType.toString());
+                  emit(RegisterCompanySuccessState());
+                });
           });
         }).catchError((error) {
           log("error in caching user_type ${error.toString()}");
@@ -205,9 +227,7 @@ class RegisterCubitClass extends Cubit<RegisterStates> {
 
   void getAllCitiesForRegister() {
     SaveValueInKey.accessToken = SharedCashHelper.getValue(key: "accessToken");
-    DioHelper.getData(
-            url: GET_CITIES_DATA_OUT,
-            authorization: "")
+    DioHelper.getData(url: GET_CITIES_DATA_OUT, authorization: "")
         .then((value) {
       allCities = AllCities.fromJson(value.data);
       log("area names List = ${allCities!.toMap().toString()}");
@@ -256,7 +276,7 @@ class RegisterCubitClass extends Cubit<RegisterStates> {
   dynamic selectedCity;
   bool isCitySelected = false;
 
-  var selectedArea;
+  dynamic selectedArea;
   bool isAreaSelected = false;
   int? areaIdNow;
 

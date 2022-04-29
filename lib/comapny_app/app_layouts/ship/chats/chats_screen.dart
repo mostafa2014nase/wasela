@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wasela/comapny_app/app_layouts/ship/bloc/cubit_class.dart';
@@ -5,18 +6,25 @@ import 'package:wasela/comapny_app/app_layouts/ship/bloc/states.dart';
 import 'package:wasela/helper_methods/constants/themes.dart';
 import 'package:wasela/helper_methods/functions/functions_needed.dart';
 import 'package:wasela/helper_methods/modules/massege_model.dart';
+import 'package:wasela/helper_methods/sharedpref/shared_preference.dart';
 
 class ChatsScreen extends StatelessWidget {
   ChatsScreen({Key? key}) : super(key: key);
-  TextEditingController messageController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
     return Builder(
       builder: (context) {
-        ShipForCompanyAppCubitClass.get(context).getAllMessages(sender: "3aghajXtxkD8i24ElUXw", receiver: "jcdjncd55sc2a5");
-        return BlocConsumer<ShipForCompanyAppCubitClass,ShipStates>(
-          listener: (context, state) {},
+        ShipForCompanyAppCubitClass.get(context).getAllMessages(
+            sender: SharedCashHelper.getValue(key: "companyId").toString(), receiver: "0receiver12here3");
+        return BlocConsumer<ShipForCompanyAppCubitClass, ShipStates>(
+          listener: (context, state) {
+            if(state is SendMessageSuccessState)
+              {
+                ShipForCompanyAppCubitClass.get(context).resetWrittenMsg();
+              }
+          },
           builder: (context, state) {
             var cubit = ShipForCompanyAppCubitClass.get(context);
             return Scaffold(
@@ -27,90 +35,133 @@ class ChatsScreen extends StatelessWidget {
                 context: context,
                 mainScreen: true,
               ),
-              body: Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: Column(
-                  children:[
-                    const OurChatComponent(),
-                    CompanyChatComponent(
-                      model:cubit.messages.isNotEmpty ?cubit.messages.first: MessageModel(text: "hhdhhfv", senderId: "njdc", receiverId: "jcfj", dateTime: DateTime.now())
-                    ),
-                    const Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              height: 60,
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.horizontal(
-                                  right: Radius.circular(10.0),
-                                  left: Radius.circular(10.0),
-                                ),
-                              ),
-                              child: TextFormField(
-                                textAlign: TextAlign.start,
-                                textAlignVertical: TextAlignVertical.bottom,
-                                controller: messageController,
-                                keyboardType:  TextInputType.text,
-                                decoration: InputDecoration(
-                                  fillColor: Colors.white,
-                                  hintStyle: lightTheme.textTheme.bodyText1
-                                      ?.copyWith(color: textGreyColor, fontSize: 20.0),
-                                  hintText: "اكتب رسالتك",
-                                  enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                      BorderSide(color: greyColortwoo, width: 1.5),
-                                      borderRadius: const BorderRadius.horizontal(
-                                        right: Radius.circular(10.0),
-                                      )),
-                                ),
-                              ),
-                            ),
+              body: Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      itemBuilder: (context,index){
+                        var message = cubit.messages[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 10.0, bottom: 25.0),
+                          child: Column(
+                            children: [
+                              const ServiceChatComponent(),
+                              CompanyChatComponent(
+                                model:message,),
+                            ],
                           ),
-                          InkWell(
-                            onTap: (){
-                              cubit.sendMessage(
-                                text: messageController.text,
-                                date: DateTime.now(),
-                                receiver: "jcdjncd55sc2a5",
-                                sender: "3aghajXtxkD8i24ElUXw",
-                              );
-                            },
-                            child: Container(
-                              width: 60.0,
-                              height: 60.0,
-                              decoration:  BoxDecoration(
-                                color: purpleColor,
-                                borderRadius: const BorderRadius.horizontal(
-                                  left: Radius.circular(10.0),
+                        );
+                      },
+                      itemCount: cubit.messages.length,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 60.0,
+                    child: Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        Container(
+                          color: greyColor,
+                          width: double.infinity,
+                          height: 10.0,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  height: 60,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.horizontal(
+                                      right: Radius.circular(10.0),
+                                      left: Radius.circular(10.0),
+                                    ),
+                                  ),
+                                  child: TextFormField(
+                                    textAlign: TextAlign.start,
+                                    textAlignVertical: TextAlignVertical.bottom,
+                                    controller: cubit.messageController,
+                                    keyboardType: TextInputType.text,
+                                    onChanged: (message){
+                                      cubit.checkControllerIsEmpty();
+                                    },
+                                    decoration: InputDecoration(
+                                      fillColor: Colors.white,
+                                      hintStyle: lightTheme.textTheme.bodyText1
+                                          ?.copyWith(
+                                          color: textGreyColor, fontSize: 20.0),
+                                      hintText: "اكتب رسالتك",
+                                      contentPadding: const EdgeInsets.all(8.0),
+                                      enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: greyColortwoo, width: 1.5),
+                                          borderRadius: const BorderRadius.horizontal(
+                                            right: Radius.circular(10.0),
+                                          )),
+                                    ),
+                                  ),
                                 ),
                               ),
-                              padding: const EdgeInsets.all(8.0),
-                              child: const Icon(
-                                Icons.arrow_forward,
-                                color: Colors.white,
+                              cubit.messageControllerIsEmpty ?
+                              Container(
+                                width: 60.0,
+                                height: 60.0,
+                                decoration: BoxDecoration(
+                                  color: purpleColor,
+                                  borderRadius: const BorderRadius.horizontal(
+                                    left: Radius.circular(10.0),
+                                  ),
+                                ),
+                                padding: const EdgeInsets.all(8.0),
+                                child: const Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                ),
+                              ):
+                              InkWell(
+                                onTap: () {
+                                  cubit.sendMessage(
+                                    date: Timestamp.now(),
+                                    receiver: "0receiver12here3",
+                                    sender: SharedCashHelper.getValue(key: "companyId").toString(),
+                                  );
+                                },
+                                child: Container(
+                                  width: 60.0,
+                                  height: 60.0,
+                                  decoration: BoxDecoration(
+                                    color: purpleColor,
+                                    borderRadius: const BorderRadius.horizontal(
+                                      left: Radius.circular(10.0),
+                                    ),
+                                  ),
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: const Icon(
+                                    Icons.arrow_forward,
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             );
-          } ,
+          },
         );
       },
     );
   }
 }
 
-class OurChatComponent extends StatelessWidget {
-  const OurChatComponent({Key? key}) : super(key: key);
+class ServiceChatComponent extends StatelessWidget {
+  const ServiceChatComponent({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
