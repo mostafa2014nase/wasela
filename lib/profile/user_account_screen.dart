@@ -99,7 +99,6 @@ class UserAccountScreen extends StatelessWidget {
                                   height: 170,
                                   width: double.infinity,
                                   child: Image.network(
-                                    // "https://png.pngtree.com/thumb_back/fh260/back_our/20190622/ourmid/pngtree-g20-summit-simple-business-background-image_232743.jpg",
                                     "https://ak.picdn.net/shutterstock/videos/1014534347/thumb/6.jpg?ip=x480",
                                     fit: BoxFit.cover,
                                   ),
@@ -1178,7 +1177,6 @@ class UserAccountScreenUpdate extends StatelessWidget {
                                     height: 170,
                                     width: double.infinity,
                                     child: Image.network(
-                                      // "https://png.pngtree.com/thumb_back/fh260/back_our/20190622/ourmid/pngtree-g20-summit-simple-business-background-image_232743.jpg",
                                       "https://ak.picdn.net/shutterstock/videos/1014534347/thumb/6.jpg?ip=x480",
                                       fit: BoxFit.cover,
                                     ),
